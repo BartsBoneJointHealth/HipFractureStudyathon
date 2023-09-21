@@ -19,7 +19,7 @@ source("analysis/private/_buildStrata.R")
 # C. Connection ----------------------
 
 # set connection Block
-configBlock <- "[block]"
+configBlock <- "optum"
 
 # provide connection details
 connectionDetails <- DatabaseConnector::createConnectionDetails(
@@ -53,11 +53,14 @@ analysisSettings <- readSettingsFile(here::here("analysis/settings/strata.yml"))
 
 # E. Script --------------------
 
-#######if BAYER uncomment this line#################
-#startSnowflakeSession(con, executionSettings)
+####### If BAYER uncomment this line#################
+startSnowflakeSession(con, executionSettings)
 
 
-### RUN ONCE - Initialize Cohort table #########
+### RUN ONCE - Initialize cohort tables #########
+
+dropCohortTables(executionSettings = executionSettings, con = con)
+
 initializeCohortTables(executionSettings = executionSettings, con = con)
 
 
@@ -70,11 +73,13 @@ generatedCohorts <- generateCohorts(
 )
 
 
-# build strata
+# Build stratas
+#debug(buildStrata)
+
 buildStrata(con = con,
             executionSettings = executionSettings,
             analysisSettings = analysisSettings)
 
 # F. Session Info ------------------------
-DatabaseConnector::disconnect(con)
+#DatabaseConnector::disconnect(con)
 

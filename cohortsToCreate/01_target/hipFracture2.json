@@ -51,7 +51,8 @@
     "CriteriaList": [
       {
         "ProcedureOccurrence": {
-          "CodesetId": 0
+          "CodesetId": 0,
+          "First": true
         }
       }
     ],
