@@ -1,55 +1,55 @@
-OMOP Table,OMOP Field,Source Table,Source Field,Source Value,Source Value Description,OMOP ConceptId,OMOP Concept Name,Question
-PERSON,gender_concept_id,MinimumDataSet,Gender,Male,,8507,MALE,
-PERSON,gender_concept_id,MinimumDataSet,Gender,Female,,8532,FEMALE,
-CONDITION_OCCURRENCE,condition_concept_id,MinimumDataSet,Fracture type,Intracapsular non-displaced,,433856,"	Fracture of neck of femur",Can I check this can only be used in combination with the observation? or another code;4136840- basicervical neck of femur and 4136839-midcervical fracture neck of femur; 4135747 subcapital fracture neck of femur
-CONDITION_OCCURRENCE,condition_concept_id,MinimumDataSet,Fracture type,Intracapsular displaced,,433856,"	Fracture of neck of femur",
-CONDITION_OCCURRENCE,condition_concept_id,MinimumDataSet,Fracture type,Intertrochanteric,,4133012,Intertrochanteric fracture,
-CONDITION_OCCURRENCE,condition_concept_id,MinimumDataSet,Fracture type,Subtrochanteric,,4135748,Subtrochanteric fracture of femur,
-CONDITION_OCCURRENCE,condition_concept_id,MinimumDataSet,Fracture type,Other,,4138412,Fracture of proximal end of femur,
-OBSERVATION,observation_concept_id,MinimumDataSet,Fracture type,Intracapsular non-displaced,,4139391,Undisplaced fracture,
-OBSERVATION,observation_concept_id,MinimumDataSet,Fracture type,Intracapsular displaced,,4047514,Fracture with displacement,
-PROCEDURE_OCCURRENCE,procedure_concept_id,MinimumDataSet,Operation performed,Cannulated screws,,40479229,"	Percutaneous fixation of fracture of neck of femur",
-PROCEDURE_OCCURRENCE,procedure_concept_id,MinimumDataSet,Operation performed,Sliding hip screw,,4343341,Primary open reduction of fracture of neck of femur and open fixation using dynamic hip screw,
-PROCEDURE_OCCURRENCE,procedure_concept_id,MinimumDataSet,Operation performed,Intra-medullary nail,,46270907,Closed reduction of fracture of proximal femur and internal fixation using bone nail,
-PROCEDURE_OCCURRENCE,procedure_concept_id,MinimumDataSet,Operation performed,Hemi-arthroplasty,,4297365,Partial hip replacement by prosthesis,
-PROCEDURE_OCCURRENCE,procedure_concept_id,MinimumDataSet,Operation performed,Total hip replacement,,4203771,Total replacement of hip,
-PROCEDURE_OCCURRENCE,procedure_concept_id,MinimumDataSet,Operation performed,Other,,4327115,Operative procedure on hip,
-VISIT_OCCURRENCE,admitting_source_concept_id,MinimumDataSet,Pre-fracture residence,Home,,0,No matching concept,how to you plan to deal with this?
-VISIT_OCCURRENCE,admitting_source_concept_id,MinimumDataSet,Pre-fracture residence,Institution,,42898160,Non-hospital institution Visit,
-VISIT_OCCURRENCE,admitting_source_concept_id,MinimumDataSet,Pre-fracture residence,Acute Care,,38004279,"	General Acute Care Hospital",
-VISIT_OCCURRENCE,admitting_source_concept_id,MinimumDataSet,Pre-fracture residence,Unknown,,0,No matching concept,how to you plan to deal with this?
-VISIT_OCCURRENCE,discharge_to_concept_id,MinimumDataSet,Discharge destination ,Home,,0,No matching concept,how to you plan to deal with this?
-VISIT_OCCURRENCE,discharge_to_concept_id,MinimumDataSet,Discharge destination ,Institution,,42898160,Non-hospital institution Visit,
-VISIT_OCCURRENCE,discharge_to_concept_id,MinimumDataSet,Discharge destination ,Acute Care,,38004279,"	General Acute Care Hospital",
-VISIT_OCCURRENCE,discharge_to_concept_id,MinimumDataSet,Discharge destination ,Rehabilitation,,38004285,"	Rehabilitation Hospital",
-VISIT_OCCURRENCE,discharge_to_concept_id,MinimumDataSet,Discharge destination ,Dead,,0,No matching concept,how to you plan to deal with this?
-VISIT_OCCURRENCE,discharge_to_concept_id,MinimumDataSet,Discharge destination ,Unknown,,0,No matching concept,how to you plan to deal with this?
-CONDITION_OCCURRENCE,condition_concept_id,MinimumDataSet,Pre-fracture mobility / ADLs ,Freely mobile without aids,,4052958,Fully mobile,
-CONDITION_OCCURRENCE,condition_concept_id,MinimumDataSet,Pre-fracture mobility / ADLs ,Mobile outdoors with one aid,,4200353,Able to mobilize using mobility aids,Map to both concepts from source
-CONDITION_OCCURRENCE,condition_concept_id,MinimumDataSet,Pre-fracture mobility / ADLs ,Mobile outdoors with one aid,,4200818,Able to mobilize outside,Map to both concepts from source
-CONDITION_OCCURRENCE,condition_concept_id,MinimumDataSet,Pre-fracture mobility / ADLs ,Mobile outdoors with two aids or frame,,4200353,Able to mobilize using mobility aids,Map to both concepts from source
-CONDITION_OCCURRENCE,condition_concept_id,MinimumDataSet,Pre-fracture mobility / ADLs ,Mobile outdoors with two aids or frame,,4200818,Able to mobilize outside,Map to both concepts from source
-CONDITION_OCCURRENCE,condition_concept_id,MinimumDataSet,Pre-fracture mobility / ADLs ,Some indoor mobility but never goes outside without help,,4199109,Unable to mobilize outside,Map to both concepts from source
-CONDITION_OCCURRENCE,condition_concept_id,MinimumDataSet,Pre-fracture mobility / ADLs ,Some indoor mobility but never goes outside without help,,4199092,Able to mobilize indoors,Map to both concepts from source
-CONDITION_OCCURRENCE,condition_concept_id,MinimumDataSet,Pre-fracture mobility / ADLs ,No functional mobility (using lower limbs),,4009877,Immobile,
-CONDITION_OCCURRENCE,condition_concept_id,MinimumDataSet,Pre-fracture mobility / ADLs ,Unknown,,0,No matching concept,how to you plan to deal with this?
-CONDITION_OCCURRENCE,condition_concept_id,MinimumDataSet,Cognitive status ,Normal,,42710016,Normal cognition,
-CONDITION_OCCURRENCE,condition_concept_id,MinimumDataSet,Cognitive status ,Known dementia,,4182210,Dementia,
-CONDITION_OCCURRENCE,condition_concept_id,MinimumDataSet,Cognitive status ,Positive when screened for cognitive impairment (using a tool appropriate to the country),,443432,Impaired cognition,
-OBSERVATION,value_as_concept_id,MinimumDataSet,Death during hospital admission,Died pre-surgery,,4218686,Perioperative death,
-OBSERVATION,value_as_concept_id,MinimumDataSet,Death during hospital admission,Died post-surgery,,4183699,Postoperative death,
-OBSERVATION,value_as_concept_id,MinimumDataSet,Physician / geriatrician involvement,Physician,,4125679,Seen by physician,
-OBSERVATION,value_as_concept_id,MinimumDataSet,Physician / geriatrician involvement,Geriatrician,,4140767,Seen by care of the elderly physician,
-OBSERVATION,value_as_concept_id,MinimumDataSet,Physician / geriatrician involvement,Not seen,,0,No matching concept,how to you plan to deal with this?
-OBSERVATION,value_as_concept_id,MinimumDataSet,Side of fracture,Left,,4300877,Left,
-OBSERVATION,value_as_concept_id,MinimumDataSet,Side of fracture,Right,,4080761,Right,
-PROCEDURE_OCCURRENCE,procedure_concept_id,MinimumDataSet,Type of anaesthesia,General,,4174669,"	General anesthesia",
-PROCEDURE_OCCURRENCE,procedure_concept_id,MinimumDataSet,Type of anaesthesia,Spinal,,4332593,Spinal anesthesia,
-PROCEDURE_OCCURRENCE,procedure_concept_id,MinimumDataSet,Type of anaesthesia,Other regional e.g. nerve block,,4100052,Regional anesthesia,
-OBSERVATION,observation_concept_id,MinimumDataSet,Bone protection medication at discharge,Commenced,,765842,Prescription medication started,
-OBSERVATION,observation_concept_id,MinimumDataSet,Bone protection medication at discharge,Continued,,762564,Medication therapy continued,
-OBSERVATION,observation_concept_id,MinimumDataSet,Bone protection medication at discharge,Discontinued,,4164526,Medication discontinued,
-CONDITION_OCCURRENCE,condition_concept_id,MinimumDataSet,Pathological fracture,No,,0,No matching concept,No need to map for 'No'
-CONDITION_OCCURRENCE,condition_concept_id,MinimumDataSet,Pathological fracture,Malignancy,,45772710,"	Pathological fracture of proximal femur due to neoplastic disease",
-CONDITION_OCCURRENCE,condition_concept_id,MinimumDataSet,Pathological fracture,Atypical,,45766906, Pathological fracture of proximal end of femur,
-CONDITION_OCCURRENCE,condition_concept_id,MinimumDataSet,Pathological fracture,Unknown,,0,No matching concept,No need to map for 'Unknown'
+OMOP Table,Source Field,Source Value,OMOP ConceptId
+PERSON,Gender,Male,8507
+PERSON,Gender,Female,8532
+CONDITION_OCCURRENCE,Fracture type,Intracapsular non-displaced,433856
+CONDITION_OCCURRENCE,Fracture type,Intracapsular displaced,433856
+CONDITION_OCCURRENCE,Fracture type,Intertrochanteric,4133012
+CONDITION_OCCURRENCE,Fracture type,Subtrochanteric,4135748
+CONDITION_OCCURRENCE,Fracture type,Other,4138412
+OBSERVATION,Fracture type,Intracapsular non-displaced,4139391
+OBSERVATION,Fracture type,Intracapsular displaced,4047514
+PROCEDURE_OCCURRENCE,Operation performed,Cannulated screws,40479229
+PROCEDURE_OCCURRENCE,Operation performed,Sliding hip screw,4343341
+PROCEDURE_OCCURRENCE,Operation performed,Intra-medullary nail,46270907
+PROCEDURE_OCCURRENCE,Operation performed,Hemi-arthroplasty,4297365
+PROCEDURE_OCCURRENCE,Operation performed,Total hip replacement,4203771
+PROCEDURE_OCCURRENCE,Operation performed,Other,4327115
+VISIT_OCCURRENCE,Pre-fracture residence,Home,0
+VISIT_OCCURRENCE,Pre-fracture residence,Institution,42898160
+VISIT_OCCURRENCE,Pre-fracture residence,Acute Care,38004279
+VISIT_OCCURRENCE,Pre-fracture residence,Unknown,0
+VISIT_OCCURRENCE,Discharge destination ,Home,0
+VISIT_OCCURRENCE,Discharge destination ,Institution,42898160
+VISIT_OCCURRENCE,Discharge destination ,Acute Care,38004279
+VISIT_OCCURRENCE,Discharge destination ,Rehabilitation,38004285
+VISIT_OCCURRENCE,Discharge destination ,Dead,0
+VISIT_OCCURRENCE,Discharge destination ,Unknown,0
+CONDITION_OCCURRENCE,Pre-fracture mobility / ADLs ,Freely mobile without aids,4052958
+CONDITION_OCCURRENCE,Pre-fracture mobility / ADLs ,Mobile outdoors with one aid,4200353
+CONDITION_OCCURRENCE,Pre-fracture mobility / ADLs ,Mobile outdoors with one aid,4200818
+CONDITION_OCCURRENCE,Pre-fracture mobility / ADLs ,Mobile outdoors with two aids or frame,4200353
+CONDITION_OCCURRENCE,Pre-fracture mobility / ADLs ,Mobile outdoors with two aids or frame,4200818
+CONDITION_OCCURRENCE,Pre-fracture mobility / ADLs ,Some indoor mobility but never goes outside without help,4199109
+CONDITION_OCCURRENCE,Pre-fracture mobility / ADLs ,Some indoor mobility but never goes outside without help,4199092
+CONDITION_OCCURRENCE,Pre-fracture mobility / ADLs ,No functional mobility (using lower limbs),4009877
+CONDITION_OCCURRENCE,Pre-fracture mobility / ADLs ,Unknown,0
+CONDITION_OCCURRENCE,Cognitive status ,Normal,42710016
+CONDITION_OCCURRENCE,Cognitive status ,Known dementia,4182210
+CONDITION_OCCURRENCE,Cognitive status ,Positive when screened for cognitive impairment (using a tool appropriate to the country),443432
+OBSERVATION,Death during hospital admission,Died pre-surgery,4218686
+OBSERVATION,Death during hospital admission,Died post-surgery,4183699
+OBSERVATION,Physician / geriatrician involvement,Physician,4125679
+OBSERVATION,Physician / geriatrician involvement,Geriatrician,4140767
+OBSERVATION,Physician / geriatrician involvement,Not seen,0
+OBSERVATION,Side of fracture,Left,4300877
+OBSERVATION,Side of fracture,Right,4080761
+PROCEDURE_OCCURRENCE,Type of anaesthesia,General,4174669
+PROCEDURE_OCCURRENCE,Type of anaesthesia,Spinal,4332593
+PROCEDURE_OCCURRENCE,Type of anaesthesia,Other regional e.g. nerve block,4100052
+OBSERVATION,Bone protection medication at discharge,Commenced,765842
+OBSERVATION,Bone protection medication at discharge,Continued,762564
+OBSERVATION,Bone protection medication at discharge,Discontinued,4164526
+CONDITION_OCCURRENCE,Pathological fracture,No,0
+CONDITION_OCCURRENCE,Pathological fracture,Malignancy,45772710
+CONDITION_OCCURRENCE,Pathological fracture,Atypical,45766906
+CONDITION_OCCURRENCE,Pathological fracture,Unknown,0
