@@ -18,7 +18,7 @@ The primary objective of thE study is to describe the baseline demographic and c
 # Databases
 
 | Database                              | Country | Institution               |
-|---------------------------------------|---------|---------------------------|
+|----------------------------------|----------------|-----------------------|
 | NHFD (National Hip Fracture Database) | UK      | Barts Joint & Bone Health |
 
 # Requirements
@@ -45,5 +45,5 @@ TBD
 
 # Support
 
--   Developer questions/comments/feedback: Email George Argyriou [[george.argyriou\@odysseusinc.com](mailto:george.argyriou@odysseusinc.com){.email}]
+-   Developer questions/comments/feedback: Email George Argyriou [george.argyriou\@odysseusinc.com](mailto:george.argyriou@odysseusinc.com)
 -   Bugs/issues/enhancements: GitHub issue tracker
