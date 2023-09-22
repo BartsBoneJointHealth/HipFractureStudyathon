@@ -118,8 +118,8 @@
   "PrimaryCriteria": {
     "CriteriaList": [
       {
-        "ProcedureOccurrence": {
-          "CodesetId": 1
+        "ConditionOccurrence": {
+          "CodesetId": 0
         }
       }
     ],
