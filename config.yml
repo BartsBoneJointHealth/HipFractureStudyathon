@@ -3,30 +3,15 @@
 default:
   projectName: HipFractureStudyathon
 
-# Config block for cprdAurum
+# Config block for nhfd
 
-cprdAurum:
-  databaseName: cprdAurum
-  cohortTable: HipFractureStudyathon_cprdAurum
-  dbms: !expr keyring::key_get('cprdAurum_dbms', keyring = 'HipFractureStudyathon')
-  user: !expr keyring::key_get('cprdAurum_user', keyring = 'HipFractureStudyathon')
-  password: !expr keyring::key_get('cprdAurum_password', keyring = 'HipFractureStudyathon')
-  connectionString: !expr keyring::key_get('cprdAurum_connectionString', keyring = 'HipFractureStudyathon')
-  cdmDatabaseSchema: !expr keyring::key_get('cprdAurum_cdmDatabaseSchema', keyring = 'HipFractureStudyathon')
-  vocabDatabaseSchema: !expr keyring::key_get('cprdAurum_vocabDatabaseSchema', keyring = 'HipFractureStudyathon')
-  workDatabaseSchema: !expr keyring::key_get('cprdAurum_workDatabaseSchema', keyring = 'HipFractureStudyathon')
-  role: !expr keyring::key_get('cprdAurum_role', keyring = 'HipFractureStudyathon')
-
-# optum Credentials
-
-optum:
-  databaseName: optum
-  dbms: !expr keyring::key_get('optum_dbms', keyring = 'HipFractureStudyathon')
-  user: !expr keyring::key_get('optum_user', keyring = 'HipFractureStudyathon')
-  password: !expr keyring::key_get('optum_password', keyring = 'HipFractureStudyathon')
-  connectionString: !expr keyring::key_get('optum_connectionString', keyring = 'HipFractureStudyathon')
-  cdmDatabaseSchema: !expr keyring::key_get('optum_cdmDatabaseSchema', keyring = 'HipFractureStudyathon')
-  vocabDatabaseSchema: !expr keyring::key_get('optum_vocabDatabaseSchema', keyring = 'HipFractureStudyathon')
-  workDatabaseSchema: !expr keyring::key_get('optum_workDatabaseSchema', keyring = 'HipFractureStudyathon')
-  cohortTable: HipFractureStudyathon_optum
-  role: !expr keyring::key_get('optum_role', keyring = 'HipFractureStudyathon')
+nhfd:
+  databaseName: nhfd
+  cohortTable: HipFractureStudyathon_nhfd
+  dbms: !expr keyring::key_get('nhfd_dbms', keyring = 'HipFractureStudyathon')
+  user: !expr keyring::key_get('nhfd_user', keyring = 'HipFractureStudyathon')
+  password: !expr keyring::key_get('nhfd_password', keyring = 'HipFractureStudyathon')
+  connectionString: !expr keyring::key_get('nhfd_connectionString', keyring = 'HipFractureStudyathon')
+  cdmDatabaseSchema: !expr keyring::key_get('nhfd_cdmDatabaseSchema', keyring = 'HipFractureStudyathon')
+  vocabDatabaseSchema: !expr keyring::key_get('nhfd_vocabDatabaseSchema', keyring = 'HipFractureStudyathon')
+  workDatabaseSchema: !expr keyring::key_get('nhfd_workDatabaseSchema', keyring = 'HipFractureStudyathon')

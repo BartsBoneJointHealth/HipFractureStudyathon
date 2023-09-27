@@ -1,3 +1,7 @@
+# Project-specific files/folders
+misc/
+errorReportSql.txt
+
 # History files
 .Rhistory
 .Rapp.history
@@ -49,3 +53,4 @@ po/*~
 rsconnect/
 
 #config.yml
+config.yml

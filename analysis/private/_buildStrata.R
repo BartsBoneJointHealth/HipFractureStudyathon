@@ -47,7 +47,7 @@ ageStrata <- function(con,
              c.cohort_start_date,
              c.cohort_end_date,
              p.year_of_birth,
-             abs(p.year_of_birth - EXTRACT(YEAR FROM c.cohort_start_date)) AS age
+             abs(p.year_of_birth - YEAR(c.cohort_start_date)) AS age
       FROM @cohortDatabaseSchema.@cohortTable c
       JOIN @cdmDatabaseSchema.person p
         ON p.person_id = c.subject_id
@@ -56,8 +56,7 @@ ageStrata <- function(con,
     ) t2
   WHERE t2.ageStrata = 1;
 
-  DELETE FROM @cohortDatabaseSchema.@cohortTable
-  WHERE cohort_definition_id in (select cohort_definition_id from #age);
+  DELETE FROM @cohortDatabaseSchema.@cohortTable WHERE cohort_definition_id in (select cohort_definition_id from #age);
 
   INSERT INTO @cohortDatabaseSchema.@cohortTable (
         	cohort_definition_id,
@@ -401,8 +400,7 @@ cohortStrata <- function(con,
 
 ## Master function ----------
 buildStrata <- function(con,
-                        executionSettings,
-                        analysisSettings) {
+                        executionSettings) {
   
   # Step 0: Prep
   
@@ -412,13 +410,13 @@ buildStrata <- function(con,
   cohortTable <- executionSettings$cohortTable
   databaseId <- executionSettings$databaseName
   
-  outputFolder <- fs::path(here::here("results"), databaseId, analysisSettings$strata$outputFolder) %>%
+  outputFolder <- fs::path(here::here("results", databaseId, "02_buildStrata")) %>%
     fs::dir_create()
   
   
   ## Get cohort ids
-  targetCohorts <- analysisSettings$strata$cohorts$targetCohort
-  targetCohortsIds <- targetCohorts %>% dplyr::select(id)
+  #targetCohorts <- analysisSettings$strata$cohorts$targetCohort
+  targetCohortsIds <- getCohortManifest() %>% dplyr::select(id)
   
   
   # tb1 <- expand_grid(targetCohorts, demoStrata) %>%
@@ -448,7 +446,7 @@ buildStrata <- function(con,
                          ageMax = as.integer(c(59, 64, 69, 74, 79, 84, 89, 94, 99, 104, 109, 9999)),
                          strataId = as.integer(c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)))
   
-  inputDF <- tidyr::expand_grid(purrrObj, targetCohorts$id)
+  inputDF <- tidyr::expand_grid(purrrObj, targetCohortsIds)
   
   #debug(ageStrata)
   purrr::pwalk(inputDF,

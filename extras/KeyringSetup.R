@@ -14,19 +14,21 @@ source("analysis/private/_keyring.R")
 
 ## B) Set Parameters ------------
 
-configBlock <- "[block]"           # Name of config block
+configBlock <- "nhfd"           # Name of config block
 
-database <- "[database]"           # Name of the database in the config block
+database <- "nhfd"           # Name of the database in the config block
 
 keyringName <- getKeyringName()    # Name of keyring
 
-keyringPassword <- "[password]"    # Password for keyring
+keyringPassword <- "ehden"    # Password for keyring
 
 
 ## C) Set config.yml ------------
 
 checkConfig() # Check if config.yml file exists
 
+#Ulysses::addConfig(block = configBlock, database = database)
+#Ulysses::makeConfig(block = configBlock, database = database)
 
 ## D) Setup Keyring ------------
 

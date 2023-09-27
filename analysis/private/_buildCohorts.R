@@ -10,13 +10,6 @@
 
 initializeCohortTables <- function(executionSettings, con) {
 
-  # if (con@dbms == "snowflake") {
-  #   workSchema <- paste(executionSettings$workDatabase, executionSettings$workSchema, sep = ".")
-  # } else {
-  #   workSchema <- executionSettings$workSchema
-  # }
-  #
-
   name <- executionSettings$cohortTable
 
   cohortTableNames <- list(cohortTable = paste0(name),
