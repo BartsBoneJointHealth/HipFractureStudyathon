@@ -19,18 +19,18 @@ source("analysis/private/_buildStrata.R")
 # C. Connection ----------------------
 
 # set connection Block
-configBlock <- "nhfd"
+configBlock <- "optum"
 
 # provide connection details
 connectionDetails <- DatabaseConnector::createConnectionDetails(
   dbms = config::get("dbms", config = configBlock),
-  #user = config::get("user", config = configBlock),
-  #password = config::get("password", config = configBlock),
+  user = config::get("user", config = configBlock),
+  password = config::get("password", config = configBlock),
   connectionString = config::get("connectionString", config = configBlock)
 )
 
 
-#connect to database
+# connect to database
 con <- DatabaseConnector::connect(connectionDetails)
 
 
@@ -48,33 +48,34 @@ outputFolder <- here::here("results") %>%
 ### Add study variables or load from settings
 cohortManifest <- getCohortManifest()
 
-### Analysis Settings
-#analysisSettings <- readSettingsFile(here::here("analysis/settings/strata.yml"))
 
 # E. Script --------------------
 
+startSnowflakeSession(con, executionSettings)
+
 ### RUN ONCE - Initialize cohort tables #########
 
-#dropCohortTables(executionSettings = executionSettings, con = con)
+#debug(dropCohortTables)
+dropCohortTables(executionSettings = executionSettings, con = con)
 
 #debug(initializeCohortTables)
-# initializeCohortTables(executionSettings = executionSettings, con = con)
-# 
-# 
-# # Generate cohorts
-# generatedCohorts <- generateCohorts(
-#   executionSettings = executionSettings,
-#   con = con,
-#   cohortManifest = cohortManifest,
-#   outputFolder = outputFolder
-# )
+initializeCohortTables(executionSettings = executionSettings, con = con)
+
+
+# Generate cohorts
+generatedCohorts <- generateCohorts(
+  executionSettings = executionSettings,
+  con = con,
+  cohortManifest = cohortManifest,
+  outputFolder = outputFolder
+)
 
 
 # Build stratas
 
-debug(buildStrata)
-buildStrata(con = con,
-            executionSettings = executionSettings)
+# debug(buildStrata)
+# buildStrata(con = con,
+#             executionSettings = executionSettings)
 
 # F. Session Info ------------------------
 #DatabaseConnector::disconnect(con)

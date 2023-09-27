@@ -14,20 +14,20 @@ source("analysis/private/_keyring.R")
 
 ## B) Set Parameters ------------
 
-configBlock <- "nhfd"           # Name of config block
+configBlock <- "optum"           # Name of config block
 
-database <- "nhfd"           # Name of the database in the config block
+database <- "optum"           # Name of the database in the config block
 
 keyringName <- getKeyringName()    # Name of keyring
 
-keyringPassword <- "ehden"    # Password for keyring
+keyringPassword <- "ohdsi"    # Password for keyring
 
 
 ## C) Set config.yml ------------
 
 checkConfig() # Check if config.yml file exists
 
-#Ulysses::addConfig(block = configBlock, database = database)
+Ulysses::addConfig(block = configBlock, database = database)
 #Ulysses::makeConfig(block = configBlock, database = database)
 
 ## D) Setup Keyring ------------
@@ -40,6 +40,7 @@ checkKeyring(keyringName = keyringName, keyringPassword = keyringPassword) # Cre
 creds <- c(
   "dbms",                # The database dialect. Run ?DatabaseConnector::createConnectionDetails and scroll down to the 'Arguments' section to find the correct variable name for the dialect
   "user",                # The user's username for the database
+  "role",
   "password",            # The user's password for the database
   "connectionString",    # The connection string to access the database
   "cdmDatabaseSchema",   # The database + schema (or just schema) hosting OMOP CDM data
