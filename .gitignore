@@ -2,6 +2,7 @@
 misc/
 errorReportSql.txt
 results/
+report/
 
 # History files
 .Rhistory

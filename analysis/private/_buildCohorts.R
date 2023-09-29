@@ -138,7 +138,7 @@ dropCohortTables <- function(executionSettings, con) {
 
 countCohorts <- function(executionSettings,
                             con,
-                            cohortManifest,
+                            cohortManifest = NULL,
                             outputFolder,
                             type = "analysis") {
   
@@ -149,22 +149,13 @@ countCohorts <- function(executionSettings,
   #path for incremental
   incrementalFolder <- fs::path(outputFolder)
   
+  cohortTable <- executionSettings$cohortTable
   
-  name <- executionSettings$cohortTable
-  
-  cohortTableNames <- list(cohortTable = paste0(name),
-                           cohortInclusionTable = paste0(name, "_inclusion"),
-                           cohortInclusionResultTable = paste0(name, "_inclusion_result"),
-                           cohortInclusionStatsTable = paste0(name, "_inclusion_stats"),
-                           cohortSummaryStatsTable = paste0(name, "_summary_stats"),
-                           cohortCensorStatsTable = paste0(name, "_censor_stats"))
-  
-
   #get cohort counts
   cohortCounts <- CohortGenerator::getCohortCounts(
     connection = con,
     cohortDatabaseSchema = executionSettings$workDatabaseSchema,
-    cohortTable = cohortTableNames$cohortTable,
+    cohortTable = cohortTable,
     cohortDefinitionSet = cohortsToCreate
   ) 
   # %>%

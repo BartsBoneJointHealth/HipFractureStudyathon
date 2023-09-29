@@ -17,7 +17,7 @@ source("analysis/private/_buildStrata.R")
 # C. Connection ----------------------
 
 # set connection Block
-configBlock <- "optum"
+configBlock <- "nhfd"
 
 # provide connection details
 connectionDetails <- DatabaseConnector::createConnectionDetails(
@@ -54,22 +54,29 @@ cohortManifest <- getCohortManifest()
 #dropCohortTables(executionSettings = executionSettings, con = con)
 
 #debug(initializeCohortTables)
-initializeCohortTables(executionSettings = executionSettings, con = con)
+# initializeCohortTables(executionSettings = executionSettings, con = con)
+# 
+# 
+# # Generate cohorts
+# generatedCohorts <- generateCohorts(
+#   executionSettings = executionSettings,
+#   con = con,
+#   cohortManifest = cohortManifest,
+#   outputFolder = outputFolder
+# )
 
-
-# Generate cohorts
-generatedCohorts <- generateCohorts(
-  executionSettings = executionSettings,
-  con = con,
-  cohortManifest = cohortManifest,
-  outputFolder = outputFolder
-)
+debug(countCohorts)
+countCohorts(executionSettings = executionSettings,
+             con = con,
+             #cohortManifest = cohortManifest,
+             outputFolder = outputFolder,
+             type = "analysis") 
 
 
 # Build stratas
 
 #debug(buildStrata)
-buildStrata(con = con,
-            executionSettings = executionSettings)
+# buildStrata(con = con,
+#             executionSettings = executionSettings)
 
 

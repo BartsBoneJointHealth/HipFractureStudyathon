@@ -103,27 +103,84 @@ verboseSave <- function(object, saveName, saveLocation) {
 }
 
 
-bindFiles2 <- function(inputPath,
-                       outputPath,
-                       databaseName = NULL,
-                       filename = NULL)  {
+bindFilesCat <- function(outputPath,
+                         database = NULL,
+                         filename = NULL)  {
   
+  inputPath <- here::here("results", database, "03_postIndex")
   
   ## List all csv files in folder
-  filepath <- list.files(inputPath, full.names = TRUE, pattern = ".csv", recursive = TRUE)
+  filepath <- list.files(inputPath, full.names = TRUE, pattern = filename, recursive = TRUE)
   
   ## Read all files and save in list
-  listed_files <- lapply(filepath, readr::read_csv, show_col_types = FALSE)
+  listed_files <- lapply(filepath, 
+                         readr::read_csv, 
+                         show_col_types = FALSE, 
+                         col_types = list(
+                           nn = "d",
+                           cohortId = "d",
+                           totalEntries = "d",
+                           totalSubjects = "d",
+                           pct = "d"
+                         )
+  )
+
   
   ## Created binded data frame with all data frames of list
   binded_df <- dplyr::bind_rows(listed_files)
   
+  ## Create output directory
+  fs::dir_create(outputPath)
+  
   ## Save output
   readr::write_csv(
     x = binded_df,
-    file = file.path(outputPath, paste0(filename, "_", databaseName, ".csv")),
+    file = file.path(outputPath, paste0(filename, "_", database, ".csv")),
     append = FALSE
   )
   
+  invisible(binded_df)
 }
 
+
+bindFilesCont <- function(outputPath,
+                          database = NULL,
+                          filename = NULL)  {
+  
+  inputPath <- here::here("results", database, "03_postIndex")
+  
+  ## List all csv files in folder
+  filepath <- list.files(inputPath, full.names = TRUE, pattern = filename, recursive = TRUE)
+  
+  ## Read all files and save in list
+  listed_files <- lapply(filepath, 
+                         readr::read_csv, 
+                         show_col_types = FALSE, 
+                         col_types = list(
+                           nn = "d",
+                           meanvalue = "d",
+                           minvalue = "d",
+                           maxvalue = "d",
+                           cohortId = "d",
+                           totalSubjects = "d",
+                           totalEntries = "d",
+                           pct = "d"
+                         )
+  )
+  
+  
+  ## Created binded data frame with all data frames of list
+  binded_df <- dplyr::bind_rows(listed_files)
+  
+  ## Create output directory
+  fs::dir_create(outputPath)
+  
+  ## Save output
+  readr::write_csv(
+    x = binded_df,
+    file = file.path(outputPath, paste0(filename, "_", database, ".csv")),
+    append = FALSE
+  )
+  
+  invisible(binded_df)
+}

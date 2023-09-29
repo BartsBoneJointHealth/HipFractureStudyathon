@@ -77,14 +77,12 @@ ageStrata <- function(con,
     ageMax = ageMax) %>%
     SqlRender::translate(targetDialect = con@dbms)
   
-  DatabaseConnector::executeSql(connection = con, ageStrataSql, progressBar = FALSE)
+  DatabaseConnector::executeSql(connection = con, ageStrataSql, progressBar = TRUE)
   
- 
-  # cohortStrataId <- targetId * 100 + strataId
-  # cohortSchemaTable <- paste(cohortDatabaseSchema, cohortTable, sep = ".")
-  
+
   invisible(ageStrataSql)
 }
+
 
 
 sexStrata <- function(con,
@@ -182,13 +180,11 @@ sexStrata <- function(con,
     targetId = targetId) %>%
     SqlRender::translate(targetDialect = con@dbms)
   
-  DatabaseConnector::executeSql(connection = con, sexStrataSql, progressBar = FALSE)
+  DatabaseConnector::executeSql(connection = con, sexStrataSql, progressBar = TRUE)
   
   
   invisible(sexStrataSql)
 }
-
-
 
 
 
@@ -221,16 +217,13 @@ cognStrata <- function(con,
             row_number()over(partition by subject_id, cohort_definition_id order by condition_start_date) as rnk
         from @cohortDatabaseSchema.@cohortTable a
         left join  @cdmDatabaseSchema.CONDITION_OCCURRENCE b
-         on a.subject_id = b.person_id and a.cohort_start_date <= b.condition_start_date and b.condition_start_date <= a.cohort_end_date -- Change to '=' when testing in real data (start date)
-        where cohort_definition_id IN (@targetId) and b.condition_concept_id in (42710016, 4182210, 443432) -- TO REMOVE: cohort_definition_id < 1000
-        --order by subject_id, rnk, cohort_definition_id
+         on a.subject_id = b.person_id and a.cohort_start_date = b.condition_start_date 
+        where cohort_definition_id IN (@targetId) and b.condition_concept_id in (42710016, 4182210, 443432)
   )t1 
   WHERE rnk =1
     )t2;
 
-  DELETE FROM @cohortDatabaseSchema.@cohortTable 
-  --WHERE cohort_definition_id in (select cohort_definition_id from #concept where cohort_definition_id between 1000000 and 44000003);
-  WHERE cohort_definition_id between 1000000 and 44000003;
+  DELETE FROM @cohortDatabaseSchema.@cohortTable WHERE cohort_definition_id between 1000000 and 44000003;
 
 
   -- CAT1: Dementia
@@ -276,6 +269,21 @@ cognStrata <- function(con,
         	cohort_end_date 
   from #concept
   where cat = 3;
+  
+  
+  -- CAT4: Unknown
+  INSERT INTO @cohortDatabaseSchema.@cohortTable (
+        	cohort_definition_id,
+        	subject_id,
+        	cohort_start_date,
+        	cohort_end_date
+  )
+  select  cohort_definition_id * 1000000 + 0 AS cohort_definition_id,
+        	subject_id,
+        	cohort_start_date,
+        	cohort_end_date 
+  from #concept
+  where cat = 0;
 
   DROP TABLE #concept;
 "
@@ -288,124 +296,140 @@ cognStrata <- function(con,
     targetId = targetId) %>%
     SqlRender::translate(targetDialect = con@dbms)
   
-  DatabaseConnector::executeSql(connection = con, cognStrataSql, progressBar = FALSE)
-  
-  # cohortStrataId <- targetId * 1000 + strataId
-  # cohortSchemaTable <- paste(cohortDatabaseSchema, cohortTable, sep = ".")
+  DatabaseConnector::executeSql(connection = con, cognStrataSql, progressBar = TRUE)
   
   invisible(cognStrataSql)
 }
 
 
 
-## Other ---------------
-cohortStrata <- function(con,
-                         cohortDatabaseSchema,
-                         cohortTable,
-                         targetId,
-                         strataId) {
+fracStrata <- function(con,
+                       cohortDatabaseSchema,
+                       cohortTable,
+                       cdmDatabaseSchema,
+                       targetId) {
   
-  cli::cat_bullet("Building strata for target cohort id ", crayon::magenta(targetId),
-                  " using strata cohort id ", crayon::magenta(strataId),
-                  bullet = "checkbox_on", bullet_col = "green")
+  cli::cat_bullet("Building Fracture Type strata for target cohort id: ", targetId, bullet = "checkbox_on", bullet_col = "green")
   
-  # create ids for cohort with and without strata
-  cohortIdWithStrata <- as.integer(paste0(as.character(targetId), "001", strataId))
-  cohortIdWithoutStrata <- as.integer(paste0(as.character(targetId), "000", strataId))
-  
-  cohortStrataSql <- "
-        select @cohortIdWithStrata as cohort_definition_id,
-              tar_cohort.subject_id,
-              tar_cohort.cohort_start_date,
-              tar_cohort.cohort_end_date
-        into #t_w_s_cohort
-              from (
-                select * from @cohortDatabaseSchema.@cohortTable
-                where cohort_definition_id IN (@targetId)
-              ) tar_cohort
-        join (
-              select * from @cohortDatabaseSchema.@cohortTable
-              where cohort_definition_id IN (@strataId)
-          ) strata_cohort
-        ON tar_cohort.subject_id = strata_cohort.subject_id
-        and strata_cohort.cohort_start_date <= tar_cohort.cohort_start_date
-        and strata_cohort.cohort_end_date >= tar_cohort.cohort_start_date
-        ;
+  sql <- "
+  select
+      cohort_definition_id,
+      t2.subject_id,
+      t2.cohort_start_date,
+      t2.cohort_end_date,
+      t2.cat
+  INTO #concept
+  FROM
+  (
+  select subject_id, cohort_start_date, cohort_end_date, cohort_definition_id, condition_concept_id,
+         case 
+           when condition_concept_id in (433856) then 1   -- Intracapsular displaced/non-displaced (Fracture of neck of femur)
+           when condition_concept_id in (4133012) then 2  -- Intertrochanteric
+           when condition_concept_id in (4135748) then 3  -- Subtrochanteric
+           when condition_concept_id in (4138412) then 4  -- Other
+           else 5 end as cat                              
+  FROM (
+        select subject_id, cohort_start_date, cohort_end_date, condition_start_date, condition_concept_id, cohort_definition_id,
+            row_number()over(partition by subject_id, cohort_definition_id order by condition_start_date) as rnk
+        from @cohortDatabaseSchema.@cohortTable a
+        left join  @cdmDatabaseSchema.CONDITION_OCCURRENCE b
+         on a.subject_id = b.person_id and a.cohort_start_date = b.condition_start_date 
+        where cohort_definition_id IN (@targetId) and b.condition_concept_id in (45772710, 45766906)
+  )t1 
+  WHERE rnk =1
+    )t2;
+
+  DELETE FROM @cohortDatabaseSchema.@cohortTable WHERE cohort_definition_id between 10000 and 44003;
 
 
-        select @cohortIdWithoutStrata as cohort_definition_id,
-              tar_cohort.subject_id,
-              tar_cohort.cohort_start_date,
-              tar_cohort.cohort_end_date
-
-        into #t_wo_s_cohort
-        from (
-            select *
-            from @cohortDatabaseSchema.@cohortTable
-            where cohort_definition_id IN (@targetId)
-          ) tar_cohort
-        left join (
-            select *
-            from @cohortDatabaseSchema.@cohortTable
-            where cohort_definition_id IN (@strataId)
-          ) strata_cohort
-        ON tar_cohort.subject_id = strata_cohort.subject_id
-        and strata_cohort.cohort_start_date <= tar_cohort.cohort_start_date
-        and strata_cohort.cohort_end_date >= tar_cohort.cohort_start_date
-        where strata_cohort.subject_id is null
-        ;
-
-        delete from @cohortDatabaseSchema.@cohortTable where cohort_definition_id = @cohortIdWithStrata;
-
-        delete from @cohortDatabaseSchema.@cohortTable where cohort_definition_id = @cohortIdWithoutStrata;
-
-        INSERT INTO @cohortDatabaseSchema.@cohortTable (
+  -- CAT1: Intracapsular displaced/non-displaced
+  INSERT INTO @cohortDatabaseSchema.@cohortTable (
         	cohort_definition_id,
         	subject_id,
         	cohort_start_date,
         	cohort_end_date
-        )
-        -- T with S
-        select cohort_definition_id, subject_id, cohort_start_date, cohort_end_date
-        from #t_w_s_cohort
-
-        union all
-        -- T without S
-        select cohort_definition_id, subject_id, cohort_start_date, cohort_end_date
-        from #t_wo_s_cohort
-        ;
-
-
-        TRUNCATE TABLE #t_w_s_cohort;
-        DROP TABLE #t_w_s_cohort;
-
-        TRUNCATE TABLE #t_wo_s_cohort;
-        DROP TABLE #t_wo_s_cohort;
-  "
+  )
+  select  CAST(cohort_definition_id * 10000 + 1 AS bigint) AS cohort_definition_id,
+        	subject_id,
+        	cohort_start_date,
+        	cohort_end_date 
+  from #concept
+  where cat = 1;
   
-  cohortStrataSql <- SqlRender::render(
-    cohortStrataSql,
+  
+  -- CAT2: Intertrochanteric
+  INSERT INTO @cohortDatabaseSchema.@cohortTable (
+        	cohort_definition_id,
+        	subject_id,
+        	cohort_start_date,
+        	cohort_end_date
+  )
+  select  cohort_definition_id * 10000 + 2 AS cohort_definition_id,
+        	subject_id,
+        	cohort_start_date,
+        	cohort_end_date 
+  from #concept
+  where cat = 2;
+  
+  
+  -- CAT3: Subtrochanteric
+  INSERT INTO @cohortDatabaseSchema.@cohortTable (
+        	cohort_definition_id,
+        	subject_id,
+        	cohort_start_date,
+        	cohort_end_date
+  )
+  select  cohort_definition_id * 10000 + 3 AS cohort_definition_id,
+        	subject_id,
+        	cohort_start_date,
+        	cohort_end_date 
+  from #concept
+  where cat = 3;
+  
+  
+  -- CAT4: Other
+  INSERT INTO @cohortDatabaseSchema.@cohortTable (
+        	cohort_definition_id,
+        	subject_id,
+        	cohort_start_date,
+        	cohort_end_date
+  )
+  select  cohort_definition_id * 10000 + 4 AS cohort_definition_id,
+        	subject_id,
+        	cohort_start_date,
+        	cohort_end_date 
+  from #concept
+  where cat = 4;
+  
+  
+    -- CAT5: Unknown
+  INSERT INTO @cohortDatabaseSchema.@cohortTable (
+        	cohort_definition_id,
+        	subject_id,
+        	cohort_start_date,
+        	cohort_end_date
+  )
+  select  cohort_definition_id * 10000 + 0 AS cohort_definition_id,
+        	subject_id,
+        	cohort_start_date,
+        	cohort_end_date 
+  from #concept
+  where cat = 0;
+
+  DROP TABLE #concept;
+"
+  
+  cognStrataSql <- SqlRender::render(
+    sql,
     cohortDatabaseSchema = cohortDatabaseSchema,
     cohortTable = cohortTable,
-    targetId = targetId,
-    strataId = strataId,
-    cohortIdWithStrata = cohortIdWithStrata,
-    cohortIdWithoutStrata = cohortIdWithoutStrata) %>%
+    cdmDatabaseSchema = cdmDatabaseSchema,
+    targetId = targetId) %>%
     SqlRender::translate(targetDialect = con@dbms)
   
-  DatabaseConnector::executeSql(connection = con, cohortStrataSql, progressBar = FALSE)
+  DatabaseConnector::executeSql(connection = con, cognStrataSql, progressBar = TRUE)
   
-  #TODO Add timing
-  cohortSchemaTable <- paste(cohortDatabaseSchema, cohortTable, sep = ".")
-  cli::cat_bullet("Cohort strata written to ", cohortSchemaTable,
-                  bullet = "tick", bullet_col = "green")
-  cli::cat_bullet("Age strata written to ", cohortSchemaTable,
-                  "\n-cohort without strata ", cohortIdWithoutStrata,
-                  "\n-cohort with strata ", cohortIdWithStrata,
-                  bullet = "tick", bullet_col = "green")
-  
-  invisible(cohortStrataSql)
-  
+  invisible(cognStrataSql)
 }
 
 
@@ -413,8 +437,6 @@ cohortStrata <- function(con,
 ## Master function ----------
 buildStrata <- function(con,
                         executionSettings) {
-  
-  # Step 0: Prep
   
   ## Get variables
   cdmDatabaseSchema <- executionSettings$cdmDatabaseSchema
@@ -427,25 +449,8 @@ buildStrata <- function(con,
   
   
   ## Get cohort ids
-  #targetCohorts <- analysisSettings$strata$cohorts$targetCohort
   targetCohortsIds <- getCohortManifest() %>% dplyr::select(id)
-  targetCohortsIds <- targetCohortsIds[1,]
-  
-  
-  # tb1 <- expand_grid(targetCohorts, demoStrata) %>%
-  #   dplyr::mutate(
-  #     strataId = id * 1000 + strataId,
-  #     strataName = paste(name, strataName)
-  #   ) %>%
-  #   select(strataId, strataName)
-  
-  # cohortStrata <- analysisSettings$strata$cohorts$strataCohorts %>%
-  #   dplyr::rename(
-  #     strataId = id,
-  #     strataName = name
-  #   )
-  # demoStrata <- analysisSettings$strata$demographics
-  
+
   
   ## Initial stratas ----------
   
@@ -473,18 +478,18 @@ buildStrata <- function(con,
   #                         ageMax = ..2))
   # 
   # cli::cat_bullet("Age strata written to table: ", paste0(workDatabaseSchema,".",cohortTable), bullet = "tick", bullet_col = "green")
-
-  ### Sex ----------
-
-  #debug(sexStrata)
-  purrr::pwalk(targetCohortsIds,
-               ~sexStrata(con = con,
-                          cohortDatabaseSchema = workDatabaseSchema,
-                          cohortTable = cohortTable,
-                          cdmDatabaseSchema = cdmDatabaseSchema,
-                          targetId = ..1))
-
-  cli::cat_bullet("Sex strata written to table: ",  paste0(workDatabaseSchema,".",cohortTable), bullet = "tick", bullet_col = "green")
+# 
+#   ### Sex ----------
+# 
+#   #debug(sexStrata)
+#   purrr::pwalk(targetCohortsIds,
+#                ~sexStrata(con = con,
+#                           cohortDatabaseSchema = workDatabaseSchema,
+#                           cohortTable = cohortTable,
+#                           cdmDatabaseSchema = cdmDatabaseSchema,
+#                           targetId = ..1))
+# 
+#   cli::cat_bullet("Sex strata written to table: ",  paste0(workDatabaseSchema,".",cohortTable), bullet = "tick", bullet_col = "green")
   
 
   ### Cognitive Status ----------
@@ -501,47 +506,29 @@ buildStrata <- function(con,
   cli::cat_bullet("Cognitive Status strata written to table: ",  paste0(workDatabaseSchema,".",cohortTable), bullet = "tick", bullet_col = "green")
   
   
-  ### ASA ----------
+  ### Fracture type ----------
   
-  ### Fracture Type ----------
+  #debug(fracStrata)
+  purrr::pwalk(targetCohortsIds,
+               ~ fracStrata(con = con,
+                            cohortDatabaseSchema = workDatabaseSchema,
+                            cohortTable = cohortTable,
+                            cdmDatabaseSchema = cdmDatabaseSchema,
+                            targetId = ..1)
+  )
   
-  ### Pre-fracture mobility ----------
+  cli::cat_bullet("Fracture type strata written to table: ",  paste0(workDatabaseSchema,".",cohortTable), bullet = "tick", bullet_col = "green")
   
-  ### Pre-fracture residence ----------
   
-  ### Anaesthesia ----------
+  
+  countedCohorts <- countCohorts(
+    executionSettings = executionSettings,
+    con = con,
+    cohortManifest = cohortManifest,
+    outputFolder = outputFolder
+  )
   
 
-  
-  # cohortStrataTbl <- tibble::tibble(
-  #   strataId = c(paste0("000", cohortStrata$strataId), paste0("001", cohortStrata$strataId)),
-  #   strataName = c(paste("without", cohortStrata$strataName), paste("with", cohortStrata$strataName))
-  # )
-  # tb2 <- tidyr::expand_grid(targetCohorts, cohortStrataTbl) %>%
-  #   dplyr::mutate(
-  #     strataId = as.integer(paste0(as.character(id), strataId)),
-  #     strataName = paste(name, strataName)
-  #   )
-  # 
-  # strataKey <- dplyr::bind_rows(
-  #   tb1,
-  #   tb2 %>% select(strataId, strataName)
-  # )
-  # 
-  # strataKey <- tb1
-  # 
-  # strataSummary <- dplyr::tbl(con, dbplyr::in_schema(workDatabaseSchema, cohortTable)) %>%
-  #   dplyr::count(cohort_definition_id) %>%
-  #   dplyr::collect() %>%
-  #   dplyr::filter(cohort_definition_id > 1000)
-  # 
-  # 
-  # dt <- strataKey %>%
-  #   dplyr::left_join(strataSummary, by = c("strataId" = "cohort_definition_id")) %>%
-  #   dplyr::rename(cohort_definition_id = strataId,
-  #                 name = strataName) %>%
-  #   dplyr::select(cohort_definition_id, name, n)
-  # 
   # verboseSave(
   #   object = dt,
   #   saveName = "strata_table",
