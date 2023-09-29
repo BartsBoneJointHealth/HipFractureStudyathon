@@ -155,12 +155,14 @@ countCohorts <- function(executionSettings,
   cohortCounts <- CohortGenerator::getCohortCounts(
     connection = con,
     cohortDatabaseSchema = executionSettings$workDatabaseSchema,
-    cohortTable = cohortTable,
-    cohortDefinitionSet = cohortsToCreate
+    cohortTable = cohortTable
+    #cohortIds = c(1:10000000000)
+    #cohortDefinitionSet = cohortsToCreate
   ) 
-  # %>%
-  #   dplyr::select(cohortId, cohortName, cohortEntries, cohortSubjects)
   
+  cohortCountsF <- cohortCounts %>%
+    dplyr::mutate(database = executionSettings$databaseName)
+
   # # save generated cohorts
   # tb <- cohortManifest %>%
   #   dplyr::left_join(cohortCounts %>%
@@ -174,9 +176,9 @@ countCohorts <- function(executionSettings,
   #   )
   
   savePath <- fs::path(outputFolder, "allCohorts.csv")
-  readr::write_csv(x = cohortCounts, file = savePath)
+  readr::write_csv(x = cohortCountsF, file = savePath)
   cli::cat_bullet("Saving Generated Cohorts to ", crayon::cyan(savePath), bullet = "tick", bullet_col = "green")
   
-  return(cohortCounts)
+  return(cohortCountsF)
   
 }

@@ -1,7 +1,6 @@
 # A. Meta Info -----------------------
 
 # Task: Post-Index Characteristics
-# Description: The purpose of this script is to 
 
 # B. Dependencies ----------------------
 
@@ -35,24 +34,22 @@ executionSettings <- config::get(config = configBlock) %>%
 
 # E. Script --------------------
 
-#startSnowflakeSession(con, executionSettings)
-
-
-## Get Baseline Covariates
-
 #debug(executePostIndex)
-# executePostIndex(con = con,
-#                  executionSettings = executionSettings)
+executePostIndex(con = con,
+                 executionSettings = executionSettings)
 
 
-debug(bindFilesCat)
-bindFilesCat(outputPath = here::here("report"),
-             database = configBlock,
-             filename = "catCov")
+# debug(bindFilesCat)
+# bindFilesCat(outputPath = here::here("report"),
+#              database = configBlock,
+#              filename = "catCov")
+# 
+# 
+# debug(bindFilesCont)
+# bindFilesCont(outputPath = here::here("report"),
+#              database = configBlock,
+#              filename = "contChar")
 
 
-debug(bindFilesCont)
-bindFilesCont(outputPath = here::here("report"),
-             database = configBlock,
-             filename = "contChar")
-
+# F. Disconnect from server --------------------
+DatabaseConnector::disconnect(con)

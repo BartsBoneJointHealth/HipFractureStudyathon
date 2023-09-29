@@ -46,37 +46,31 @@ cohortManifest <- getCohortManifest()
 
 
 # E. Script --------------------
-#startSnowflakeSession(con, executionSettings)
 
 ### RUN ONCE - Initialize cohort tables #########
 
 #debug(dropCohortTables)
-#dropCohortTables(executionSettings = executionSettings, con = con)
+dropCohortTables(executionSettings = executionSettings, con = con)
 
 #debug(initializeCohortTables)
-# initializeCohortTables(executionSettings = executionSettings, con = con)
-# 
-# 
-# # Generate cohorts
-# generatedCohorts <- generateCohorts(
-#   executionSettings = executionSettings,
-#   con = con,
-#   cohortManifest = cohortManifest,
-#   outputFolder = outputFolder
-# )
+initializeCohortTables(executionSettings = executionSettings, con = con)
 
-debug(countCohorts)
-countCohorts(executionSettings = executionSettings,
-             con = con,
-             #cohortManifest = cohortManifest,
-             outputFolder = outputFolder,
-             type = "analysis") 
+
+# Generate cohorts
+generatedCohorts <- generateCohorts(
+  executionSettings = executionSettings,
+  con = con,
+  cohortManifest = cohortManifest,
+  outputFolder = outputFolder
+)
 
 
 # Build stratas
 
-#debug(buildStrata)
-# buildStrata(con = con,
-#             executionSettings = executionSettings)
+debug(buildStrata)
+buildStrata(con = con,
+            executionSettings = executionSettings)
 
 
+# F. Disconnect from server --------------------
+DatabaseConnector::disconnect(con)

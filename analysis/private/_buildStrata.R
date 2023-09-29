@@ -176,7 +176,6 @@ sexStrata <- function(con,
     cohortDatabaseSchema = cohortDatabaseSchema,
     cohortTable = cohortTable,
     cdmDatabaseSchema = cdmDatabaseSchema,
-    #strataId = strataId,
     targetId = targetId) %>%
     SqlRender::translate(targetDialect = con@dbms)
   
@@ -504,7 +503,7 @@ buildStrata <- function(con,
   )
   
   cli::cat_bullet("Cognitive Status strata written to table: ",  paste0(workDatabaseSchema,".",cohortTable), bullet = "tick", bullet_col = "green")
-  
+
   
   ### Fracture type ----------
   
@@ -520,6 +519,20 @@ buildStrata <- function(con,
   cli::cat_bullet("Fracture type strata written to table: ",  paste0(workDatabaseSchema,".",cohortTable), bullet = "tick", bullet_col = "green")
   
   
+  sql <- "
+      select distinct cohort_definition_id
+      from @cohortDatabaseSchema.@cohortTable;
+  "
+  
+  countSql <- SqlRender::render(
+    sql,
+    cohortDatabaseSchema = workDatabaseSchema,
+    cohortTable = cohortTable) %>%
+    SqlRender::translate(targetDialect = con@dbms)
+  
+  counts <- DatabaseConnector::querySql(connection = con, sql = countSql)
+  counts
+  
   
   countedCohorts <- countCohorts(
     executionSettings = executionSettings,
@@ -527,7 +540,6 @@ buildStrata <- function(con,
     cohortManifest = cohortManifest,
     outputFolder = outputFolder
   )
-  
 
   # verboseSave(
   #   object = dt,
