@@ -1,10 +1,6 @@
 # A. Meta Info -----------------------
 
 # Task: Build Cohorts
-# Author: [Add Name of Author]
-# Date: 2023-04-12
-# Description: The purpose of the _buildCohorts.R script is to
-# build cohort functions
 
 # B. Functions ------------------------
 
@@ -136,5 +132,60 @@ dropCohortTables <- function(executionSettings, con) {
     DatabaseConnector::executeSql(connection = con, dropSql, progressBar = FALSE)
     
   }
+  
+}
+
+
+countCohorts <- function(executionSettings,
+                            con,
+                            cohortManifest,
+                            outputFolder,
+                            type = "analysis") {
+  
+  
+  # prep cohorts for generator
+  cohortsToCreate <- prepManifestForCohortGenerator(cohortManifest)
+  
+  #path for incremental
+  incrementalFolder <- fs::path(outputFolder)
+  
+  
+  name <- executionSettings$cohortTable
+  
+  cohortTableNames <- list(cohortTable = paste0(name),
+                           cohortInclusionTable = paste0(name, "_inclusion"),
+                           cohortInclusionResultTable = paste0(name, "_inclusion_result"),
+                           cohortInclusionStatsTable = paste0(name, "_inclusion_stats"),
+                           cohortSummaryStatsTable = paste0(name, "_summary_stats"),
+                           cohortCensorStatsTable = paste0(name, "_censor_stats"))
+  
+
+  #get cohort counts
+  cohortCounts <- CohortGenerator::getCohortCounts(
+    connection = con,
+    cohortDatabaseSchema = executionSettings$workDatabaseSchema,
+    cohortTable = cohortTableNames$cohortTable,
+    cohortDefinitionSet = cohortsToCreate
+  ) 
+  # %>%
+  #   dplyr::select(cohortId, cohortName, cohortEntries, cohortSubjects)
+  
+  # # save generated cohorts
+  # tb <- cohortManifest %>%
+  #   dplyr::left_join(cohortCounts %>%
+  #                      dplyr::select(cohortId, cohortEntries, cohortSubjects),
+  #                    by = c("id" = "cohortId")) %>%
+  #   dplyr::rename(
+  #     entries = cohortEntries,
+  #     subjects = cohortSubjects) %>%
+  #   dplyr::select(
+  #     id, name, type, entries, subjects, file
+  #   )
+  
+  savePath <- fs::path(outputFolder, "allCohorts.csv")
+  readr::write_csv(x = cohortCounts, file = savePath)
+  cli::cat_bullet("Saving Generated Cohorts to ", crayon::cyan(savePath), bullet = "tick", bullet_col = "green")
+  
+  return(cohortCounts)
   
 }

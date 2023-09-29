@@ -1,3 +1,9 @@
+# A. Meta Info -----------------------
+
+# Task: Keyring
+
+# B. Functions ------------------------
+
 `%notin%` <- Negate("%in%")
 
 makeConfigUpdated <- function(block, database = block, projectPath = here::here(), open = TRUE) {

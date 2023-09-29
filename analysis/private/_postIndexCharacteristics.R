@@ -1,22 +1,19 @@
 # A. Meta Info -----------------------
 
-# Task: Post Index Analysis
-# Date: 2023-07-26
-# Description: The purpose of the _postIndexAnalysis.R script is to
+# Task: Post-Index Analysis
 
 source("analysis/private/_utilities.R")
 
 # B. Functions ------------------------
 
-# Post index module -------------
+# Post-Index module -------------
 executePostIndex<- function(con,
                             executionSettings) {
   
   ## Remove scientific notation
   #options(scipen=999)
   
-  ## Prep
-  ## get schema vars
+  ## Get variables
   cdmDatabaseSchema <- executionSettings$cdmDatabaseSchema
   workDatabaseSchema <- executionSettings$workDatabaseSchema
   cohortTable <- executionSettings$cohortTable
@@ -26,61 +23,111 @@ executePostIndex<- function(con,
     fs::dir_create()
 
   
-  #Start execution talk
-  cli::cat_boxx("Building Post-Index Covariates")
+  ## Start execution
+  cli::cat_boxx("Building Post-Index Covariates (on index date)")
   cli::cat_line()
   
   tik <- Sys.time()
   
-  # Run post-index
-  cohortCovariatesFra(con = con,
-                      cohortDatabaseSchema = workDatabaseSchema,
-                      cdmDatabaseSchema = cdmDatabaseSchema,
-                      cohortTable = cohortTable,
-                      database = databaseId,
-                      outputFolder = outputFolder)
+  catCovFra(con = con,
+            cohortDatabaseSchema = workDatabaseSchema,
+            cdmDatabaseSchema = cdmDatabaseSchema,
+            cohortTable = cohortTable,
+            database = databaseId,
+            outputFolder = outputFolder)
+
+  catCovCogn(con = con,
+             cohortDatabaseSchema = workDatabaseSchema,
+             cdmDatabaseSchema = cdmDatabaseSchema,
+             cohortTable = cohortTable,
+             database = databaseId,
+             outputFolder = outputFolder)
+
+  catCovMob(con = con,
+            cohortDatabaseSchema = workDatabaseSchema,
+            cdmDatabaseSchema = cdmDatabaseSchema,
+            cohortTable = cohortTable,
+            database = databaseId,
+            outputFolder = outputFolder)
+
+  catCovPathFra(con = con,
+                cohortDatabaseSchema = workDatabaseSchema,
+                cdmDatabaseSchema = cdmDatabaseSchema,
+                cohortTable = cohortTable,
+                database = databaseId,
+                outputFolder = outputFolder)
+
+  catCovAna(con = con,
+            cohortDatabaseSchema = workDatabaseSchema,
+            cdmDatabaseSchema = cdmDatabaseSchema,
+            cohortTable = cohortTable,
+            database = databaseId,
+            outputFolder = outputFolder)
+
+  catCovRes(con = con,
+            cohortDatabaseSchema = workDatabaseSchema,
+            cdmDatabaseSchema = cdmDatabaseSchema,
+            cohortTable = cohortTable,
+            database = databaseId,
+            outputFolder = outputFolder)
+
+  catCovASA(con = con,
+            cohortDatabaseSchema = workDatabaseSchema,
+            cdmDatabaseSchema = cdmDatabaseSchema,
+            cohortTable = cohortTable,
+            database = databaseId,
+            outputFolder = outputFolder)
   
-  cohortCovariatesCogn(con = con,
-                      cohortDatabaseSchema = workDatabaseSchema,
-                      cdmDatabaseSchema = cdmDatabaseSchema,
-                      cohortTable = cohortTable,
-                      database = databaseId,
-                      outputFolder = outputFolder)
+
+  tok <- Sys.time()
+  cli::cat_bullet("Execution Completed at: ", crayon::red(tok),
+                  bullet = "info", bullet_col = "blue")
+  tdif <- tok - tik
+  tok_format <- paste(scales::label_number(0.01)(as.numeric(tdif)), attr(tdif, "units"))
+  cli::cat_bullet("Execution took: ", crayon::red(tok_format),
+                  bullet = "info", bullet_col = "blue")
   
-  cohortCovariatesMob(con = con,
+  
+  cli::cat_boxx("Building Post-Index Covariates (any time after and on index date)")
+  cli::cat_line()
+  
+  tik <- Sys.time()
+  
+  catCovBoneMed(con = con,
+                cohortDatabaseSchema = workDatabaseSchema,
+                cdmDatabaseSchema = cdmDatabaseSchema,
+                cohortTable = cohortTable,
+                database = databaseId,
+                outputFolder = outputFolder)
+  
+  contCovTimeToSurgery(con = con,
                        cohortDatabaseSchema = workDatabaseSchema,
                        cdmDatabaseSchema = cdmDatabaseSchema,
                        cohortTable = cohortTable,
                        database = databaseId,
                        outputFolder = outputFolder)
   
-  cohortCovariatesPathFra(con = con,
-                      cohortDatabaseSchema = workDatabaseSchema,
-                      cdmDatabaseSchema = cdmDatabaseSchema,
-                      cohortTable = cohortTable,
-                      database = databaseId,
-                      outputFolder = outputFolder)
+  catCovDeath(con = con,
+              cohortDatabaseSchema = workDatabaseSchema,
+              cdmDatabaseSchema = cdmDatabaseSchema,
+              cohortTable = cohortTable,
+              database = databaseId,
+              outputFolder = outputFolder)
   
-  cohortCovariatesAna(con = con,
-                          cohortDatabaseSchema = workDatabaseSchema,
-                          cdmDatabaseSchema = cdmDatabaseSchema,
-                          cohortTable = cohortTable,
-                          database = databaseId,
-                          outputFolder = outputFolder)
+  catCovSex(con = con,
+            cohortDatabaseSchema = workDatabaseSchema,
+            cdmDatabaseSchema = cdmDatabaseSchema,
+            cohortTable = cohortTable,
+            database = databaseId,
+            outputFolder = outputFolder)
   
-  cohortCovariatesRes(con = con,
-                      cohortDatabaseSchema = workDatabaseSchema,
-                      cdmDatabaseSchema = cdmDatabaseSchema,
-                      cohortTable = cohortTable,
-                      database = databaseId,
-                      outputFolder = outputFolder)
+  contCovAge(con = con,
+             cohortDatabaseSchema = workDatabaseSchema,
+             cdmDatabaseSchema = cdmDatabaseSchema,
+             cohortTable = cohortTable,
+             database = databaseId,
+             outputFolder = outputFolder)
   
-  cohortCovariatesASA(con = con,
-                      cohortDatabaseSchema = workDatabaseSchema,
-                      cdmDatabaseSchema = cdmDatabaseSchema,
-                      cohortTable = cohortTable,
-                      database = databaseId,
-                      outputFolder = outputFolder)
   
   tok <- Sys.time()
   cli::cat_bullet("Execution Completed at: ", crayon::red(tok),
@@ -90,23 +137,24 @@ executePostIndex<- function(con,
   cli::cat_bullet("Execution took: ", crayon::red(tok_format),
                   bullet = "info", bullet_col = "blue")
   
+  
   invisible(tok)
 }
 
 
 # Cohort Covariates -----------
-cohortCovariatesFra <- function(con,
-                             cohortDatabaseSchema,
-                             cdmDatabaseSchema,
-                             cohortTable,
-                             database,
-                             type = "fracture",
-                             outputFolder) {
+catCovFra <- function(con,
+                      cohortDatabaseSchema,
+                      cdmDatabaseSchema,
+                      cohortTable,
+                      database,
+                      type = "fracture",
+                      outputFolder) {
   
   cli::cat_rule("Build Cohort Covariates: Fracture Type")
   
   
-  # sql to get cohort covariates
+  # SQL code to get cohort covariates
   sql <- "
    -- Fracture Type
    
@@ -121,11 +169,12 @@ cohortCovariatesFra <- function(con,
     select 
       count(subject_id) as nn, 
       cohort_definition_id, 
+      b.concept_id,
       concept_name
     from cts a
     left join @cdmDatabaseSchema.CONCEPT b on a.condition_concept_id =  b.concept_id
     where rnk=1
-    group by cohort_definition_id, concept_name;
+    group by cohort_definition_id, b.concept_id, concept_name;
 "
   
   # Render and translate sql
@@ -150,12 +199,13 @@ cohortCovariatesFra <- function(con,
                   totalEntries = entries,
                   totalSubjects = subjects) %>%
     dplyr::select(nn, cohortId, concept_name, totalEntries, totalSubjects) %>%
-    dplyr::mutate(pct = nn/totalSubjects) 
+    dplyr::mutate(pct = nn/totalSubjects,
+                  database = database)
 
   
   verboseSave(
     object = tb,
-    saveName = paste("cohortCovariates", type, sep = "_"),
+    saveName = paste("catCov", type, sep = "_"),
     saveLocation = outputFolder
   )
   
@@ -165,18 +215,18 @@ cohortCovariatesFra <- function(con,
 
 
 
-cohortCovariatesCogn <- function(con,
-                                cohortDatabaseSchema,
-                                cdmDatabaseSchema,
-                                cohortTable,
-                                database,
-                                type = "cognStatus",
-                                outputFolder) {
+catCovCogn <- function(con,
+                       cohortDatabaseSchema,
+                       cdmDatabaseSchema,
+                       cohortTable,
+                       database,
+                       type = "cognStatus",
+                       outputFolder) {
   
   cli::cat_rule("Build Cohort Covariates: Cognitive Status")
   
   
-  # sql to get cohort covariates
+  # SQL code to get cohort covariates
   sql <- "
    -- Cognitive Status
    
@@ -191,11 +241,12 @@ cohortCovariatesCogn <- function(con,
     select 
       count(subject_id) as nn, 
       cohort_definition_id, 
+      b.concept_id,
       concept_name
     from cts a
     left join @cdmDatabaseSchema.CONCEPT b on a.condition_concept_id =  b.concept_id
     where rnk=1
-    group by cohort_definition_id, concept_name;
+    group by cohort_definition_id,b.concept_id, concept_name;
 "
   
   # Render and translate sql
@@ -220,12 +271,13 @@ cohortCovariatesCogn <- function(con,
                   totalEntries = entries,
                   totalSubjects = subjects) %>%
     dplyr::select(nn, cohortId, concept_name, totalEntries, totalSubjects) %>%
-    dplyr::mutate(pct = nn/totalSubjects) 
+    dplyr::mutate(pct = nn/totalSubjects,
+                  database = database)
   
   
   verboseSave(
     object = tb,
-    saveName = paste("cohortCovariates", type, sep = "_"),
+    saveName = paste("catCov", type, sep = "_"),
     saveLocation = outputFolder
   )
   
@@ -235,18 +287,18 @@ cohortCovariatesCogn <- function(con,
 
 
 
-cohortCovariatesMob <- function(con,
-                                 cohortDatabaseSchema,
-                                 cdmDatabaseSchema,
-                                 cohortTable,
-                                 database,
-                                 type = "mobility",
-                                 outputFolder) {
+catCovMob <- function(con,
+                      cohortDatabaseSchema,
+                      cdmDatabaseSchema,
+                      cohortTable,
+                      database,
+                      type = "mobility",
+                      outputFolder) {
   
   cli::cat_rule("Build Cohort Covariates: Pre-fracture mobility")
   
   
-  # sql to get cohort covariates
+  # SQL code to get cohort covariates
   sql <- "
    -- Pre-fracture mobility
    
@@ -261,11 +313,12 @@ cohortCovariatesMob <- function(con,
     select 
       count(subject_id) as nn, 
       cohort_definition_id, 
+      b.concept_id,
       concept_name
     from cts a
     left join @cdmDatabaseSchema.CONCEPT b on a.condition_concept_id =  b.concept_id
     where rnk=1
-    group by cohort_definition_id, concept_name;
+    group by cohort_definition_id,b.concept_id, concept_name;
 "
   
   # Render and translate sql
@@ -290,12 +343,13 @@ cohortCovariatesMob <- function(con,
                   totalEntries = entries,
                   totalSubjects = subjects) %>%
     dplyr::select(nn, cohortId, concept_name, totalEntries, totalSubjects) %>%
-    dplyr::mutate(pct = nn/totalSubjects) 
+    dplyr::mutate(pct = nn/totalSubjects,
+                  database = database)
   
   
   verboseSave(
     object = tb,
-    saveName = paste("cohortCovariates", type, sep = "_"),
+    saveName = paste("catCov", type, sep = "_"),
     saveLocation = outputFolder
   )
   
@@ -305,18 +359,18 @@ cohortCovariatesMob <- function(con,
 
 
 
-cohortCovariatesPathFra <- function(con,
-                                cohortDatabaseSchema,
-                                cdmDatabaseSchema,
-                                cohortTable,
-                                database,
-                                type = "pathFra",
-                                outputFolder) {
+catCovPathFra <- function(con,
+                          cohortDatabaseSchema,
+                          cdmDatabaseSchema,
+                          cohortTable,
+                          database,
+                          type = "pathFra",
+                          outputFolder) {
   
   cli::cat_rule("Build Cohort Covariates: Pathological fracture")
   
   
-  # sql to get cohort covariates
+  # SQL code to get cohort covariates
   sql <- "
    -- Pathological fracture
    
@@ -331,11 +385,12 @@ cohortCovariatesPathFra <- function(con,
     select 
       count(subject_id) as nn, 
       cohort_definition_id, 
+      b.concept_id,
       concept_name
     from cts a
     left join @cdmDatabaseSchema.CONCEPT b on a.condition_concept_id =  b.concept_id
     where rnk=1
-    group by cohort_definition_id, concept_name;
+    group by cohort_definition_id,b.concept_id, concept_name;
 "
   
   # Render and translate sql
@@ -360,12 +415,13 @@ cohortCovariatesPathFra <- function(con,
                   totalEntries = entries,
                   totalSubjects = subjects) %>%
     dplyr::select(nn, cohortId, concept_name, totalEntries, totalSubjects) %>%
-    dplyr::mutate(pct = nn/totalSubjects) 
+    dplyr::mutate(pct = nn/totalSubjects,
+                  database = database) 
   
   
   verboseSave(
     object = tb,
-    saveName = paste("cohortCovariates", type, sep = "_"),
+    saveName = paste("catCov", type, sep = "_"),
     saveLocation = outputFolder
   )
   
@@ -374,22 +430,22 @@ cohortCovariatesPathFra <- function(con,
 }
 
 
-cohortCovariatesAna <- function(con,
-                                    cohortDatabaseSchema,
-                                    cdmDatabaseSchema,
-                                    cohortTable,
-                                    database,
-                                    type = "anasthesia",
-                                    outputFolder) {
+catCovAna <- function(con,
+                      cohortDatabaseSchema,
+                      cdmDatabaseSchema,
+                      cohortTable,
+                      database,
+                      type = "anasthesia",
+                      outputFolder) {
   
   cli::cat_rule("Build Cohort Covariates: Anasthesia Type")
   
   
-  # sql to get cohort covariates
+  # SQL code to get cohort covariates
   sql <- "
    -- Anasthesia Type
    
-with cts as (
+  with cts as (
     select subject_id, cohort_start_date, cohort_end_date, procedure_date, cohort_definition_id, procedure_concept_id
      ,row_number()over(partition by subject_id, cohort_definition_id order by procedure_date) as rnk
     from @cohortDatabaseSchema.@cohortTable a
@@ -400,12 +456,13 @@ with cts as (
   select 
     count(subject_id) as nn, 
     cohort_definition_id, 
+    b.concept_id,
     concept_name
   from cts a
   left join @cdmDatabaseSchema.CONCEPT b
   on a.procedure_concept_id =  b.concept_id
   where rnk=1
-  group by cohort_definition_id, concept_name;
+  group by cohort_definition_id,b.concept_id, concept_name;
 "
   
   # Render and translate sql
@@ -430,12 +487,13 @@ with cts as (
                   totalEntries = entries,
                   totalSubjects = subjects) %>%
     dplyr::select(nn, cohortId, concept_name, totalEntries, totalSubjects) %>%
-    dplyr::mutate(pct = nn/totalSubjects) 
+    dplyr::mutate(pct = nn/totalSubjects,
+                  database = database)
   
   
   verboseSave(
     object = tb,
-    saveName = paste("cohortCovariates", type, sep = "_"),
+    saveName = paste("catCov", type, sep = "_"),
     saveLocation = outputFolder
   )
   
@@ -444,18 +502,18 @@ with cts as (
 }
 
 
-cohortCovariatesRes <- function(con,
-                                    cohortDatabaseSchema,
-                                    cdmDatabaseSchema,
-                                    cohortTable,
-                                    database,
-                                    type = "residence",
-                                    outputFolder) {
+catCovRes <- function(con,
+                      cohortDatabaseSchema,
+                      cdmDatabaseSchema,
+                      cohortTable,
+                      database,
+                      type = "residence",
+                      outputFolder) {
   
   cli::cat_rule("Build Cohort Covariates: Pre-fracture residence")
   
   
-  # sql to get cohort covariates
+  # SQL code to get cohort covariates
   sql <- "
    -- Pre-fracture residence
    
@@ -466,14 +524,17 @@ with cts as (
     left join @cdmDatabaseSchema.VISIT_OCCURRENCE b
     on a.subject_id = b.person_id and a.cohort_start_date = b.visit_start_date
     where admitting_source_concept_id in (42898160,38004279)
-    order by subject_id, cohort_definition_id, rnk
   )
-  select count(subject_id) as nn, cohort_definition_id, concept_name
+  select 
+    count(subject_id) as nn, 
+    cohort_definition_id,
+    b.concept_id,
+    concept_name
   from cts a
   left join @cdmDatabaseSchema.CONCEPT b
   on a.admitting_source_concept_id =  b.concept_id
   where rnk=1
-  group by cohort_definition_id, concept_name;
+  group by cohort_definition_id,b.concept_id, concept_name;
 "
   
   # Render and translate sql
@@ -498,12 +559,13 @@ with cts as (
                   totalEntries = entries,
                   totalSubjects = subjects) %>%
     dplyr::select(nn, cohortId, concept_name, totalEntries, totalSubjects) %>%
-    dplyr::mutate(pct = nn/totalSubjects) 
+    dplyr::mutate(pct = nn/totalSubjects,
+                  database = database)
   
   
   verboseSave(
     object = tb,
-    saveName = paste("cohortCovariates", type, sep = "_"),
+    saveName = paste("catCov", type, sep = "_"),
     saveLocation = outputFolder
   )
   
@@ -512,28 +574,113 @@ with cts as (
 }
 
 
-cohortCovariatesASA <- function(con,
-                                cohortDatabaseSchema,
-                                cdmDatabaseSchema,
-                                cohortTable,
-                                database,
-                                type = "ASA",
-                                outputFolder) {
+catCovASA <- function(con,
+                      cohortDatabaseSchema,
+                      cdmDatabaseSchema,
+                      cohortTable,
+                      database,
+                      type = "ASA",
+                      outputFolder) {
   
   cli::cat_rule("Build Cohort Covariates: ASA grade")
   
   
-  # sql to get cohort covariates
+  # SQL code to get cohort covariates
   sql <- "
    -- ASA grade
-   
-    select subject_id, cohort_start_date, cohort_end_date, measurement_date, cohort_definition_id, measurement_concept_id, value_as_number
-     ,row_number()over(partition by subject_id, cohort_definition_id order by measurement_date) as rnk
-    from @cohortDatabaseSchema.@cohortTable a
-    left join @cdmDatabaseSchema.MEASUREMENT b
-    on a.subject_id = b.person_id and a.cohort_start_date = b.measurement_date
-    where measurement_concept_id in (42898160,38004279)
-    order by subject_id, cohort_definition_id, rnk
+
+      with cts as (
+        select top 1000 subject_id, cohort_start_date, cohort_end_date, measurement_date, cohort_definition_id, measurement_concept_id, value_as_number
+         ,row_number()over(partition by subject_id, cohort_definition_id order by measurement_date) as rnk
+        from @cohortDatabaseSchema.@cohortTable a
+        left join @cdmDatabaseSchema.MEASUREMENT b
+        on a.subject_id = b.person_id and a.cohort_start_date = b.measurement_date
+        where measurement_concept_id in (4159411)
+    )
+    select 
+      count(subject_id) as nn, 
+      cohort_definition_id,
+      value_as_number,
+      b.concept_id,
+      concept_name
+    from cts a
+    left join @cdmDatabaseSchema.CONCEPT b
+    on a.measurement_concept_id =  b.concept_id
+    where rnk=1
+    group by cohort_definition_id, b.concept_id, value_as_number, concept_name;
+"
+
+  # Render and translate sql
+  cohortCovariateSql <- SqlRender::render(
+    sql,
+    cohortDatabaseSchema = cohortDatabaseSchema,
+    cdmDatabaseSchema = cdmDatabaseSchema,
+    cohortTable = cohortTable
+  ) %>%
+    SqlRender::translate(targetDialect = con@dbms)
+
+  tb <- DatabaseConnector::querySql(connection = con, sql = cohortCovariateSql)
+  names(tb) <- tolower(names(tb))
+  
+  cohortManifest <- readr::read_csv(file = here::here("results", database, "01_buildCohorts", "cohortManifest.csv"), 
+                                    show_col_types = FALSE)
+  
+  tb <- tb %>%
+    dplyr::inner_join(cohortManifest, by = c("cohort_definition_id" = "id")) %>%
+    dplyr::rename(cohortId = cohort_definition_id,
+                  totalEntries = entries,
+                  totalSubjects = subjects) %>%
+    dplyr::mutate(concept_name = paste0("ASA grade: ", value_as_number)) %>%
+    dplyr::select(nn, cohortId, concept_name, totalEntries, totalSubjects) %>%
+    dplyr::mutate(pct = nn/totalSubjects,
+                  database = database) 
+  
+  
+  verboseSave(
+    object = tb,
+    saveName = paste("catCov", type, sep = "_"),
+    saveLocation = outputFolder
+  )
+  
+  
+  invisible(cohortCovariateSql)
+}
+
+
+
+catCovBoneMed <- function(con,
+                          cohortDatabaseSchema,
+                          cdmDatabaseSchema,
+                          cohortTable,
+                          database,
+                          type = "boneMed",
+                          outputFolder) {
+  
+  cli::cat_rule("Build Cohort Covariates: Bone medication")
+  
+  
+  # SQL code to get cohort covariates
+  sql <- "
+   -- Bone medication
+
+    with cts as (
+      select subject_id, cohort_start_date, cohort_end_date, observation_date, cohort_definition_id, observation_concept_id
+       ,row_number()over(partition by subject_id, cohort_definition_id order by observation_date) as rnk
+      from @cohortDatabaseSchema.@cohortTable a
+      left join @cdmDatabaseSchema.observation b
+      on a.subject_id = b.person_id and a.cohort_start_date <= b.observation_date
+      where observation_concept_id in (765842, 762564, 4164526)
+    )
+    select 
+      count(subject_id) as nn, 
+      cohort_definition_id,
+      b.concept_id,
+      concept_name
+    from cts a
+    left join @cdmDatabaseSchema.CONCEPT b
+    on a.observation_concept_id =  b.concept_id
+    where rnk=1
+    group by cohort_definition_id, b.concept_id, concept_name;
 "
   
   # Render and translate sql
@@ -544,7 +691,6 @@ cohortCovariatesASA <- function(con,
     cohortTable = cohortTable
   ) %>%
     SqlRender::translate(targetDialect = con@dbms)
-  
   
   tb <- DatabaseConnector::querySql(connection = con, sql = cohortCovariateSql)
   names(tb) <- tolower(names(tb))
@@ -558,12 +704,13 @@ cohortCovariatesASA <- function(con,
                   totalEntries = entries,
                   totalSubjects = subjects) %>%
     dplyr::select(nn, cohortId, concept_name, totalEntries, totalSubjects) %>%
-    dplyr::mutate(pct = nn/totalSubjects) 
+    dplyr::mutate(pct = nn/totalSubjects,
+                  database = database) 
   
   
   verboseSave(
     object = tb,
-    saveName = paste("cohortCovariates", type, sep = "_"),
+    saveName = paste("catCov", type, sep = "_"),
     saveLocation = outputFolder
   )
   
@@ -573,3 +720,441 @@ cohortCovariatesASA <- function(con,
 
 
 
+catCovDischarge <- function(con,
+                            cohortDatabaseSchema,
+                            cdmDatabaseSchema,
+                            cohortTable,
+                            database,
+                            type = "discharge",
+                            outputFolder) {
+  
+  cli::cat_rule("Build Cohort Covariates: Discharge location")
+  
+  
+  # SQL code to get cohort covariates
+  sql <- "
+   -- Discharge location
+
+    with cts as (
+      select subject_id, cohort_start_date, cohort_end_date, visit_start_date, cohort_definition_id, visit_concept_id
+       ,row_number()over(partition by subject_id, cohort_definition_id order by visit_start_date) as rnk
+      from @cohortDatabaseSchema.@cohortTable a
+      left join @cdmDatabaseSchema.visit_occurrence b
+      on a.subject_id = b.person_id and a.cohort_start_date <= b.visit_start_date
+      where discharge_to_concept_id in (42898160, 38004279, 38004285)
+    )
+    select 
+      count(subject_id) as nn, 
+      cohort_definition_id,
+      b.concept_id,
+      concept_name
+    from cts a
+    left join @cdmDatabaseSchema.CONCEPT b
+    on a.discharge_to_concept_id = b.concept_id
+    where rnk=1
+    group by cohort_definition_id, b.concept_id, concept_name;
+"
+  
+  # Render and translate sql
+  cohortCovariateSql <- SqlRender::render(
+    sql,
+    cohortDatabaseSchema = cohortDatabaseSchema,
+    cdmDatabaseSchema = cdmDatabaseSchema,
+    cohortTable = cohortTable
+  ) %>%
+    SqlRender::translate(targetDialect = con@dbms)
+  
+  tb <- DatabaseConnector::querySql(connection = con, sql = cohortCovariateSql)
+  names(tb) <- tolower(names(tb))
+  
+  cohortManifest <- readr::read_csv(file = here::here("results", database, "01_buildCohorts", "cohortManifest.csv"), 
+                                    show_col_types = FALSE)
+  
+  tb <- tb %>%
+    dplyr::inner_join(cohortManifest, by = c("cohort_definition_id" = "id")) %>%
+    dplyr::rename(cohortId = cohort_definition_id,
+                  totalEntries = entries,
+                  totalSubjects = subjects) %>%
+    dplyr::select(nn, cohortId, concept_name, totalEntries, totalSubjects) %>%
+    dplyr::mutate(pct = nn/totalSubjects,
+                  database = database) 
+  
+  
+  verboseSave(
+    object = tb,
+    saveName = paste("catCov", type, sep = "_"),
+    saveLocation = outputFolder
+  )
+  
+  
+  invisible(cohortCovariateSql)
+}
+
+
+
+catCovPostMob <- function(con,
+                          cohortDatabaseSchema,
+                          cdmDatabaseSchema,
+                          cohortTable,
+                          database,
+                          type = "postMobility",
+                          outputFolder) {
+  
+  cli::cat_rule("Build Cohort Covariates: Post-op mobility")
+  
+  
+  # SQL code to get cohort covariates
+  sql <- "
+   -- Post-op mobility
+
+    with cts as (
+      select subject_id, cohort_start_date, cohort_end_date, procedure_date, cohort_definition_id, procedure_concept_id
+       ,row_number()over(partition by subject_id, cohort_definition_id order by procedure_date) as rnk
+      from @cohortDatabaseSchema.@cohortTable a
+      left join @cdmDatabaseSchema.procedure_occurrence b
+      on a.subject_id = b.person_id and a.cohort_start_date <= b.procedure_date
+      where b.procedure_concept_id in (4040076)
+    )
+    select 
+      count(subject_id) as nn, 
+      cohort_definition_id,
+      b.concept_id,
+      concept_name
+    from cts a
+    left join @cdmDatabaseSchema.CONCEPT b
+    on a.procedure_concept_id =  b.concept_id
+    where rnk=1
+    group by cohort_definition_id, b.concept_id, concept_name;
+"
+  
+  # Render and translate sql
+  cohortCovariateSql <- SqlRender::render(
+    sql,
+    cohortDatabaseSchema = cohortDatabaseSchema,
+    cdmDatabaseSchema = cdmDatabaseSchema,
+    cohortTable = cohortTable
+  ) %>%
+    SqlRender::translate(targetDialect = con@dbms)
+  
+  tb <- DatabaseConnector::querySql(connection = con, sql = cohortCovariateSql)
+  names(tb) <- tolower(names(tb))
+  
+  cohortManifest <- readr::read_csv(file = here::here("results", database, "01_buildCohorts", "cohortManifest.csv"), 
+                                    show_col_types = FALSE)
+  
+  tb <- tb %>%
+    dplyr::inner_join(cohortManifest, by = c("cohort_definition_id" = "id")) %>%
+    dplyr::rename(cohortId = cohort_definition_id,
+                  totalEntries = entries,
+                  totalSubjects = subjects) %>%
+    dplyr::select(nn, cohortId, concept_name, totalEntries, totalSubjects) %>%
+    dplyr::mutate(pct = nn/totalSubjects,
+                  database = database) 
+  
+  
+  verboseSave(
+    object = tb,
+    saveName = paste("catCov", type, sep = "_"),
+    saveLocation = outputFolder
+  )
+  
+  
+  invisible(cohortCovariateSql)
+}
+
+
+
+catCovDeath <- function(con,
+                        cohortDatabaseSchema,
+                        cdmDatabaseSchema,
+                        cohortTable,
+                        database,
+                        type = "death",
+                        outputFolder) {
+  
+  cli::cat_rule("Build Cohort Covariates: Death")
+  
+  
+  # SQL code to get cohort covariates
+  sql <- "
+   -- Death
+
+    with cts as (
+      select subject_id, cohort_start_date, cohort_end_date, death_date, cohort_definition_id, death_type_concept_id
+       ,row_number()over(partition by subject_id, cohort_definition_id order by death_date) as rnk
+      from @cohortDatabaseSchema.@cohortTable a
+      left join @cdmDatabaseSchema.death b
+      on a.subject_id = b.person_id and a.cohort_start_date <= b.death_date
+      where b.death_type_concept_id in (32817)
+    )
+    select 
+      count(subject_id) as nn, 
+      cohort_definition_id,
+      b.concept_id,
+      concept_name
+    from cts a
+    left join @cdmDatabaseSchema.CONCEPT b
+    on a.death_type_concept_id =  b.concept_id
+    where rnk=1
+    group by cohort_definition_id, b.concept_id, concept_name;
+"
+  
+  # Render and translate sql
+  cohortCovariateSql <- SqlRender::render(
+    sql,
+    cohortDatabaseSchema = cohortDatabaseSchema,
+    cdmDatabaseSchema = cdmDatabaseSchema,
+    cohortTable = cohortTable
+  ) %>%
+    SqlRender::translate(targetDialect = con@dbms)
+  
+  tb <- DatabaseConnector::querySql(connection = con, sql = cohortCovariateSql)
+  names(tb) <- tolower(names(tb))
+  
+  cohortManifest <- readr::read_csv(file = here::here("results", database, "01_buildCohorts", "cohortManifest.csv"), 
+                                    show_col_types = FALSE)
+  
+  tb <- tb %>%
+    dplyr::inner_join(cohortManifest, by = c("cohort_definition_id" = "id")) %>%
+    dplyr::rename(cohortId = cohort_definition_id,
+                  totalEntries = entries,
+                  totalSubjects = subjects) %>%
+    dplyr::select(nn, cohortId, concept_name, totalEntries, totalSubjects) %>%
+    dplyr::mutate(pct = nn/totalSubjects,
+                  database = database) 
+  
+  
+  verboseSave(
+    object = tb,
+    saveName = paste("catCov", type, sep = "_"),
+    saveLocation = outputFolder
+  )
+  
+  
+  invisible(cohortCovariateSql)
+}
+
+
+
+contCovTimeToSurgery <- function(con,
+                                 cohortDatabaseSchema,
+                                 cdmDatabaseSchema,
+                                 cohortTable,
+                                 database,
+                                 type = "timeToSurgery",
+                                 outputFolder) {
+  
+  cli::cat_rule("Build Cohort Covariates: Time to surgery")
+  
+  
+  # SQL code to get cohort covariates
+  sql <- "
+   -- Time to surgery
+
+     with cts as (
+        select subject_id, cohort_start_date, cohort_end_date, observation_date, cohort_definition_id, observation_concept_id, value_as_number
+         ,row_number()over(partition by subject_id, cohort_definition_id order by observation_date) as rnk
+        from @cohortDatabaseSchema.@cohortTable a
+        left join @cdmDatabaseSchema.observation b
+        on a.subject_id = b.person_id and a.cohort_start_date <= b.observation_date
+        where value_as_concept_id in (4078490)
+    )
+    select
+      count(subject_id) as nn,
+      avg(value_as_number) as meanValue,
+      --median(value_as_number) as medianValue,
+      min(value_as_number) as minValue,
+      max(value_as_number) as maxValue,
+      --percentile_cont(0.25) within group (order by value_as_number) over (partition by cohort_definition_id) as p25,
+      --percentile_cont(0.5) within group (order by value_as_number) over (partition by cohort_definition_id)  as medianValue,
+      --percentile_cont(0.75) within group (order by value_as_number) over (partition by cohort_definition_id)  as p75,
+      cohort_definition_id
+  from cts 
+  where rnk=1
+  group by cohort_definition_id;
+  "
+  
+  # Render and translate sql
+  cohortCovariateSql <- SqlRender::render(
+    sql,
+    cohortDatabaseSchema = cohortDatabaseSchema,
+    cdmDatabaseSchema = cdmDatabaseSchema,
+    cohortTable = cohortTable
+  ) %>%
+    SqlRender::translate(targetDialect = con@dbms)
+  
+  tb <- DatabaseConnector::querySql(connection = con, sql = cohortCovariateSql)
+  names(tb) <- tolower(names(tb))
+  
+  cohortManifest <- readr::read_csv(file = here::here("results", database, "01_buildCohorts", "cohortManifest.csv"), 
+                                    show_col_types = FALSE)
+  
+  tb <- tb %>%
+    dplyr::inner_join(cohortManifest, by = c("cohort_definition_id" = "id")) %>%
+    dplyr::rename(cohortId = cohort_definition_id,
+                  totalEntries = entries,
+                  totalSubjects = subjects) %>%
+    #dplyr::select(nn, cohortId, concept_name, totalEntries, totalSubjects, p25, p75, minValue, maxValue, meanValue, medianValue) %>%
+    dplyr::mutate(pct = nn/totalSubjects,
+                  database = database) 
+  
+  
+  verboseSave(
+    object = tb,
+    saveName = paste("contChar", type, sep = "_"),
+    saveLocation = outputFolder
+  )
+  
+  
+  invisible(cohortCovariateSql)
+}
+
+
+
+catCovSex <- function(con,
+                      cohortDatabaseSchema,
+                      cdmDatabaseSchema,
+                      cohortTable,
+                      database,
+                      type = "sex",
+                      outputFolder) {
+  
+  cli::cat_rule("Build Cohort Covariates: Sex")
+  
+  
+  # SQL code to get cohort covariates
+  sql <- "
+   -- Sex
+
+    with cts as (
+      select 
+        subject_id, 
+        cohort_start_date, 
+        cohort_end_date, 
+        cohort_definition_id, 
+        b.gender_concept_id
+      from @cohortDatabaseSchema.@cohortTable a
+      left join @cdmDatabaseSchema.person b
+      on a.subject_id = b.person_id 
+    )
+    select 
+      count(subject_id) as nn, 
+      cohort_definition_id,
+      b.concept_id,
+      concept_name
+    from cts a
+    left join @cdmDatabaseSchema.CONCEPT b
+    on a.gender_concept_id =  b.concept_id
+    group by cohort_definition_id, b.concept_id, concept_name;
+"
+  
+  # Render and translate sql
+  cohortCovariateSql <- SqlRender::render(
+    sql,
+    cohortDatabaseSchema = cohortDatabaseSchema,
+    cdmDatabaseSchema = cdmDatabaseSchema,
+    cohortTable = cohortTable
+  ) %>%
+    SqlRender::translate(targetDialect = con@dbms)
+  
+  tb <- DatabaseConnector::querySql(connection = con, sql = cohortCovariateSql)
+  names(tb) <- tolower(names(tb))
+  
+  cohortManifest <- readr::read_csv(file = here::here("results", database, "01_buildCohorts", "cohortManifest.csv"), 
+                                    show_col_types = FALSE)
+  
+  tb <- tb %>%
+    dplyr::inner_join(cohortManifest, by = c("cohort_definition_id" = "id")) %>%
+    dplyr::rename(cohortId = cohort_definition_id,
+                  totalEntries = entries,
+                  totalSubjects = subjects) %>%
+    dplyr::select(nn, cohortId, concept_name, totalEntries, totalSubjects) %>%
+    dplyr::mutate(pct = nn/totalSubjects,
+                  database = database) 
+  
+  
+  verboseSave(
+    object = tb,
+    saveName = paste("catCov", type, sep = "_"),
+    saveLocation = outputFolder
+  )
+  
+  
+  invisible(cohortCovariateSql)
+}
+
+
+
+contCovAge <- function(con,
+                       cohortDatabaseSchema,
+                       cdmDatabaseSchema,
+                       cohortTable,
+                       database,
+                       type = "age",
+                       outputFolder) {
+  
+  cli::cat_rule("Build Cohort Covariates: Age")
+  
+  
+  # SQL code to get cohort covariates
+  sql <- "
+   -- Age
+
+    with cts as (
+      select 
+        subject_id, 
+        cohort_start_date, 
+        cohort_end_date, 
+        cohort_definition_id, 
+        abs(YEAR(a.cohort_start_date) - b.year_of_birth) as age
+      from @cohortDatabaseSchema.@cohortTable a
+      left join @cdmDatabaseSchema.person b
+      on a.subject_id = b.person_id 
+    )
+    select
+      count(subject_id) as nn,
+      avg(age) as meanValue,
+      --median(age) as medianValue,
+      min(age) as minValue,
+      max(age) as maxValue,
+      --percentile_cont(0.25) within group (order by age) as p25,
+      --percentile_cont(0.75) within group (order by age) as p75,
+      cohort_definition_id
+    from cts
+    group by cohort_definition_id;
+  "
+  
+  # Render and translate sql
+  cohortCovariateSql <- SqlRender::render(
+    sql,
+    cohortDatabaseSchema = cohortDatabaseSchema,
+    cdmDatabaseSchema = cdmDatabaseSchema,
+    cohortTable = cohortTable
+  ) %>%
+    SqlRender::translate(targetDialect = con@dbms)
+  
+  tb <- DatabaseConnector::querySql(connection = con, sql = cohortCovariateSql)
+  names(tb) <- tolower(names(tb))
+  
+  cohortManifest <- readr::read_csv(file = here::here("results", database, "01_buildCohorts", "cohortManifest.csv"), 
+                                    show_col_types = FALSE)
+  
+  tb <- tb %>%
+    dplyr::inner_join(cohortManifest, by = c("cohort_definition_id" = "id")) %>%
+    dplyr::rename(cohortId = cohort_definition_id,
+                  totalEntries = entries,
+                  totalSubjects = subjects) %>%
+    #dplyr::select(nn, cohortId, concept_name, totalEntries, totalSubjects, p25, p75, minValue, maxValue, meanValue, medianValue) %>%
+    dplyr::mutate(pct = nn/totalSubjects,
+                  database = database) 
+  
+  
+  verboseSave(
+    object = tb,
+    saveName = paste("contChar", type, sep = "_"),
+    saveLocation = outputFolder
+  )
+  
+  
+  invisible(cohortCovariateSql)
+}

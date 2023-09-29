@@ -1,6 +1,7 @@
 # Project-specific files/folders
 misc/
 errorReportSql.txt
+results/
 
 # History files
 .Rhistory

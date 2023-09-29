@@ -1,9 +1,6 @@
 # A. Meta Info -----------------------
 
-# Task: Build Strata
-# Author: Martin Lavallee
-# Date: 2023-05-03
-# Description: The purpose of the _buildStrata.R script is to create stratas for the target cohorts
+# Task: Build stratas
 
 # B. Functions ------------------------
 
@@ -130,7 +127,8 @@ sexStrata <- function(con,
     ) t2;
 
   DELETE FROM @cohortDatabaseSchema.@cohortTable 
-  WHERE cohort_definition_id in (select cohort_definition_id from #sex where cohort_definition_id between 1000 and 44002);
+  --WHERE cohort_definition_id in (select cohort_definition_id from #sex where cohort_definition_id between 1000 and 44002);
+  WHERE cohort_definition_id between 1000 and 44002;
 
   INSERT INTO @cohortDatabaseSchema.@cohortTable (
         	cohort_definition_id,
@@ -146,7 +144,7 @@ sexStrata <- function(con,
   where sexStrata = 1;
   
   
-    INSERT INTO @cohortDatabaseSchema.@cohortTable (
+  INSERT INTO @cohortDatabaseSchema.@cohortTable (
         	cohort_definition_id,
         	subject_id,
         	cohort_start_date,
@@ -158,6 +156,19 @@ sexStrata <- function(con,
         	cohort_end_date 
   from #sex
   where sexStrata = 2;
+  
+  INSERT INTO @cohortDatabaseSchema.@cohortTable (
+        	cohort_definition_id,
+        	subject_id,
+        	cohort_start_date,
+        	cohort_end_date
+  )
+  select  cohort_definition_id * 1000 + 0 AS cohort_definition_id,
+        	subject_id,
+        	cohort_start_date,
+        	cohort_end_date 
+  from #sex
+  where sexStrata = 0;
 
   DROP TABLE #sex;
 "
@@ -212,13 +223,14 @@ cognStrata <- function(con,
         left join  @cdmDatabaseSchema.CONDITION_OCCURRENCE b
          on a.subject_id = b.person_id and a.cohort_start_date <= b.condition_start_date and b.condition_start_date <= a.cohort_end_date -- Change to '=' when testing in real data (start date)
         where cohort_definition_id IN (@targetId) and b.condition_concept_id in (42710016, 4182210, 443432) -- TO REMOVE: cohort_definition_id < 1000
-        order by subject_id, rnk, cohort_definition_id
+        --order by subject_id, rnk, cohort_definition_id
   )t1 
   WHERE rnk =1
     )t2;
 
   DELETE FROM @cohortDatabaseSchema.@cohortTable 
-  WHERE cohort_definition_id in (select cohort_definition_id from #concept where cohort_definition_id between 1000000 and 44000003);
+  --WHERE cohort_definition_id in (select cohort_definition_id from #concept where cohort_definition_id between 1000000 and 44000003);
+  WHERE cohort_definition_id between 1000000 and 44000003;
 
 
   -- CAT1: Dementia
@@ -417,6 +429,7 @@ buildStrata <- function(con,
   ## Get cohort ids
   #targetCohorts <- analysisSettings$strata$cohorts$targetCohort
   targetCohortsIds <- getCohortManifest() %>% dplyr::select(id)
+  targetCohortsIds <- targetCohortsIds[1,]
   
   
   # tb1 <- expand_grid(targetCohorts, demoStrata) %>%
@@ -441,28 +454,28 @@ buildStrata <- function(con,
   cli::cat_rule("Building Demographic Stratas")
   
   
-  ### Age ----------
-  purrrObj <- data.frame(ageMin = as.integer(c(0, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110)),
-                         ageMax = as.integer(c(59, 64, 69, 74, 79, 84, 89, 94, 99, 104, 109, 9999)),
-                         strataId = as.integer(c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)))
-  
-  inputDF <- tidyr::expand_grid(purrrObj, targetCohortsIds)
-  
-  #debug(ageStrata)
-  purrr::pwalk(inputDF,
-               ~ageStrata(con = con,
-                          cohortDatabaseSchema = workDatabaseSchema,
-                          cohortTable = cohortTable,
-                          cdmDatabaseSchema = cdmDatabaseSchema,
-                          targetId = ..4,
-                          strataId = ..3,
-                          ageMin = ..1,
-                          ageMax = ..2))
-  
-  cli::cat_bullet("Age strata written to table: ", paste0(workDatabaseSchema,".",cohortTable), bullet = "tick", bullet_col = "green")
-  
+  # ### Age ----------
+  # purrrObj <- data.frame(ageMin = as.integer(c(0, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110)),
+  #                        ageMax = as.integer(c(59, 64, 69, 74, 79, 84, 89, 94, 99, 104, 109, 9999)),
+  #                        strataId = as.integer(c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)))
+  # 
+  # inputDF <- tidyr::expand_grid(purrrObj, targetCohortsIds)
+  # 
+  # #debug(ageStrata)
+  # purrr::pwalk(inputDF,
+  #              ~ageStrata(con = con,
+  #                         cohortDatabaseSchema = workDatabaseSchema,
+  #                         cohortTable = cohortTable,
+  #                         cdmDatabaseSchema = cdmDatabaseSchema,
+  #                         targetId = ..4,
+  #                         strataId = ..3,
+  #                         ageMin = ..1,
+  #                         ageMax = ..2))
+  # 
+  # cli::cat_bullet("Age strata written to table: ", paste0(workDatabaseSchema,".",cohortTable), bullet = "tick", bullet_col = "green")
+
   ### Sex ----------
-  
+
   #debug(sexStrata)
   purrr::pwalk(targetCohortsIds,
                ~sexStrata(con = con,
@@ -470,7 +483,7 @@ buildStrata <- function(con,
                           cohortTable = cohortTable,
                           cdmDatabaseSchema = cdmDatabaseSchema,
                           targetId = ..1))
-  
+
   cli::cat_bullet("Sex strata written to table: ",  paste0(workDatabaseSchema,".",cohortTable), bullet = "tick", bullet_col = "green")
   
 

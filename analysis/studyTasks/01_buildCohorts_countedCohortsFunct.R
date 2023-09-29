@@ -1,6 +1,8 @@
 # A. Meta Info -----------------------
 
-# Task: Build Cohorts
+# Study: HIPSTER
+# Name: Build Cohorts
+# Date: 2023-09-14
 # Description: The purpose of this script is to build the cohorts needed for the HIPSTER study.
 
 # B. Dependencies ----------------------
@@ -17,16 +19,18 @@ source("analysis/private/_buildStrata.R")
 # C. Connection ----------------------
 
 # set connection Block
-configBlock <- "optum"
+configBlock <- "nhfd"
 
 # provide connection details
 connectionDetails <- DatabaseConnector::createConnectionDetails(
   dbms = config::get("dbms", config = configBlock),
+  #user = config::get("user", config = configBlock),
+  #password = config::get("password", config = configBlock),
   connectionString = config::get("connectionString", config = configBlock)
 )
 
 
-# connect to database
+#connect to database
 con <- DatabaseConnector::connect(connectionDetails)
 
 
@@ -44,21 +48,30 @@ outputFolder <- here::here("results") %>%
 ### Add study variables or load from settings
 cohortManifest <- getCohortManifest()
 
+### Analysis Settings
+#analysisSettings <- readSettingsFile(here::here("analysis/settings/strata.yml"))
 
 # E. Script --------------------
-#startSnowflakeSession(con, executionSettings)
 
 ### RUN ONCE - Initialize cohort tables #########
 
-#debug(dropCohortTables)
 #dropCohortTables(executionSettings = executionSettings, con = con)
 
 #debug(initializeCohortTables)
-initializeCohortTables(executionSettings = executionSettings, con = con)
+# initializeCohortTables(executionSettings = executionSettings, con = con)
+# 
+# 
+# # Generate cohorts
+# generatedCohorts <- generateCohorts(
+#   executionSettings = executionSettings,
+#   con = con,
+#   cohortManifest = cohortManifest,
+#   outputFolder = outputFolder
+# )
 
-
-# Generate cohorts
-generatedCohorts <- generateCohorts(
+# Count cohorts
+#debug(countCohorts)
+countedCohorts <- countCohorts(
   executionSettings = executionSettings,
   con = con,
   cohortManifest = cohortManifest,
@@ -72,4 +85,6 @@ generatedCohorts <- generateCohorts(
 buildStrata(con = con,
             executionSettings = executionSettings)
 
+# F. Session Info ------------------------
+#DatabaseConnector::disconnect(con)
 

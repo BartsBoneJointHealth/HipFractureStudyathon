@@ -1,13 +1,9 @@
 # A. Meta Info -----------------------
 
 # Task: Execution Settings
-# Author: Martin Lavallee
-# Date: 2023-04-12
-# Description: The purpose of the _executionSettings.R script is to
-# set the execution settings and initialize cohorts
 
 # B. Functions ------------------------
-#
+`%notin%` <- Negate("%in%")
 
 getCohortManifest <- function(inputPath = here::here("cohortsToCreate")) {
 

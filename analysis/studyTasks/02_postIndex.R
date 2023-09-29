@@ -1,8 +1,7 @@
 # A. Meta Info -----------------------
 
-# Task: Post Index Characteristics
-# Date: 2023-05-03
-
+# Task: Post-Index Characteristics
+# Description: The purpose of this script is to 
 
 # B. Dependencies ----------------------
 
@@ -16,13 +15,11 @@ source("analysis/private/_postIndexCharacteristics.R")
 # C. Connection ----------------------
 
 # set connection Block
-configBlock <- "optum"
+configBlock <- "nhfd"
 
 # provide connection details
 connectionDetails <- DatabaseConnector::createConnectionDetails(
   dbms = config::get("dbms", config = configBlock),
-  user = config::get("user", config = configBlock),
-  password = config::get("password", config = configBlock),
   connectionString = config::get("connectionString", config = configBlock)
 )
 
@@ -37,8 +34,9 @@ executionSettings <- config::get(config = configBlock) %>%
 
 
 # E. Script --------------------
-#######if BAYER uncomment this line#################
-startSnowflakeSession(con, executionSettings)
+
+#startSnowflakeSession(con, executionSettings)
+
 
 ## Get Baseline Covariates
 
