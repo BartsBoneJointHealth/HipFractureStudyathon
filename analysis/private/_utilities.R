@@ -101,3 +101,29 @@ verboseSave <- function(object, saveName, saveLocation) {
   cli::cat_line()
   invisible(savePath)
 }
+
+
+bindFiles2 <- function(inputPath,
+                       outputPath,
+                       databaseName = NULL,
+                       filename = NULL)  {
+  
+  
+  ## List all csv files in folder
+  filepath <- list.files(inputPath, full.names = TRUE, pattern = ".csv", recursive = TRUE)
+  
+  ## Read all files and save in list
+  listed_files <- lapply(filepath, readr::read_csv, show_col_types = FALSE)
+  
+  ## Created binded data frame with all data frames of list
+  binded_df <- dplyr::bind_rows(listed_files)
+  
+  ## Save output
+  readr::write_csv(
+    x = binded_df,
+    file = file.path(outputPath, paste0(filename, "_", databaseName, ".csv")),
+    append = FALSE
+  )
+  
+}
+
