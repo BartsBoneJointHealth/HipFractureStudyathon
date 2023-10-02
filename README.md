@@ -1,5 +1,6 @@
 # HIPSTER: Hip fracture Information Profiling, Surveillance and Treatment across Epidemiological Registries
 FFN Studyathon 2023
+
 <img src="https://img.shields.io/badge/Study%20Status-Started-blue.svg"/>
 
 -   Analytics use case(s): **Characterization**
@@ -17,9 +18,9 @@ The primary objective of thE study is to describe the baseline demographic and c
 
 # Databases
 
-| Database                              | Country | Institution               |
-|--------------------------------|------------------|----------------------|
-| NHFD (National Hip Fracture Database) | England + Wales     | Barts Joint & Bone Health |
+| Database                              | Country |
+|--------------------------------|------------------|
+| NHFD (National Hip Fracture Database) | England + Wales     | 
 
 # Requirements
 
