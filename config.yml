@@ -1,0 +1,17 @@
+# Config File for HipFractureStudyathon
+
+default:
+  projectName: HipFractureStudyathon
+
+# Config block for nhfd
+
+nhfd:
+  databaseName: nhfd
+  cohortTable: HipFractureStudyathon_nhfd
+  dbms: !expr keyring::key_get('nhfd_dbms', keyring = 'HipFractureStudyathon')
+  user: !expr keyring::key_get('nhfd_user', keyring = 'HipFractureStudyathon')
+  password: !expr keyring::key_get('nhfd_password', keyring = 'HipFractureStudyathon')
+  connectionString: !expr keyring::key_get('nhfd_connectionString', keyring = 'HipFractureStudyathon')
+  cdmDatabaseSchema: !expr keyring::key_get('nhfd_cdmDatabaseSchema', keyring = 'HipFractureStudyathon')
+  vocabDatabaseSchema: !expr keyring::key_get('nhfd_vocabDatabaseSchema', keyring = 'HipFractureStudyathon')
+  workDatabaseSchema: !expr keyring::key_get('nhfd_workDatabaseSchema', keyring = 'HipFractureStudyathon')
