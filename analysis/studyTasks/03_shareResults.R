@@ -27,11 +27,12 @@ bindFilesCat(outputPath = here::here("report"),
 
 #debug(bindFilesCont)
 bindFilesCont(outputPath = here::here("report"),
-             database = configBlock,
-             filename = "contChar")
+              database = configBlock,
+              filename = "contChar")
 
 
 allCohorts <- readr::read_csv(here::here("results/nhfd/02_buildStrata/allCohorts.csv"),
                               show_col_types = FALSE)
+
 
 

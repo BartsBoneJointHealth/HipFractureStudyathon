@@ -18,7 +18,7 @@ The primary objective of thE study is to describe the baseline demographic and c
 # Databases
 
 | Database                              | Country | Institution               |
-|----------------------------------|----------------|-----------------------|
+|--------------------------------|------------------|----------------------|
 | NHFD (National Hip Fracture Database) | UK      | Barts Joint & Bone Health |
 
 # Requirements
@@ -32,7 +32,7 @@ The primary objective of thE study is to describe the baseline demographic and c
 
 # Study Documentation
 
--   How to Run
+-   [**How to Run**](https://github.com/BartsBoneJointHealth/HipFractureStudyathon/blob/main/documentation/HowToRun.md)
 -   Share Results
 
 # Development
