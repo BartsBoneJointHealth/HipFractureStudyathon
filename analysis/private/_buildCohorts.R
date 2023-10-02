@@ -21,7 +21,6 @@ initializeCohortTables <- function(executionSettings, con) {
                                       cohortTableNames = cohortTableNames,
                                       incremental = TRUE)
   invisible(cohortTableNames)
-
 }
 
 
@@ -38,8 +37,8 @@ prepManifestForCohortGenerator <- function(cohortManifest) {
     cohortsToCreate$json,
     ~CirceR::buildCohortQuery(CirceR::cohortExpressionFromJson(.x),
                               CirceR::createGenerateOptions(generateStats = TRUE)))
+  
   return(cohortsToCreate)
-
 }
 
 

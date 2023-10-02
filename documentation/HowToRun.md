@@ -1,4 +1,4 @@
-# How to Run Ehden HMB
+# How to Run Hip Fracture study
 
 ## Table of Contents
 
@@ -9,11 +9,9 @@
 
 ## 1. Technical Requirements
 
-To run this study you must setup the [HADES environment](https://ohdsi.github.io/Hades/rSetup.html).
+To run this study you must setup the following software: 
 
-You also need to install the following software:
-
--   [R](https://cloud.r-project.org/) (version 4.1 or greater)
+-   [R](https://cloud.r-project.org/) (version 4.2.3 or greater)
 -   [R Studio](https://posit.co/download/rstudio-desktop/)
 -   On Windows: [RTools](https://cran.r-project.org/bin/windows/Rtools/)
 -   [Java](https://www.java.com/en/)
@@ -21,25 +19,25 @@ You also need to install the following software:
 You also require your site data to be mapped to the [OMOP CDM](https://ohdsi.github.io/CommonDataModel/) and administered on one of the following supported database platforms:
 
 -   Microsoft SQL Server
--   Microsoft Parallel Data Warehouse
 -   Oracle
 -   PostgreSQL
 -   Google BigQuery
 -   Amazon RedShift
 -   Snowflake
--   Apache Hive
--   Apache Spark
--   Apache Impala
+-   DuckDb
+-   SQLite
+-   DatBricks
 
-## 2. Setup the Ehden Hmb study locally
+
+## 2. Setup the Hip Fracture study locally
 
 ### Get Study Package
 
-1)  Go to URL: <https://github.com/OdyOSG/ehden_hmb>
+1)  Go to URL: <https://github.com/BartsBoneJointHealth/HipFractureStudyathon>
 2)  Select the green code button named `Code`, revealing a dropdown menu
 3)  Select `Download Zip`
 4)  Unzip the folder in a location on your local computer that is easily accessible by R Studio
-5)  Open the unzipped folder and click on the `ehden_hmb.Rproj` file to open the study package in R Studio
+5)  Open the unzipped folder and click on the `HipFractureStudyathon.Rproj` file to open the study package in R Studio
 
 ### Setup `renv`
 
@@ -79,7 +77,7 @@ If you don't know what your credentials are please contact your database adminis
 
 **1. Load Dependencies**
 
-Run section `A) Dependencies` to load the packages. If they are not already installed install them using `install.packages` for CRAN packages or using the installation directions for the `Ulysses` package provided in section `Final Steps` above.
+Run section `A. Dependencies` to load the packages. If they are not already installed install them using `install.packages` for CRAN packages or using the installation directions for the `Ulysses` package provided in section `Final Steps` above.
 
 
 **2. Assign Variables**

@@ -48,6 +48,7 @@ cohortManifest <- getCohortManifest()
 initializeCohortTables(executionSettings = executionSettings, con = con)
 
 # Generate cohorts
+debug(generateCohorts)
 generatedCohorts <- generateCohorts(
   executionSettings = executionSettings,
   con = con,
