@@ -163,8 +163,7 @@ bindFilesCont <- function(outputPath,
                            maxvalue = "d",
                            cohortId = "d",
                            totalSubjects = "d",
-                           totalEntries = "d",
-                           pct = "d"
+                           totalEntries = "d"
                          )
   )
   

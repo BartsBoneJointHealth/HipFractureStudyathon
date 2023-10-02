@@ -1,5 +1,0 @@
-nn,meanvalue,minvalue,maxvalue,cohortId,name,type,totalEntries,totalSubjects,file,pct,database
-572041,32.64642687310312,0,6703,1,c1,target,581222,581222,C:/Users/argyri01/Documents/R/HipFractureStudyathon/cohortsToCreate/01_target/c1.json,0.9842039702557714,nhfd
-449679,31.610791467708108,0,6703,2,c2,target,449691,449691,C:/Users/argyri01/Documents/R/HipFractureStudyathon/cohortsToCreate/01_target/c2.json,0.9999733150096399,nhfd
-449679,31.610840396501146,0,6703,3,c3,target,473298,449691,C:/Users/argyri01/Documents/R/HipFractureStudyathon/cohortsToCreate/01_target/c3.json,0.9999733150096399,nhfd
-339746,33.750005887131906,0,4059,4,c4,target,349064,349064,C:/Users/argyri01/Documents/R/HipFractureStudyathon/cohortsToCreate/01_target/c4.json,0.9733057548186006,nhfd

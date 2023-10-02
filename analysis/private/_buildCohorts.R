@@ -24,6 +24,7 @@ initializeCohortTables <- function(executionSettings, con) {
 
 }
 
+
 prepManifestForCohortGenerator <- function(cohortManifest) {
 
   cohortsToCreate <- cohortManifest %>%
@@ -49,10 +50,8 @@ generateCohorts <- function(executionSettings,
                             type = "analysis") {
 
 
-  # prep cohorts for generator
+  # Prepare cohorts for Cohort Generator
   cohortsToCreate <- prepManifestForCohortGenerator(cohortManifest)
-
-  #path for incremental
   incrementalFolder <- fs::path(outputFolder)
 
 
@@ -65,7 +64,7 @@ generateCohorts <- function(executionSettings,
                            cohortSummaryStatsTable = paste0(name, "_summary_stats"),
                            cohortCensorStatsTable = paste0(name, "_censor_stats"))
 
-  #generate cohorts
+  # Generate cohorts
   CohortGenerator::generateCohortSet(
     connection = con,
     cdmDatabaseSchema = executionSettings$cdmDatabaseSchema,
@@ -76,7 +75,7 @@ generateCohorts <- function(executionSettings,
     incrementalFolder = incrementalFolder
   )
 
-  #get cohort counts
+  # Get cohort counts
   cohortCounts <- CohortGenerator::getCohortCounts(
     connection = con,
     cohortDatabaseSchema = executionSettings$workDatabaseSchema,
@@ -85,7 +84,7 @@ generateCohorts <- function(executionSettings,
   ) %>%
     dplyr::select(cohortId, cohortName, cohortEntries, cohortSubjects)
 
-  # save generated cohorts
+  # Save cohort counts
   tb <- cohortManifest %>%
     dplyr::left_join(cohortCounts %>%
                        dplyr::select(cohortId, cohortEntries, cohortSubjects),
@@ -103,7 +102,6 @@ generateCohorts <- function(executionSettings,
                   bullet = "tick", bullet_col = "green")
 
   return(cohortCounts)
-
 }
 
 
@@ -180,5 +178,5 @@ countCohorts <- function(executionSettings,
   cli::cat_bullet("Saving Generated Cohorts to ", crayon::cyan(savePath), bullet = "tick", bullet_col = "green")
   
   return(cohortCountsF)
-  
 }
+

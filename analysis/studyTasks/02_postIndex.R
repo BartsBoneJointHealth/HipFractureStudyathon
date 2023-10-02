@@ -2,6 +2,7 @@
 
 # Task: Post-Index Characteristics
 
+
 # B. Dependencies ----------------------
 
 library(tidyverse, quietly = TRUE)
@@ -13,21 +14,22 @@ source("analysis/private/_postIndexCharacteristics.R")
 
 # C. Connection ----------------------
 
-# set connection Block
+# Set database block
 configBlock <- "nhfd"
 
-# provide connection details
+# Provide connection details
 connectionDetails <- DatabaseConnector::createConnectionDetails(
   dbms = config::get("dbms", config = configBlock),
   connectionString = config::get("connectionString", config = configBlock)
 )
 
-
-#connect to database
+# Connect to database
 con <- DatabaseConnector::connect(connectionDetails)
 
+
 # D. Variables -----------------------
-### Administrative Variables
+
+# Administrative Variables
 executionSettings <- config::get(config = configBlock) %>%
   purrr::discard_at(c("dbms", "user", "password", "connectionString"))
 
@@ -39,17 +41,19 @@ executePostIndex(con = con,
                  executionSettings = executionSettings)
 
 
-# debug(bindFilesCat)
-# bindFilesCat(outputPath = here::here("report"),
-#              database = configBlock,
-#              filename = "catCov")
-# 
-# 
-# debug(bindFilesCont)
-# bindFilesCont(outputPath = here::here("report"),
-#              database = configBlock,
-#              filename = "contChar")
+#debug(bindFilesCat)
+bindFilesCat(outputPath = here::here("report"),
+             database = configBlock,
+             filename = "catCov")
+
+
+#debug(bindFilesCont)
+bindFilesCont(outputPath = here::here("report"),
+             database = configBlock,
+             filename = "contChar")
 
 
 # F. Disconnect from server --------------------
+
 DatabaseConnector::disconnect(con)
+

@@ -8,7 +8,6 @@
 library(tidyverse, quietly = TRUE)
 library(DatabaseConnector)
 library(config)
-
 source("analysis/private/_utilities.R")
 source("analysis/private/_buildCohorts.R")
 source("analysis/private/_buildStrata.R")
@@ -16,23 +15,22 @@ source("analysis/private/_buildStrata.R")
 
 # C. Connection ----------------------
 
-# set connection Block
+# Set database block
 configBlock <- "nhfd"
 
-# provide connection details
+# Provide connection details
 connectionDetails <- DatabaseConnector::createConnectionDetails(
   dbms = config::get("dbms", config = configBlock),
   connectionString = config::get("connectionString", config = configBlock)
 )
 
-
-# connect to database
+# Connect to database
 con <- DatabaseConnector::connect(connectionDetails)
 
 
 # D. Study Variables -----------------------
 
-### Administrative Variables
+# Administrative Variables
 executionSettings <- config::get(config = configBlock) %>%
   purrr::discard_at(c("dbms", "user", "password", "connectionString"))
 
@@ -40,21 +38,14 @@ outputFolder <- here::here("results") %>%
   fs::path(executionSettings$databaseName, "01_buildCohorts") %>%
   fs::dir_create()
 
-
-### Add study variables or load from settings
+# Add study variables
 cohortManifest <- getCohortManifest()
 
 
 # E. Script --------------------
 
-### RUN ONCE - Initialize cohort tables #########
-
-#debug(dropCohortTables)
-dropCohortTables(executionSettings = executionSettings, con = con)
-
-#debug(initializeCohortTables)
+### RUN ONCE - Initialize cohort tables ###
 initializeCohortTables(executionSettings = executionSettings, con = con)
-
 
 # Generate cohorts
 generatedCohorts <- generateCohorts(
@@ -65,12 +56,7 @@ generatedCohorts <- generateCohorts(
 )
 
 
-# Build stratas
-
-debug(buildStrata)
-buildStrata(con = con,
-            executionSettings = executionSettings)
-
-
 # F. Disconnect from server --------------------
+
 DatabaseConnector::disconnect(con)
+

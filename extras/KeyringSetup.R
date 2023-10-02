@@ -1,10 +1,9 @@
-# Setup Credentials ------------
-# This file setups the credential library for the study. The function establishes
-# a config.yml file and creates a keyring for the study. To add your credentials
-# into the keyring keep your database credentials handy before running this script.
+## Setup Credentials ------------
+# This file setups the credential library for the study. The function establishes a config.yml file and creates a keyring for the study. 
+# To add your credentials into the keyring keep your database credentials handy before running this script.
 # Ask your database administrator if you are unsure of your credentials.
 
-## A) Dependencies ------------
+## A. Dependencies ------------
 
 library(tidyverse, quietly = TRUE)
 library(Ulysses)
@@ -12,7 +11,7 @@ library(keyring)
 source("analysis/private/_keyring.R")
 
 
-## B) Set Parameters ------------
+## B. Set Parameters ------------
 
 configBlock <- "optum"           # Name of config block
 
@@ -23,24 +22,23 @@ keyringName <- getKeyringName()    # Name of keyring
 keyringPassword <- "ohdsi"    # Password for keyring
 
 
-## C) Set config.yml ------------
+## C. Set config.yml file ------------
 
 checkConfig() # Check if config.yml file exists
 
 Ulysses::addConfig(block = configBlock, database = database)
 #Ulysses::makeConfig(block = configBlock, database = database)
 
-## D) Setup Keyring ------------
+## D. Setup Keyring ------------
 
 checkKeyring(keyringName = keyringName, keyringPassword = keyringPassword) # Create the keyring for the study
 
 
-## E) Set Credentials ------------
+## E. Set Credentials ------------
 
 creds <- c(
   "dbms",                # The database dialect. Run ?DatabaseConnector::createConnectionDetails and scroll down to the 'Arguments' section to find the correct variable name for the dialect
   "user",                # The user's username for the database
-  "role",
   "password",            # The user's password for the database
   "connectionString",    # The connection string to access the database
   "cdmDatabaseSchema",   # The database + schema (or just schema) hosting OMOP CDM data
@@ -51,7 +49,7 @@ creds <- c(
 setCreds(creds = creds, configBlock = configBlock, keyringName = keyringName)
 
 
-## F) Check credentials ------------
+## F. Check credentials ------------
 
 checkCreds(creds = creds, configBlock = configBlock, keyringName = keyringName) # Review that credentials are correct
 
@@ -61,7 +59,7 @@ checkCreds(creds = creds, configBlock = configBlock, keyringName = keyringName) 
 testCreds(configBlock = configBlock) # Test access to keyring
 
 
-## G) Session Info ------------
+## G. Session Info ------------
 
 sessioninfo::session_info()
 rm(list=ls())
