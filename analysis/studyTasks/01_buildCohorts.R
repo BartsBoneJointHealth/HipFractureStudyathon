@@ -45,10 +45,9 @@ cohortManifest <- getCohortManifest()
 # E. Script --------------------
 
 ### RUN ONCE - Initialize cohort tables ###
-initializeCohortTables(executionSettings = executionSettings, con = con)
+#initializeCohortTables(executionSettings = executionSettings, con = con)
 
 # Generate cohorts
-debug(generateCohorts)
 generatedCohorts <- generateCohorts(
   executionSettings = executionSettings,
   con = con,

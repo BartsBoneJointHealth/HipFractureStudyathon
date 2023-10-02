@@ -27,97 +27,90 @@ executePostIndex<- function(con,
   
   tik <- Sys.time()
   
-  catCovFra(con = con,
-            cohortDatabaseSchema = workDatabaseSchema,
-            cdmDatabaseSchema = cdmDatabaseSchema,
-            cohortTable = cohortTable,
-            database = databaseId,
-            outputFolder = outputFolder)
-
-  catCovCogn(con = con,
-             cohortDatabaseSchema = workDatabaseSchema,
-             cdmDatabaseSchema = cdmDatabaseSchema,
-             cohortTable = cohortTable,
-             database = databaseId,
-             outputFolder = outputFolder)
-
-  catCovMob(con = con,
-            cohortDatabaseSchema = workDatabaseSchema,
-            cdmDatabaseSchema = cdmDatabaseSchema,
-            cohortTable = cohortTable,
-            database = databaseId,
-            outputFolder = outputFolder)
-
-  catCovPathFra(con = con,
-                cohortDatabaseSchema = workDatabaseSchema,
-                cdmDatabaseSchema = cdmDatabaseSchema,
-                cohortTable = cohortTable,
-                database = databaseId,
-                outputFolder = outputFolder)
-
-  catCovAna(con = con,
-            cohortDatabaseSchema = workDatabaseSchema,
-            cdmDatabaseSchema = cdmDatabaseSchema,
-            cohortTable = cohortTable,
-            database = databaseId,
-            outputFolder = outputFolder)
-
-  catCovRes(con = con,
-            cohortDatabaseSchema = workDatabaseSchema,
-            cdmDatabaseSchema = cdmDatabaseSchema,
-            cohortTable = cohortTable,
-            database = databaseId,
-            outputFolder = outputFolder)
-
-  catCovASA(con = con,
-            cohortDatabaseSchema = workDatabaseSchema,
-            cdmDatabaseSchema = cdmDatabaseSchema,
-            cohortTable = cohortTable,
-            database = databaseId,
-            outputFolder = outputFolder)
-  
-
-  tok <- Sys.time()
-  cli::cat_bullet("Execution Completed at: ", crayon::red(tok),
-                  bullet = "info", bullet_col = "blue")
-  tdif <- tok - tik
-  tok_format <- paste(scales::label_number(0.01)(as.numeric(tdif)), attr(tdif, "units"))
-  cli::cat_bullet("Execution took: ", crayon::red(tok_format),
-                  bullet = "info", bullet_col = "blue")
-  
-  
-  cli::cat_boxx("Building Post-Index Covariates (any time after and on index date)")
-  cli::cat_line()
-  
-  tik <- Sys.time()
-  
-  catCovBoneMed(con = con,
-                cohortDatabaseSchema = workDatabaseSchema,
-                cdmDatabaseSchema = cdmDatabaseSchema,
-                cohortTable = cohortTable,
-                database = databaseId,
-                outputFolder = outputFolder)
-
-  contCovTimeToSurgery(con = con,
-                       cohortDatabaseSchema = workDatabaseSchema,
-                       cdmDatabaseSchema = cdmDatabaseSchema,
-                       cohortTable = cohortTable,
-                       database = databaseId,
-                       outputFolder = outputFolder)
-
-  catCovDeath(con = con,
-              cohortDatabaseSchema = workDatabaseSchema,
-              cdmDatabaseSchema = cdmDatabaseSchema,
-              cohortTable = cohortTable,
-              database = databaseId,
-              outputFolder = outputFolder)
-
-  catCovSex(con = con,
-            cohortDatabaseSchema = workDatabaseSchema,
-            cdmDatabaseSchema = cdmDatabaseSchema,
-            cohortTable = cohortTable,
-            database = databaseId,
-            outputFolder = outputFolder)
+  # catCovFra(con = con,
+  #           cohortDatabaseSchema = workDatabaseSchema,
+  #           cdmDatabaseSchema = cdmDatabaseSchema,
+  #           cohortTable = cohortTable,
+  #           database = databaseId,
+  #           outputFolder = outputFolder)
+  # 
+  # catCovCogn(con = con,
+  #            cohortDatabaseSchema = workDatabaseSchema,
+  #            cdmDatabaseSchema = cdmDatabaseSchema,
+  #            cohortTable = cohortTable,
+  #            database = databaseId,
+  #            outputFolder = outputFolder)
+  # 
+  # catCovMob(con = con,
+  #           cohortDatabaseSchema = workDatabaseSchema,
+  #           cdmDatabaseSchema = cdmDatabaseSchema,
+  #           cohortTable = cohortTable,
+  #           database = databaseId,
+  #           outputFolder = outputFolder)
+  # 
+  # catCovPathFra(con = con,
+  #               cohortDatabaseSchema = workDatabaseSchema,
+  #               cdmDatabaseSchema = cdmDatabaseSchema,
+  #               cohortTable = cohortTable,
+  #               database = databaseId,
+  #               outputFolder = outputFolder)
+  # 
+  # catCovAna(con = con,
+  #           cohortDatabaseSchema = workDatabaseSchema,
+  #           cdmDatabaseSchema = cdmDatabaseSchema,
+  #           cohortTable = cohortTable,
+  #           database = databaseId,
+  #           outputFolder = outputFolder)
+  # 
+  # catCovRes(con = con,
+  #           cohortDatabaseSchema = workDatabaseSchema,
+  #           cdmDatabaseSchema = cdmDatabaseSchema,
+  #           cohortTable = cohortTable,
+  #           database = databaseId,
+  #           outputFolder = outputFolder)
+  # 
+  # catCovASA(con = con,
+  #           cohortDatabaseSchema = workDatabaseSchema,
+  #           cdmDatabaseSchema = cdmDatabaseSchema,
+  #           cohortTable = cohortTable,
+  #           database = databaseId,
+  #           outputFolder = outputFolder)
+  # 
+  # 
+  # tok <- Sys.time()
+  # cli::cat_bullet("Execution Completed at: ", crayon::red(tok),
+  #                 bullet = "info", bullet_col = "blue")
+  # tdif <- tok - tik
+  # tok_format <- paste(scales::label_number(0.01)(as.numeric(tdif)), attr(tdif, "units"))
+  # cli::cat_bullet("Execution took: ", crayon::red(tok_format),
+  #                 bullet = "info", bullet_col = "blue")
+  # 
+  # 
+  # cli::cat_boxx("Building Post-Index Covariates (any time after and on index date)")
+  # cli::cat_line()
+  # 
+  # tik <- Sys.time()
+  # 
+  # catCovBoneMed(con = con,
+  #               cohortDatabaseSchema = workDatabaseSchema,
+  #               cdmDatabaseSchema = cdmDatabaseSchema,
+  #               cohortTable = cohortTable,
+  #               database = databaseId,
+  #               outputFolder = outputFolder)
+  # 
+  # catCovDeath(con = con,
+  #             cohortDatabaseSchema = workDatabaseSchema,
+  #             cdmDatabaseSchema = cdmDatabaseSchema,
+  #             cohortTable = cohortTable,
+  #             database = databaseId,
+  #             outputFolder = outputFolder)
+  # 
+  # catCovSex(con = con,
+  #           cohortDatabaseSchema = workDatabaseSchema,
+  #           cdmDatabaseSchema = cdmDatabaseSchema,
+  #           cohortTable = cohortTable,
+  #           database = databaseId,
+  #           outputFolder = outputFolder)
 
   contCovAge(con = con,
              cohortDatabaseSchema = workDatabaseSchema,
@@ -126,6 +119,13 @@ executePostIndex<- function(con,
              database = databaseId,
              outputFolder = outputFolder)
   
+  contCovTimeToSurgery(con = con,
+                       cohortDatabaseSchema = workDatabaseSchema,
+                       cdmDatabaseSchema = cdmDatabaseSchema,
+                       cohortTable = cohortTable,
+                       database = databaseId,
+                       outputFolder = outputFolder)
+  
   
   tok <- Sys.time()
   cli::cat_bullet("Execution Completed at: ", crayon::red(tok),
@@ -134,7 +134,6 @@ executePostIndex<- function(con,
   tok_format <- paste(scales::label_number(0.01)(as.numeric(tdif)), attr(tdif, "units"))
   cli::cat_bullet("Execution took: ", crayon::red(tok_format),
                   bullet = "info", bullet_col = "blue")
-  
   
   invisible(tok)
 }
@@ -188,26 +187,25 @@ catCovFra <- function(con,
   tb <- DatabaseConnector::querySql(connection = con, sql = cohortCovariateSql)
   names(tb) <- tolower(names(tb))
   
-  cohortManifest <- readr::read_csv(file = here::here("results", database, "01_buildCohorts", "cohortManifest.csv"), 
+  cohortManifest <- readr::read_csv(file = here::here("results", database, "02_buildStrata", "allCohorts.csv"), 
                                     show_col_types = FALSE)
   
-  tb <- tb %>%
-    dplyr::inner_join(cohortManifest, by = c("cohort_definition_id" = "id")) %>%
+  tbF <- tb %>%
+    dplyr::left_join(cohortManifest, by = c("cohort_definition_id" = "cohortId")) %>%
     dplyr::rename(cohortId = cohort_definition_id,
-                  totalEntries = entries,
-                  totalSubjects = subjects) %>%
-    dplyr::select(nn, cohortId, concept_name, totalEntries, totalSubjects) %>%
-    dplyr::mutate(pct = nn/totalSubjects,
-                  database = database)
-
+                  conceptName = concept_name,
+                  totalEntries = cohortEntries,
+                  totalSubjects = cohortSubjects) %>%
+    dplyr::select(nn, cohortId, conceptName, totalEntries, totalSubjects) %>%
+    dplyr::mutate(pct = nn/totalSubjects)
   
   verboseSave(
-    object = tb,
+    object = tbF,
     saveName = paste("catCov", type, sep = "_"),
     saveLocation = outputFolder
   )
   
-  
+
   invisible(cohortCovariateSql)
 }
 
@@ -260,21 +258,20 @@ catCovCogn <- function(con,
   tb <- DatabaseConnector::querySql(connection = con, sql = cohortCovariateSql)
   names(tb) <- tolower(names(tb))
   
-  cohortManifest <- readr::read_csv(file = here::here("results", database, "01_buildCohorts", "cohortManifest.csv"), 
+  cohortManifest <- readr::read_csv(file = here::here("results", database, "02_buildStrata", "allCohorts.csv"), 
                                     show_col_types = FALSE)
   
-  tb <- tb %>%
-    dplyr::inner_join(cohortManifest, by = c("cohort_definition_id" = "id")) %>%
+  tbF <- tb %>%
+    dplyr::left_join(cohortManifest, by = c("cohort_definition_id" = "cohortId")) %>%
     dplyr::rename(cohortId = cohort_definition_id,
-                  totalEntries = entries,
-                  totalSubjects = subjects) %>%
-    dplyr::select(nn, cohortId, concept_name, totalEntries, totalSubjects) %>%
-    dplyr::mutate(pct = nn/totalSubjects,
-                  database = database)
-  
+                  conceptName = concept_name,
+                  totalEntries = cohortEntries,
+                  totalSubjects = cohortSubjects) %>%
+    dplyr::select(nn, cohortId, conceptName, totalEntries, totalSubjects) %>%
+    dplyr::mutate(pct = nn/totalSubjects)
   
   verboseSave(
-    object = tb,
+    object = tbF,
     saveName = paste("catCov", type, sep = "_"),
     saveLocation = outputFolder
   )
@@ -332,21 +329,20 @@ catCovMob <- function(con,
   tb <- DatabaseConnector::querySql(connection = con, sql = cohortCovariateSql)
   names(tb) <- tolower(names(tb))
   
-  cohortManifest <- readr::read_csv(file = here::here("results", database, "01_buildCohorts", "cohortManifest.csv"), 
+  cohortManifest <- readr::read_csv(file = here::here("results", database, "02_buildStrata", "allCohorts.csv"), 
                                     show_col_types = FALSE)
   
-  tb <- tb %>%
-    dplyr::inner_join(cohortManifest, by = c("cohort_definition_id" = "id")) %>%
+  tbF <- tb %>%
+    dplyr::left_join(cohortManifest, by = c("cohort_definition_id" = "cohortId")) %>%
     dplyr::rename(cohortId = cohort_definition_id,
-                  totalEntries = entries,
-                  totalSubjects = subjects) %>%
-    dplyr::select(nn, cohortId, concept_name, totalEntries, totalSubjects) %>%
-    dplyr::mutate(pct = nn/totalSubjects,
-                  database = database)
-  
+                  conceptName = concept_name,
+                  totalEntries = cohortEntries,
+                  totalSubjects = cohortSubjects) %>%
+    dplyr::select(nn, cohortId, conceptName, totalEntries, totalSubjects) %>%
+    dplyr::mutate(pct = nn/totalSubjects)
   
   verboseSave(
-    object = tb,
+    object = tbF,
     saveName = paste("catCov", type, sep = "_"),
     saveLocation = outputFolder
   )
@@ -404,21 +400,20 @@ catCovPathFra <- function(con,
   tb <- DatabaseConnector::querySql(connection = con, sql = cohortCovariateSql)
   names(tb) <- tolower(names(tb))
   
-  cohortManifest <- readr::read_csv(file = here::here("results", database, "01_buildCohorts", "cohortManifest.csv"), 
+  cohortManifest <- readr::read_csv(file = here::here("results", database, "02_buildStrata", "allCohorts.csv"), 
                                     show_col_types = FALSE)
   
-  tb <- tb %>%
-    dplyr::inner_join(cohortManifest, by = c("cohort_definition_id" = "id")) %>%
+  tbF <- tb %>%
+    dplyr::left_join(cohortManifest, by = c("cohort_definition_id" = "cohortId")) %>%
     dplyr::rename(cohortId = cohort_definition_id,
-                  totalEntries = entries,
-                  totalSubjects = subjects) %>%
-    dplyr::select(nn, cohortId, concept_name, totalEntries, totalSubjects) %>%
-    dplyr::mutate(pct = nn/totalSubjects,
-                  database = database) 
-  
+                  conceptName = concept_name,
+                  totalEntries = cohortEntries,
+                  totalSubjects = cohortSubjects) %>%
+    dplyr::select(nn, cohortId, conceptName, totalEntries, totalSubjects) %>%
+    dplyr::mutate(pct = nn/totalSubjects)
   
   verboseSave(
-    object = tb,
+    object = tbF,
     saveName = paste("catCov", type, sep = "_"),
     saveLocation = outputFolder
   )
@@ -476,21 +471,20 @@ catCovAna <- function(con,
   tb <- DatabaseConnector::querySql(connection = con, sql = cohortCovariateSql)
   names(tb) <- tolower(names(tb))
   
-  cohortManifest <- readr::read_csv(file = here::here("results", database, "01_buildCohorts", "cohortManifest.csv"), 
+  cohortManifest <- readr::read_csv(file = here::here("results", database, "02_buildStrata", "allCohorts.csv"), 
                                     show_col_types = FALSE)
   
-  tb <- tb %>%
-    dplyr::inner_join(cohortManifest, by = c("cohort_definition_id" = "id")) %>%
+  tbF <- tb %>%
+    dplyr::left_join(cohortManifest, by = c("cohort_definition_id" = "cohortId")) %>%
     dplyr::rename(cohortId = cohort_definition_id,
-                  totalEntries = entries,
-                  totalSubjects = subjects) %>%
-    dplyr::select(nn, cohortId, concept_name, totalEntries, totalSubjects) %>%
-    dplyr::mutate(pct = nn/totalSubjects,
-                  database = database)
-  
+                  conceptName = concept_name,
+                  totalEntries = cohortEntries,
+                  totalSubjects = cohortSubjects) %>%
+    dplyr::select(nn, cohortId, conceptName, totalEntries, totalSubjects) %>%
+    dplyr::mutate(pct = nn/totalSubjects)
   
   verboseSave(
-    object = tb,
+    object = tbF,
     saveName = paste("catCov", type, sep = "_"),
     saveLocation = outputFolder
   )
@@ -548,21 +542,20 @@ with cts as (
   tb <- DatabaseConnector::querySql(connection = con, sql = cohortCovariateSql)
   names(tb) <- tolower(names(tb))
   
-  cohortManifest <- readr::read_csv(file = here::here("results", database, "01_buildCohorts", "cohortManifest.csv"), 
+  cohortManifest <- readr::read_csv(file = here::here("results", database, "02_buildStrata", "allCohorts.csv"), 
                                     show_col_types = FALSE)
   
-  tb <- tb %>%
-    dplyr::inner_join(cohortManifest, by = c("cohort_definition_id" = "id")) %>%
+  tbF <- tb %>%
+    dplyr::left_join(cohortManifest, by = c("cohort_definition_id" = "cohortId")) %>%
     dplyr::rename(cohortId = cohort_definition_id,
-                  totalEntries = entries,
-                  totalSubjects = subjects) %>%
-    dplyr::select(nn, cohortId, concept_name, totalEntries, totalSubjects) %>%
-    dplyr::mutate(pct = nn/totalSubjects,
-                  database = database)
-  
+                  conceptName = concept_name,
+                  totalEntries = cohortEntries,
+                  totalSubjects = cohortSubjects) %>%
+    dplyr::select(nn, cohortId, conceptName, totalEntries, totalSubjects) %>%
+    dplyr::mutate(pct = nn/totalSubjects)
   
   verboseSave(
-    object = tb,
+    object = tbF,
     saveName = paste("catCov", type, sep = "_"),
     saveLocation = outputFolder
   )
@@ -620,22 +613,20 @@ catCovASA <- function(con,
   tb <- DatabaseConnector::querySql(connection = con, sql = cohortCovariateSql)
   names(tb) <- tolower(names(tb))
   
-  cohortManifest <- readr::read_csv(file = here::here("results", database, "01_buildCohorts", "cohortManifest.csv"), 
+  cohortManifest <- readr::read_csv(file = here::here("results", database, "02_buildStrata", "allCohorts.csv"), 
                                     show_col_types = FALSE)
   
-  tb <- tb %>%
-    dplyr::inner_join(cohortManifest, by = c("cohort_definition_id" = "id")) %>%
+  tbF <- tb %>%
+    dplyr::left_join(cohortManifest, by = c("cohort_definition_id" = "cohortId")) %>%
     dplyr::rename(cohortId = cohort_definition_id,
-                  totalEntries = entries,
-                  totalSubjects = subjects) %>%
-    dplyr::mutate(concept_name = paste0("ASA grade: ", value_as_number)) %>%
-    dplyr::select(nn, cohortId, concept_name, totalEntries, totalSubjects) %>%
-    dplyr::mutate(pct = nn/totalSubjects,
-                  database = database) 
-  
+                  conceptName = concept_name,
+                  totalEntries = cohortEntries,
+                  totalSubjects = cohortSubjects) %>%
+    dplyr::select(nn, cohortId, conceptName, totalEntries, totalSubjects) %>%
+    dplyr::mutate(pct = nn/totalSubjects)
   
   verboseSave(
-    object = tb,
+    object = tbF,
     saveName = paste("catCov", type, sep = "_"),
     saveLocation = outputFolder
   )
@@ -693,21 +684,20 @@ catCovBoneMed <- function(con,
   tb <- DatabaseConnector::querySql(connection = con, sql = cohortCovariateSql)
   names(tb) <- tolower(names(tb))
   
-  cohortManifest <- readr::read_csv(file = here::here("results", database, "01_buildCohorts", "cohortManifest.csv"), 
+  cohortManifest <- readr::read_csv(file = here::here("results", database, "02_buildStrata", "allCohorts.csv"), 
                                     show_col_types = FALSE)
   
-  tb <- tb %>%
-    dplyr::inner_join(cohortManifest, by = c("cohort_definition_id" = "id")) %>%
+  tbF <- tb %>%
+    dplyr::left_join(cohortManifest, by = c("cohort_definition_id" = "cohortId")) %>%
     dplyr::rename(cohortId = cohort_definition_id,
-                  totalEntries = entries,
-                  totalSubjects = subjects) %>%
-    dplyr::select(nn, cohortId, concept_name, totalEntries, totalSubjects) %>%
-    dplyr::mutate(pct = nn/totalSubjects,
-                  database = database) 
-  
+                  conceptName = concept_name,
+                  totalEntries = cohortEntries,
+                  totalSubjects = cohortSubjects) %>%
+    dplyr::select(nn, cohortId, conceptName, totalEntries, totalSubjects) %>%
+    dplyr::mutate(pct = nn/totalSubjects)
   
   verboseSave(
-    object = tb,
+    object = tbF,
     saveName = paste("catCov", type, sep = "_"),
     saveLocation = outputFolder
   )
@@ -765,21 +755,20 @@ catCovDischarge <- function(con,
   tb <- DatabaseConnector::querySql(connection = con, sql = cohortCovariateSql)
   names(tb) <- tolower(names(tb))
   
-  cohortManifest <- readr::read_csv(file = here::here("results", database, "01_buildCohorts", "cohortManifest.csv"), 
+  cohortManifest <- readr::read_csv(file = here::here("results", database, "02_buildStrata", "allCohorts.csv"), 
                                     show_col_types = FALSE)
   
-  tb <- tb %>%
-    dplyr::inner_join(cohortManifest, by = c("cohort_definition_id" = "id")) %>%
+  tbF <- tb %>%
+    dplyr::left_join(cohortManifest, by = c("cohort_definition_id" = "cohortId")) %>%
     dplyr::rename(cohortId = cohort_definition_id,
-                  totalEntries = entries,
-                  totalSubjects = subjects) %>%
-    dplyr::select(nn, cohortId, concept_name, totalEntries, totalSubjects) %>%
-    dplyr::mutate(pct = nn/totalSubjects,
-                  database = database) 
-  
+                  conceptName = concept_name,
+                  totalEntries = cohortEntries,
+                  totalSubjects = cohortSubjects) %>%
+    dplyr::select(nn, cohortId, conceptName, totalEntries, totalSubjects) %>%
+    dplyr::mutate(pct = nn/totalSubjects)
   
   verboseSave(
-    object = tb,
+    object = tbF,
     saveName = paste("catCov", type, sep = "_"),
     saveLocation = outputFolder
   )
@@ -837,21 +826,20 @@ catCovPostMob <- function(con,
   tb <- DatabaseConnector::querySql(connection = con, sql = cohortCovariateSql)
   names(tb) <- tolower(names(tb))
   
-  cohortManifest <- readr::read_csv(file = here::here("results", database, "01_buildCohorts", "cohortManifest.csv"), 
+  cohortManifest <- readr::read_csv(file = here::here("results", database, "02_buildStrata", "allCohorts.csv"), 
                                     show_col_types = FALSE)
   
-  tb <- tb %>%
-    dplyr::inner_join(cohortManifest, by = c("cohort_definition_id" = "id")) %>%
+  tbF <- tb %>%
+    dplyr::left_join(cohortManifest, by = c("cohort_definition_id" = "cohortId")) %>%
     dplyr::rename(cohortId = cohort_definition_id,
-                  totalEntries = entries,
-                  totalSubjects = subjects) %>%
-    dplyr::select(nn, cohortId, concept_name, totalEntries, totalSubjects) %>%
-    dplyr::mutate(pct = nn/totalSubjects,
-                  database = database) 
-  
+                  conceptName = concept_name,
+                  totalEntries = cohortEntries,
+                  totalSubjects = cohortSubjects) %>%
+    dplyr::select(nn, cohortId, conceptName, totalEntries, totalSubjects) %>%
+    dplyr::mutate(pct = nn/totalSubjects)
   
   verboseSave(
-    object = tb,
+    object = tbF,
     saveName = paste("catCov", type, sep = "_"),
     saveLocation = outputFolder
   )
@@ -909,21 +897,20 @@ catCovDeath <- function(con,
   tb <- DatabaseConnector::querySql(connection = con, sql = cohortCovariateSql)
   names(tb) <- tolower(names(tb))
   
-  cohortManifest <- readr::read_csv(file = here::here("results", database, "01_buildCohorts", "cohortManifest.csv"), 
+  cohortManifest <- readr::read_csv(file = here::here("results", database, "02_buildStrata", "allCohorts.csv"), 
                                     show_col_types = FALSE)
   
-  tb <- tb %>%
-    dplyr::inner_join(cohortManifest, by = c("cohort_definition_id" = "id")) %>%
+  tbF <- tb %>%
+    dplyr::left_join(cohortManifest, by = c("cohort_definition_id" = "cohortId")) %>%
     dplyr::rename(cohortId = cohort_definition_id,
-                  totalEntries = entries,
-                  totalSubjects = subjects) %>%
-    dplyr::select(nn, cohortId, concept_name, totalEntries, totalSubjects) %>%
-    dplyr::mutate(pct = nn/totalSubjects,
-                  database = database) 
-  
+                  conceptName = concept_name,
+                  totalEntries = cohortEntries,
+                  totalSubjects = cohortSubjects) %>%
+    dplyr::select(nn, cohortId, conceptName, totalEntries, totalSubjects) %>%
+    dplyr::mutate(pct = nn/totalSubjects)
   
   verboseSave(
-    object = tb,
+    object = tbF,
     saveName = paste("catCov", type, sep = "_"),
     saveLocation = outputFolder
   )
@@ -983,21 +970,20 @@ catCovSex <- function(con,
   tb <- DatabaseConnector::querySql(connection = con, sql = cohortCovariateSql)
   names(tb) <- tolower(names(tb))
   
-  cohortManifest <- readr::read_csv(file = here::here("results", database, "01_buildCohorts", "cohortManifest.csv"), 
+  cohortManifest <- readr::read_csv(file = here::here("results", database, "02_buildStrata", "allCohorts.csv"), 
                                     show_col_types = FALSE)
   
-  tb <- tb %>%
-    dplyr::inner_join(cohortManifest, by = c("cohort_definition_id" = "id")) %>%
+  tbF <- tb %>%
+    dplyr::left_join(cohortManifest, by = c("cohort_definition_id" = "cohortId")) %>%
     dplyr::rename(cohortId = cohort_definition_id,
-                  totalEntries = entries,
-                  totalSubjects = subjects) %>%
-    dplyr::select(nn, cohortId, concept_name, totalEntries, totalSubjects) %>%
-    dplyr::mutate(pct = nn/totalSubjects,
-                  database = database) 
-  
+                  conceptName = concept_name,
+                  totalEntries = cohortEntries,
+                  totalSubjects = cohortSubjects) %>%
+    dplyr::select(nn, cohortId, conceptName, totalEntries, totalSubjects) %>%
+    dplyr::mutate(pct = nn/totalSubjects)
   
   verboseSave(
-    object = tb,
+    object = tbF,
     saveName = paste("catCov", type, sep = "_"),
     saveLocation = outputFolder
   )
@@ -1095,17 +1081,16 @@ contCovAge <- function(con,
   tbAll <- tb %>% 
     dplyr::left_join(tb2, by = c("cohort_definition_id"))
   
-  cohortManifest <- readr::read_csv(file = here::here("results", database, "01_buildCohorts", "cohortManifest.csv"),
+  cohortManifest <- readr::read_csv(file = here::here("results", database, "02_buildStrata", "allCohorts.csv"), 
                                     show_col_types = FALSE)
 
   tb <- tbAll %>%
-    dplyr::inner_join(cohortManifest, by = c("cohort_definition_id" = "id")) %>%
+    dplyr::left_join(cohortManifest, by = c("cohort_definition_id" = "cohortId")) %>%
     dplyr::rename(cohortId = cohort_definition_id,
-                  totalEntries = entries,
-                  totalSubjects = subjects) %>%
-    dplyr::select(-name, -type, -file) %>%
-    dplyr::mutate(database = database,
-                  type = type)
+                  totalEntries = cohortEntries,
+                  totalSubjects = cohortSubjects) %>%
+    #dplyr::select(-name, -type, -file) %>%
+    dplyr::mutate(type = type)
   
   
   verboseSave(
@@ -1203,17 +1188,16 @@ contCovTimeToSurgery <- function(con,
   tbAll <- tb %>% 
     dplyr::left_join(tb2, by = c("cohort_definition_id"))
   
-  cohortManifest <- readr::read_csv(file = here::here("results", database, "01_buildCohorts", "cohortManifest.csv"), 
+  cohortManifest <- readr::read_csv(file = here::here("results", database, "02_buildStrata", "allCohorts.csv"), 
                                     show_col_types = FALSE)
   
   tb <- tbAll %>%
-    dplyr::inner_join(cohortManifest, by = c("cohort_definition_id" = "id")) %>%
+    dplyr::left_join(cohortManifest, by = c("cohort_definition_id" = "cohortId")) %>%
     dplyr::rename(cohortId = cohort_definition_id,
-                  totalEntries = entries,
-                  totalSubjects = subjects) %>%
-    dplyr::select(-name, -type, -file) %>%
-    dplyr::mutate(database = database,
-                  type = type)
+                  totalEntries = cohortEntries,
+                  totalSubjects = cohortSubjects) %>%
+    #dplyr::select(-name, -type, -file) %>%
+    dplyr::mutate(type = type)
   
   
   verboseSave(

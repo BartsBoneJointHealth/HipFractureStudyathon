@@ -3,7 +3,7 @@
 ## Table of Contents
 
 1.  Technical Requirements
-2.  Setup the Ehden HMB study locally
+2.  Setup the Hip Fracture study locally
 3.  Setup Credentials
 4.  Execute Scripts
 
@@ -39,15 +39,6 @@ You also require your site data to be mapped to the [OMOP CDM](https://ohdsi.git
 4)  Unzip the folder in a location on your local computer that is easily accessible by R Studio
 5)  Open the unzipped folder and click on the `HipFractureStudyathon.Rproj` file to open the study package in R Studio
 
-### Setup `renv`
-
-The study package contains an `renv.lock` file which ensures that all collaborators are working with the same packages' version. For more details on `renv`, refer to the [package website](https://rstudio.github.io/renv/index.html).
-
-To activate the `renv` file, run:
-
-```
-renv::restore()
-```
 
 ### Final steps
 To run the study package user must install the following packages:
@@ -82,7 +73,7 @@ Run section `A. Dependencies` to load the packages. If they are not already inst
 
 **2. Assign Variables**
 
-Run section `B) Assign Variables`. The following variables will be created:
+Run section `B. Assign Variables`. The following variables will be created:
 
 1) **configBlock**: Shorthand reference of the database. This should be a single string without spaces e.g. synpuf
 2) **database**:    The database name. This should be a single string without spaces  e.g. synpuf
@@ -95,13 +86,13 @@ The keyring is the group that stores the credentials that pertain to the study. 
 **3. Create file config.yml**
 
 Once variables have been assigned, you can now setup the `config.yml` file.
-Run section `C) Set config.yml` to check if the config.yml file exists. If it does not already exist run the following function to create:
+Run section `C. Set config.yml` to check if the config.yml file exists. If it does not already exist run the following function to create:
 
 ``` r
 Ulysses::makeConfig(block = configBlock, database = database)
 ```
 
-Variables `configBlock` and `database` are defined in section `B) Assign Variables`. Running this function will open the `config.yml` file in Rstudio.
+Variables `configBlock` and `database` are defined in section `B. Assign Variables`. Running this function will open the `config.yml` file in Rstudio.
 
 
 If the `config.yml` already exists open it and review. Make sure the block contains the following structure, where [block] is the value of the `configBlock` variable:
@@ -123,19 +114,19 @@ workDatabaseSchema: !expr keyring::key_get('[block]_workDatabaseSchema', keyring
 
 **4. Setup keyring**
 
-Next we need to setup the keyring for the  study. Run section `D) Setup Keyring`.
+Next we need to setup the keyring for the  study. Run section `D. Setup Keyring`.
 The function checks if the keyring for the study already exists. If it does, it is being deleted and recreated.
 
 
 **5. Set Credentials**
 
-Once we have setup the keyring we can add credentials in the keyring. Run section `E) Set Credentials`.
+Once we have setup the keyring we can add credentials in the keyring. Run section `E. Set Credentials`.
 You will be prompted to place your credentials. Type in the credentials into the dialog box as they appear.
 
 
 **6. Check credentials**
 
-Once you have finished adding the credentials run function `checkCreds` in section `F) Check credentials` to check if they are correct.
+Once you have finished adding the credentials run function `checkCreds` in section `F. Check credentials` to check if they are correct.
 If there is a mistake, uncomment and run function `setSingleCred` for each incorrect credential.
 As one final check, run function `testCreds` to ensure that the connection details have been established successfully.
 If they have, you should see the name of the `dbms` variable i.e. database dialect, in your console.
@@ -153,28 +144,9 @@ Replace the bracketed variables with the next database. This function will open 
 
 We now need to add the credentials of this configBlock to the keyring. Reassign variables `configBlock` and `database` in section `B) Set Parameters` of the `KeyringSetup.R` file to the new block and database. Next, rerun section `E) Set Credentials` to set the credentials in the keyring for your other databases. Optionally, rerun section `F) Check Credentials` to check the credentials and test connection to the database as demonstrated above. Rerun these steps until all databases are added to the `config.yml` and keyring.
 
-Lastly, run section `G) Session Info` to clear your R session. You are now ready to execute the study package.
-
-## 4. Execute Scripts (TO EDIT)
-
-Once the credentials have been setup, the user may begin running study tasks. Go to folder `analysis/studyTasks` and consider the file structure. Study tasks are ordered in the sequence that they must run based on a numerical prefix. This means you must run `01_buildCohorts.R` first in the sequence before `02_cohortDiagnostics.R`.
-
-### Step 1: Build Cohorts
-
-In the `01_buildCohorts.R` script replace L21 to fit the configBlock for the database you want to use in the study. For example if I was running my analysis on optum claims whose credentials were stored under the block *optum*, I would replace L21 with `configBlock <- "optum"`.
-
-Once this has been changed. scroll down to L59. If you are part of Bayer, uncomment this line. If not, keep this line commented. Now you can run the script from start to finish. While the script is running, information will fill your R console describing where files have been saved and what is being done.
-
-
-### Step 2: Run Cohort Diagnostics
-
-Next you will run the cohort diagnostics script. Follow the steps described in step 1 by replacing the assigned value for `configBlock` on L21 with that of the database you want to use.  When this is done, run the script.
-
-Once the cohort diagnostics function has completed, move to script `03_reviewCohortDiagnostics.R` and run it. This script will launch the shiny app to review the cohort diagnostics results.
-
-Once the results have been reviewed, please upload the zip file of each database found in the *02_cohortDiagnostics* folder to the aws s3 bucket. A file `extras/StoreReults.R` provides guidance on how to upload. You must contact the study lead for the aws s3 key and secret.
+Lastly, run section `G. Session Info` to clear your R session. You are now ready to execute the study package.
 
 
 ### Support
 
-If you encounter any issues, please contact [martin.lavallee\@odysseusinc.com](mailto:martin.lavallee@odysseusinc.com){.email} or [george.argyriou\@odysseusinc.com](mailto:george.argyriou@odysseusinc.com){.email}.
+If you encounter any issues, please contact [george.argyriou\@odysseusinc.com](mailto:george.argyriou@odysseusinc.com){.email}.

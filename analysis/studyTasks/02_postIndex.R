@@ -41,18 +41,6 @@ executePostIndex(con = con,
                  executionSettings = executionSettings)
 
 
-#debug(bindFilesCat)
-bindFilesCat(outputPath = here::here("report"),
-             database = configBlock,
-             filename = "catCov")
-
-
-#debug(bindFilesCont)
-bindFilesCont(outputPath = here::here("report"),
-             database = configBlock,
-             filename = "contChar")
-
-
 # F. Disconnect from server --------------------
 
 DatabaseConnector::disconnect(con)

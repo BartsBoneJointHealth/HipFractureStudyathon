@@ -183,3 +183,15 @@ bindFilesCont <- function(outputPath,
   
   invisible(binded_df)
 }
+
+
+bindAndShareResults <- function(
+    
+    )
+  
+{
+  
+  
+  
+  
+}
