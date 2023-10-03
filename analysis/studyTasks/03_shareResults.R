@@ -61,10 +61,12 @@ allCohortsF <- allCohorts %>%
                   strataCohortId == "16" ~ "No Malignancy",
                   strataCohortId == "17" ~ "Atypical",
                   strataCohortId == "18" ~ "No Atypical",
+                  strataCohortId == "19" ~ "Physician involvement",
+                  strataCohortId == "20" ~ "No Physician involvement",
                   TRUE ~ ""
                  ),
                 fullName = paste0(targetCohortName, ": ", strataCohortName)
                 )
 
 
-readr::write_csv(allCohortsF, file = here::here("misc", "report", "allCohorts.csv"))
+readr::write_csv(allCohortsF, file = here::here("report", "allCohorts.csv"))
