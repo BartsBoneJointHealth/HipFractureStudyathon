@@ -33,7 +33,9 @@ The primary objective of thE study is to describe the baseline demographic and c
 
 # Study Documentation
 
--   [**How to Run**](https://github.com/BartsBoneJointHealth/HipFractureStudyathon/blob/main/documentation/HowToRun.md)
+(ADMINISTRATIVE NOTE: The study package is in validation phase. If you are a site looking to run the package, please reach out to [Kristin Kostka](k.kostka@northeastern.edu) to walk through the process to run in your environment.)
+
+-   ***UNDER DEVELOPMENT*** [**How to Run**](https://github.com/BartsBoneJointHealth/HipFractureStudyathon/blob/main/documentation/HowToRun.md)
 -   Share Results
 
 # Development
