@@ -10,7 +10,7 @@ FFN Studyathon 2023
 -   Study lead forums tag: -
 -   Study start date: **September 11, 2023**
 -   Study end date: -**November 30, 2023**
--   Protocol: - 
+-   Protocol: - **see document folder above**
 -   Publications: -
 -   Results explorer: -  - **[Shiny App: Hip Fracture Studyathon](https://bartsbonejointhealth.shinyapps.io/Hipstar/)**
 
