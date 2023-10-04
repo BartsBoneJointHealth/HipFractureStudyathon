@@ -12,7 +12,7 @@ FFN Studyathon 2023
 -   Study end date: -**November 30, 2023**
 -   Protocol: - 
 -   Publications: -
--   Results explorer: -
+-   Results explorer: -  - **[Shiny App: Hip Fracture Studyathon](https://bartsbonejointhealth.shinyapps.io/Hipstar/)**
 
 The primary objective of the study is to describe the baseline demographic and clinical characteristics of individuals sustaining a hip fracture across a network of real-world databases, including the occurrence of adverse outcomes following surgery. This will be explored overall and if sufficiently sampling exists, to also examine treatments and outcomes by sex, age, and surgical subtype.
 
