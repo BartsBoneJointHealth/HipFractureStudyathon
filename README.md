@@ -40,7 +40,7 @@ The primary objective of the study is to describe the baseline demographic and c
 
 # Development
 
-HIPSTER was developed in R.
+HIPSTAR was developed in R.
 
 # License
 
