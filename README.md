@@ -1,4 +1,4 @@
-# HIPSTER: Hip fracture Information Profiling, Surveillance and Treatment across Epidemiological Registries
+# HIPSTAR: Hip fracture Information Profiling, Surveillance and Treatment Across epidemiological Registries
 FFN Studyathon 2023
 
 <img src="https://img.shields.io/badge/Study%20Status-Started-blue.svg"/>
@@ -9,8 +9,8 @@ FFN Studyathon 2023
 -   Study lead: **Jennifer Lane**
 -   Study lead forums tag: -
 -   Study start date: **September 11, 2023**
--   Study end date: -
--   Protocol: -
+-   Study end date: -**November 30, 2023**
+-   Protocol: - 
 -   Publications: -
 -   Results explorer: -
 
