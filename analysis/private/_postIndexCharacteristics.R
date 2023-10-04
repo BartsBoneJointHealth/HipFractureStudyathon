@@ -27,54 +27,54 @@ executePostIndex<- function(con,
   
   tik <- Sys.time()
   
-  catCovFra(con = con,
-            cohortDatabaseSchema = workDatabaseSchema,
-            cdmDatabaseSchema = cdmDatabaseSchema,
-            cohortTable = cohortTable,
-            database = databaseId,
-            outputFolder = outputFolder)
-
-catCovCogn(con = con,
-           cohortDatabaseSchema = workDatabaseSchema,
-           cdmDatabaseSchema = cdmDatabaseSchema,
-           cohortTable = cohortTable,
-           database = databaseId,
-           outputFolder = outputFolder)
-
-catCovMob(con = con,
-          cohortDatabaseSchema = workDatabaseSchema,
-          cdmDatabaseSchema = cdmDatabaseSchema,
-          cohortTable = cohortTable,
-          database = databaseId,
-          outputFolder = outputFolder)
-
-  catCovPathFra(con = con,
-                cohortDatabaseSchema = workDatabaseSchema,
-                cdmDatabaseSchema = cdmDatabaseSchema,
-                cohortTable = cohortTable,
-                database = databaseId,
-                outputFolder = outputFolder)
-
-  catCovAna(con = con,
-            cohortDatabaseSchema = workDatabaseSchema,
-            cdmDatabaseSchema = cdmDatabaseSchema,
-            cohortTable = cohortTable,
-            database = databaseId,
-            outputFolder = outputFolder)
-
-catCovRes(con = con,
-          cohortDatabaseSchema = workDatabaseSchema,
-          cdmDatabaseSchema = cdmDatabaseSchema,
-          cohortTable = cohortTable,
-          database = databaseId,
-          outputFolder = outputFolder)
-
-  catCovASA(con = con,
-            cohortDatabaseSchema = workDatabaseSchema,
-            cdmDatabaseSchema = cdmDatabaseSchema,
-            cohortTable = cohortTable,
-            database = databaseId,
-            outputFolder = outputFolder)
+#   catCovFra(con = con,
+#             cohortDatabaseSchema = workDatabaseSchema,
+#             cdmDatabaseSchema = cdmDatabaseSchema,
+#             cohortTable = cohortTable,
+#             database = databaseId,
+#             outputFolder = outputFolder)
+# 
+# catCovCogn(con = con,
+#            cohortDatabaseSchema = workDatabaseSchema,
+#            cdmDatabaseSchema = cdmDatabaseSchema,
+#            cohortTable = cohortTable,
+#            database = databaseId,
+#            outputFolder = outputFolder)
+# 
+# catCovMob(con = con,
+#           cohortDatabaseSchema = workDatabaseSchema,
+#           cdmDatabaseSchema = cdmDatabaseSchema,
+#           cohortTable = cohortTable,
+#           database = databaseId,
+#           outputFolder = outputFolder)
+# 
+#   catCovPathFra(con = con,
+#                 cohortDatabaseSchema = workDatabaseSchema,
+#                 cdmDatabaseSchema = cdmDatabaseSchema,
+#                 cohortTable = cohortTable,
+#                 database = databaseId,
+#                 outputFolder = outputFolder)
+# 
+#   catCovAna(con = con,
+#             cohortDatabaseSchema = workDatabaseSchema,
+#             cdmDatabaseSchema = cdmDatabaseSchema,
+#             cohortTable = cohortTable,
+#             database = databaseId,
+#             outputFolder = outputFolder)
+# 
+# catCovRes(con = con,
+#           cohortDatabaseSchema = workDatabaseSchema,
+#           cdmDatabaseSchema = cdmDatabaseSchema,
+#           cohortTable = cohortTable,
+#           database = databaseId,
+#           outputFolder = outputFolder)
+# 
+#   catCovASA(con = con,
+#             cohortDatabaseSchema = workDatabaseSchema,
+#             cdmDatabaseSchema = cdmDatabaseSchema,
+#             cohortTable = cohortTable,
+#             database = databaseId,
+#             outputFolder = outputFolder)
 
 
   tok <- Sys.time()
@@ -91,26 +91,26 @@ catCovRes(con = con,
 
   tik <- Sys.time()
 
-  catCovBoneMed(con = con,
-                cohortDatabaseSchema = workDatabaseSchema,
-                cdmDatabaseSchema = cdmDatabaseSchema,
-                cohortTable = cohortTable,
-                database = databaseId,
-                outputFolder = outputFolder)
-
-  catCovDeath(con = con,
-              cohortDatabaseSchema = workDatabaseSchema,
-              cdmDatabaseSchema = cdmDatabaseSchema,
-              cohortTable = cohortTable,
-              database = databaseId,
-              outputFolder = outputFolder)
-
-  catCovSex(con = con,
-            cohortDatabaseSchema = workDatabaseSchema,
-            cdmDatabaseSchema = cdmDatabaseSchema,
-            cohortTable = cohortTable,
-            database = databaseId,
-            outputFolder = outputFolder)
+  # catCovBoneMed(con = con,
+  #               cohortDatabaseSchema = workDatabaseSchema,
+  #               cdmDatabaseSchema = cdmDatabaseSchema,
+  #               cohortTable = cohortTable,
+  #               database = databaseId,
+  #               outputFolder = outputFolder)
+  # 
+  # catCovDeath(con = con,
+  #             cohortDatabaseSchema = workDatabaseSchema,
+  #             cdmDatabaseSchema = cdmDatabaseSchema,
+  #             cohortTable = cohortTable,
+  #             database = databaseId,
+  #             outputFolder = outputFolder)
+  # 
+  # catCovSex(con = con,
+  #           cohortDatabaseSchema = workDatabaseSchema,
+  #           cdmDatabaseSchema = cdmDatabaseSchema,
+  #           cohortTable = cohortTable,
+  #           database = databaseId,
+  #           outputFolder = outputFolder)
 
   contCovAge(con = con,
              cohortDatabaseSchema = workDatabaseSchema,
@@ -1126,6 +1126,7 @@ contCovAge <- function(con,
       avg(age) as meanValue,
       min(age) as minValue,
       max(age) as maxValue,
+      stdev(age) as sd,
       cohort_definition_id
     from cts
     group by cohort_definition_id;
@@ -1154,7 +1155,6 @@ contCovAge <- function(con,
     dplyr::rename(cohortId = cohort_definition_id,
                   totalEntries = cohortEntries,
                   totalSubjects = cohortSubjects) %>%
-    #dplyr::select(-name, -type, -file) %>%
     dplyr::mutate(type = type)
   
   
@@ -1232,6 +1232,7 @@ contCovTimeToSurgery <- function(con,
       avg(value_as_number) as meanValue,
       min(value_as_number) as minValue,
       max(value_as_number) as maxValue,
+      stdev(value_as_number) as sd,
       cohort_definition_id
   from cts 
   where rnk=1
@@ -1261,7 +1262,6 @@ contCovTimeToSurgery <- function(con,
     dplyr::rename(cohortId = cohort_definition_id,
                   totalEntries = cohortEntries,
                   totalSubjects = cohortSubjects) %>%
-    #dplyr::select(-name, -type, -file) %>%
     dplyr::mutate(type = type)
   
   

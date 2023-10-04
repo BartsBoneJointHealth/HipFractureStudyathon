@@ -814,6 +814,92 @@ rehabStrata <- function(con,
 }
 
 
+postopStrata <- function(con,
+                        cohortDatabaseSchema,
+                        cohortTable,
+                        cdmDatabaseSchema,
+                        targetId) {
+  
+  cli::cat_bullet("Building postoperative mobilization strata for target cohort id: ", targetId, bullet = "checkbox_on", bullet_col = "green")
+  
+  sql <- "
+
+  select
+   t2.subject_id,
+   t2.cohort_start_date,
+   t2.cohort_end_date,
+   t2.cohort_definition_id
+  INTO #concept
+  from
+  (
+    select 
+     row_number()over(partition by subject_id, cohort_definition_id order by b.procedure_date) as rnk2,
+     b.procedure_date,
+     subject_id, 
+     cohort_start_date, 
+     cohort_end_date, 
+     cohort_definition_id, 
+     b.procedure_concept_id
+  FROM (
+        select subject_id, cohort_start_date, cohort_end_date, procedure_date, procedure_concept_id, cohort_definition_id,
+            row_number()over(partition by subject_id, cohort_definition_id order by procedure_date) as rnk
+        from @cohortDatabaseSchema.@cohortTable a
+        left join  @cdmDatabaseSchema.PROCEDURE_OCCURRENCE b
+         on a.subject_id = b.person_id and a.cohort_start_date <= b.procedure_date
+        where cohort_definition_id IN (@targetId) and b.procedure_concept_id in (40479229, 4343341, 46270907, 4297365, 4203771, 4327115)
+    )t1 
+    left join @cdmDatabaseSchema.PROCEDURE_OCCURRENCE b 
+     on t1.subject_id = b.person_id and t1.cohort_start_date between b.procedure_date and DATEADD(dd, 1, b.procedure_date)
+    where rnk =1 and b.procedure_concept_id in (4040076)
+  )t2 where rnk2=1;
+   
+   
+  -- CAT1: Postoperative mobilization 
+  INSERT INTO @cohortDatabaseSchema.@cohortTable (
+        	cohort_definition_id,
+        	subject_id,
+        	cohort_start_date,
+        	cohort_end_date
+  )
+  select  CAST(@targetId * 100 + 21 AS bigint) AS cohort_definition_id,
+        	subject_id,
+        	cohort_start_date,
+        	cohort_end_date 
+  from #concept;
+  
+  
+  -- CAT2: No Postoperative mobilization 
+  INSERT INTO @cohortDatabaseSchema.@cohortTable (
+        	cohort_definition_id,
+        	subject_id,
+        	cohort_start_date,
+        	cohort_end_date
+  )
+  select  CAST(@targetId * 100 + 22 AS bigint) AS cohort_definition_id,
+        	subject_id,
+        	cohort_start_date,
+        	cohort_end_date 
+  from @cohortDatabaseSchema.@cohortTable 
+  where subject_id not in (select distinct subject_id from #concept) and cohort_definition_id in (@targetId);
+ 
+    
+  DROP TABLE #concept;
+"
+  
+  cognStrataSql <- SqlRender::render(
+    sql,
+    cohortDatabaseSchema = cohortDatabaseSchema,
+    cohortTable = cohortTable,
+    cdmDatabaseSchema = cdmDatabaseSchema,
+    targetId = targetId
+  ) %>%
+    SqlRender::translate(targetDialect = con@dbms)
+  
+  DatabaseConnector::executeSql(connection = con, cognStrataSql, progressBar = TRUE)
+  
+  invisible(cognStrataSql)
+}
+
 
 ## Additional Stratas ---------------
 ageStrata <- function(con,
@@ -1333,7 +1419,15 @@ buildStrata <- function(con,
                             cohortTable = cohortTable,
                             cdmDatabaseSchema = cdmDatabaseSchema,
                             targetId = ..1))
-
+  
+  purrr::pwalk(targetCohortsIds,
+               ~postopStrata(con = con,
+                            cohortDatabaseSchema = workDatabaseSchema,
+                            cohortTable = cohortTable,
+                            cdmDatabaseSchema = cdmDatabaseSchema,
+                            targetId = ..1))
+  
+  
   # ## Additional stratas ----------
   # cli::cat_rule("Building Demographic Stratas")
   # 
