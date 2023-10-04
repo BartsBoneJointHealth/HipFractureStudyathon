@@ -21,6 +21,12 @@ The primary objective of the study is to describe the baseline demographic and c
 | Database                              | Country |
 |--------------------------------|------------------|
 | NHFD (National Hip Fracture Database) | England + Wales     | 
+| NOCA IRL (Irish Hip Fracture Database)| Ireland             | 
+| Danish Multidisciplinary Hip Fracture Database | Denmark    | 
+| NOREPOS (Norwegian Hip Fracture Register) | Norway    | 
+| RNFC (Registro Nacional de Fractura de Cadera) | Spain   | 
+| ANZHR (National Hip Fracture Database) | Australia and New Zealand    | 
+
 
 # Requirements
 
