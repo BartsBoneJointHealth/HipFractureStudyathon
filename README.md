@@ -1,4 +1,5 @@
-# HIPSTER: Hip fracture Information Profiling, Surveillance and Treatment across Epidemiological Registries
+# HIPSTAR: Hip fracture Information Profiling, Surveillance and Treatment Across epidemiological Registries
+FFN Studyathon 2023
 
 <img src="https://img.shields.io/badge/Study%20Status-Started-blue.svg"/>
 
@@ -8,18 +9,24 @@
 -   Study lead: **Jennifer Lane**
 -   Study lead forums tag: -
 -   Study start date: **September 11, 2023**
--   Study end date: -
--   Protocol: -
+-   Study end date: -**November 30, 2023**
+-   Protocol: - **[EUPAS 107016](https://www.encepp.eu/encepp/viewResource.htm?id=107016)**
 -   Publications: -
--   Results explorer: -
+-   Results explorer: -  - **[Shiny App: Hip Fracture Studyathon](https://bartsbonejointhealth.shinyapps.io/Hipstar/)**
 
-The primary objective of thE study is to describe the baseline demographic and clinical characteristics of individuals sustaining a hip fracture across a network of real-world databases, including the occurrence of adverse outcomes following surgery. This will be explored overall and if sufficiently sampling exists, to also examine treatments and outcomes by sex, age, and surgical subtype.
+The primary objective of the study is to describe the baseline demographic and clinical characteristics of individuals sustaining a hip fracture across a network of real-world databases, including the occurrence of adverse outcomes following surgery. This will be explored overall and if sufficiently sampling exists, to also examine treatments and outcomes by sex, age, and surgical subtype.
 
 # Databases
 
-| Database                              | Country | Institution               |
-|--------------------------------|------------------|----------------------|
-| NHFD (National Hip Fracture Database) | UK      | Barts Joint & Bone Health |
+| Database                              | Country |
+|--------------------------------|------------------|
+| NHFD (National Hip Fracture Database) | England + Wales     | 
+| NOCA IRL (Irish Hip Fracture Database)| Ireland             | 
+| Danish Multidisciplinary Hip Fracture Database | Denmark    | 
+| NOREPOS (Norwegian Hip Fracture Register) | Norway    | 
+| RNFC (Registro Nacional de Fractura de Cadera) | Spain   | 
+| ANZHR (National Hip Fracture Database) | Australia and New Zealand    | 
+
 
 # Requirements
 
@@ -32,12 +39,14 @@ The primary objective of thE study is to describe the baseline demographic and c
 
 # Study Documentation
 
--   [**How to Run**](https://github.com/BartsBoneJointHealth/HipFractureStudyathon/blob/main/documentation/HowToRun.md)
+(ADMINISTRATIVE NOTE: The study package is in validation phase. If you are a site looking to run the package, please reach out to [Kristin Kostka](mailto:k.kostka@northeastern.edu) to walk through the process to run in your environment.)
+
+-   ***UNDER DEVELOPMENT*** [**How to Run**](https://github.com/BartsBoneJointHealth/HipFractureStudyathon/blob/main/documentation/HowToRun.md)
 -   Share Results
 
 # Development
 
-HIPSTER was developed in R.
+HIPSTAR was developed in R.
 
 # License
 
