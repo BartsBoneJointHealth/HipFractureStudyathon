@@ -1343,6 +1343,9 @@ buildStrata <- function(con,
   targetCohortsIds <- getCohortManifest() %>% dplyr::select(id)
 
   
+  #queryDb(executionSettings = executionSettings, con = con) 
+  
+  
   ## Initial stratas ----------
   cli::cat_rule("Building Subgroups")
   
@@ -1523,4 +1526,32 @@ buildStrata <- function(con,
   
   dt<-0
   invisible(dt)
+}
+
+
+
+queryDb <- function(executionSettings,
+                          con) {
+  
+  
+  # sql <- "
+  # SELECT 
+  #   distinct value_as_concept_id,
+  #    concept_name 
+  # FROM @cdmDatabaseSchema.observation a
+  # left join @cdmDatabaseSchema.concept b on a.value_as_concept_id = b.concept_id;
+  # "
+  
+  sql <- "SELECT top 10000 * FROM @cdmDatabaseSchema.observation where value_as_concept_id in (434489);"
+  
+  sql <- SqlRender::render(
+    sql,
+    cdmDatabaseSchema = executionSettings$cdmDatabaseSchema
+  ) %>%
+    SqlRender::translate(targetDialect = executionSettings$dbms)
+  
+
+  test <- DatabaseConnector::querySql(connection = con, sql)
+  test
+  
 }

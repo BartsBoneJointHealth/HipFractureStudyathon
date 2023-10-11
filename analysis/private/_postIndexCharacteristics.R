@@ -27,54 +27,54 @@ executePostIndex<- function(con,
   
   tik <- Sys.time()
   
-#   catCovFra(con = con,
-#             cohortDatabaseSchema = workDatabaseSchema,
-#             cdmDatabaseSchema = cdmDatabaseSchema,
-#             cohortTable = cohortTable,
-#             database = databaseId,
-#             outputFolder = outputFolder)
-# 
-# catCovCogn(con = con,
-#            cohortDatabaseSchema = workDatabaseSchema,
-#            cdmDatabaseSchema = cdmDatabaseSchema,
-#            cohortTable = cohortTable,
-#            database = databaseId,
-#            outputFolder = outputFolder)
-# 
-# catCovMob(con = con,
-#           cohortDatabaseSchema = workDatabaseSchema,
-#           cdmDatabaseSchema = cdmDatabaseSchema,
-#           cohortTable = cohortTable,
-#           database = databaseId,
-#           outputFolder = outputFolder)
-# 
-#   catCovPathFra(con = con,
-#                 cohortDatabaseSchema = workDatabaseSchema,
-#                 cdmDatabaseSchema = cdmDatabaseSchema,
-#                 cohortTable = cohortTable,
-#                 database = databaseId,
-#                 outputFolder = outputFolder)
-# 
-#   catCovAna(con = con,
-#             cohortDatabaseSchema = workDatabaseSchema,
-#             cdmDatabaseSchema = cdmDatabaseSchema,
-#             cohortTable = cohortTable,
-#             database = databaseId,
-#             outputFolder = outputFolder)
-# 
-# catCovRes(con = con,
-#           cohortDatabaseSchema = workDatabaseSchema,
-#           cdmDatabaseSchema = cdmDatabaseSchema,
-#           cohortTable = cohortTable,
-#           database = databaseId,
-#           outputFolder = outputFolder)
-# 
-#   catCovASA(con = con,
-#             cohortDatabaseSchema = workDatabaseSchema,
-#             cdmDatabaseSchema = cdmDatabaseSchema,
-#             cohortTable = cohortTable,
-#             database = databaseId,
-#             outputFolder = outputFolder)
+catCovFra(con = con,
+          cohortDatabaseSchema = workDatabaseSchema,
+          cdmDatabaseSchema = cdmDatabaseSchema,
+          cohortTable = cohortTable,
+          database = databaseId,
+          outputFolder = outputFolder)
+
+catCovCogn(con = con,
+           cohortDatabaseSchema = workDatabaseSchema,
+           cdmDatabaseSchema = cdmDatabaseSchema,
+           cohortTable = cohortTable,
+           database = databaseId,
+           outputFolder = outputFolder)
+
+catCovMob(con = con,
+          cohortDatabaseSchema = workDatabaseSchema,
+          cdmDatabaseSchema = cdmDatabaseSchema,
+          cohortTable = cohortTable,
+          database = databaseId,
+          outputFolder = outputFolder)
+
+catCovPathFra(con = con,
+              cohortDatabaseSchema = workDatabaseSchema,
+              cdmDatabaseSchema = cdmDatabaseSchema,
+              cohortTable = cohortTable,
+              database = databaseId,
+              outputFolder = outputFolder)
+
+catCovAna(con = con,
+          cohortDatabaseSchema = workDatabaseSchema,
+          cdmDatabaseSchema = cdmDatabaseSchema,
+          cohortTable = cohortTable,
+          database = databaseId,
+          outputFolder = outputFolder)
+
+catCovRes(con = con,
+          cohortDatabaseSchema = workDatabaseSchema,
+          cdmDatabaseSchema = cdmDatabaseSchema,
+          cohortTable = cohortTable,
+          database = databaseId,
+          outputFolder = outputFolder)
+
+catCovASA(con = con,
+          cohortDatabaseSchema = workDatabaseSchema,
+          cdmDatabaseSchema = cdmDatabaseSchema,
+          cohortTable = cohortTable,
+          database = databaseId,
+          outputFolder = outputFolder)
 
 
   tok <- Sys.time()
@@ -90,41 +90,49 @@ executePostIndex<- function(con,
   cli::cat_line()
 
   tik <- Sys.time()
+  
+  
+  # catCovDischarge(con = con,
+  #                 cohortDatabaseSchema = workDatabaseSchema,
+  #                 cdmDatabaseSchema = cdmDatabaseSchema,
+  #                 cohortTable = cohortTable,
+  #                 database = databaseId,
+  #                 outputFolder = outputFolder)
 
-  # catCovBoneMed(con = con,
-  #               cohortDatabaseSchema = workDatabaseSchema,
-  #               cdmDatabaseSchema = cdmDatabaseSchema,
-  #               cohortTable = cohortTable,
-  #               database = databaseId,
-  #               outputFolder = outputFolder)
-  # 
-  # catCovDeath(con = con,
-  #             cohortDatabaseSchema = workDatabaseSchema,
-  #             cdmDatabaseSchema = cdmDatabaseSchema,
-  #             cohortTable = cohortTable,
-  #             database = databaseId,
-  #             outputFolder = outputFolder)
-  # 
-  # catCovSex(con = con,
-  #           cohortDatabaseSchema = workDatabaseSchema,
-  #           cdmDatabaseSchema = cdmDatabaseSchema,
-  #           cohortTable = cohortTable,
-  #           database = databaseId,
-  #           outputFolder = outputFolder)
+catCovBoneMed(con = con,
+              cohortDatabaseSchema = workDatabaseSchema,
+              cdmDatabaseSchema = cdmDatabaseSchema,
+              cohortTable = cohortTable,
+              database = databaseId,
+              outputFolder = outputFolder)
 
-  contCovAge(con = con,
-             cohortDatabaseSchema = workDatabaseSchema,
-             cdmDatabaseSchema = cdmDatabaseSchema,
-             cohortTable = cohortTable,
-             database = databaseId,
-             outputFolder = outputFolder)
+catCovDeath(con = con,
+            cohortDatabaseSchema = workDatabaseSchema,
+            cdmDatabaseSchema = cdmDatabaseSchema,
+            cohortTable = cohortTable,
+            database = databaseId,
+            outputFolder = outputFolder)
 
-  contCovTimeToSurgery(con = con,
-                       cohortDatabaseSchema = workDatabaseSchema,
-                       cdmDatabaseSchema = cdmDatabaseSchema,
-                       cohortTable = cohortTable,
-                       database = databaseId,
-                       outputFolder = outputFolder)
+catCovSex(con = con,
+          cohortDatabaseSchema = workDatabaseSchema,
+          cdmDatabaseSchema = cdmDatabaseSchema,
+          cohortTable = cohortTable,
+          database = databaseId,
+          outputFolder = outputFolder)
+
+contCovAge(con = con,
+           cohortDatabaseSchema = workDatabaseSchema,
+           cdmDatabaseSchema = cdmDatabaseSchema,
+           cohortTable = cohortTable,
+           database = databaseId,
+           outputFolder = outputFolder)
+
+contCovTimeToSurgery(con = con,
+                     cohortDatabaseSchema = workDatabaseSchema,
+                     cdmDatabaseSchema = cdmDatabaseSchema,
+                     cohortTable = cohortTable,
+                     database = databaseId,
+                     outputFolder = outputFolder)
   
   tok <- Sys.time()
   cli::cat_bullet("Execution Completed at: ", crayon::red(tok),
@@ -507,7 +515,11 @@ catCovAna <- function(con,
     from @cohortDatabaseSchema.@cohortTable a
     left join @cdmDatabaseSchema.PROCEDURE_OCCURRENCE b
     on a.subject_id = b.person_id and a.cohort_start_date = b.procedure_date
-    where procedure_concept_id in (4174669, 4332593, 4100052)
+    where procedure_concept_id in (
+      select concept_id 
+      from @cdmDatabaseSchema.CONCEPT a
+      inner join @cdmDatabaseSchema.CONCEPT_ANCESTOR b on a.concept_id = b.descendant_concept_id and b.descendant_concept_id in (4174669, 4332593, 4100052)
+                                   )
   )
   select 
     count(subject_id) as nn, 
@@ -578,7 +590,11 @@ with cts as (
     from @cohortDatabaseSchema.@cohortTable a
     left join @cdmDatabaseSchema.VISIT_OCCURRENCE b
     on a.subject_id = b.person_id and a.cohort_start_date = b.visit_start_date
-    where admitting_source_concept_id in (42898160,38004279)
+    where admitting_source_concept_id in (
+      select concept_id 
+      from @cdmDatabaseSchema.CONCEPT a
+      inner join @cdmDatabaseSchema.CONCEPT_ANCESTOR b on a.concept_id = b.descendant_concept_id and b.descendant_concept_id in (42898160,38004279)
+    )
   )
   select 
     count(subject_id) as nn, 
@@ -783,6 +799,15 @@ catCovDischarge <- function(con,
   
   cli::cat_rule("Build Cohort Covariates: Discharge location")
   
+  sql <- "select top 100 * from @cdmDatabaseSchema.visit_occurrence;"
+  
+  cohortCovariateSql <- SqlRender::render(
+    sql,
+    cdmDatabaseSchema = cdmDatabaseSchema
+  ) %>%
+    SqlRender::translate(targetDialect = con@dbms)
+  
+  tb <- DatabaseConnector::querySql(connection = con, sql = cohortCovariateSql)
   
   # SQL code to get cohort covariates
   sql <- "
@@ -794,7 +819,11 @@ catCovDischarge <- function(con,
       from @cohortDatabaseSchema.@cohortTable a
       left join @cdmDatabaseSchema.visit_occurrence b
       on a.subject_id = b.person_id and a.cohort_start_date <= b.visit_start_date
-      where discharge_to_concept_id in (42898160, 38004279, 38004285)
+      where b.discharge_to_concept_id in (42898160, 38004279, 38004285) --(
+          --select concept_id 
+          --from @cdmDatabaseSchema.CONCEPT a
+          --inner join @cdmDatabaseSchema.CONCEPT_ANCESTOR b on a.concept_id = b.descendant_concept_id and b.descendant_concept_id in (42898160, 38004279, 38004285)
+      --)
     )
     select 
       count(subject_id) as nn, 
@@ -927,39 +956,117 @@ catCovDeath <- function(con,
   
   
   # SQL code to get cohort covariates
-  sql <- "
+#   sql <- "
+#    -- Death
+# 
+#     with cts as (
+#       select subject_id, cohort_start_date, cohort_end_date, observation_date, cohort_definition_id, value_as_concept_id
+#        ,row_number()over(partition by subject_id, cohort_definition_id order by observation_date) as rnk
+#       from @cohortDatabaseSchema.@cohortTable a
+#       left join @cdmDatabaseSchema.observation b
+#       on a.subject_id = b.person_id and a.cohort_start_date <= b.observation_date
+#       where b.value_as_concept_id in (4218686, 4183699)
+#     )
+#     select 
+#       count(subject_id) as nn, 
+#       cohort_definition_id,
+#       b.concept_id,
+#       concept_name
+#     from cts a
+#     left join @cdmDatabaseSchema.CONCEPT b
+#     on a.value_as_concept_id =  b.concept_id
+#     where rnk=1
+#     group by cohort_definition_id, b.concept_id, concept_name;
+# "
+  
+#   sql <- "
+#    -- Death
+# 
+#     with cts as (
+#       select subject_id, cohort_start_date, cohort_end_date, death_date, cohort_definition_id
+#        ,row_number()over(partition by subject_id, cohort_definition_id order by death_date) as rnk
+#       from @cohortDatabaseSchema.@cohortTable a
+#       left join @cdmDatabaseSchema.death b
+#       on a.subject_id = b.person_id and a.cohort_start_date <= b.death_date
+#       where b.death_date is not null
+#    )
+#   select
+#     count(subject_id) as nn,
+#     cohort_definition_id
+#   from cts a
+#   where rnk=1
+#   group by cohort_definition_id;
+# "
+  
+  sql1 <- "
    -- Death
-
-    with cts as (
-      select subject_id, cohort_start_date, cohort_end_date, observation_date, cohort_definition_id, value_as_concept_id
-       ,row_number()over(partition by subject_id, cohort_definition_id order by observation_date) as rnk
-      from @cohortDatabaseSchema.@cohortTable a
-      left join @cdmDatabaseSchema.observation b
-      on a.subject_id = b.person_id and a.cohort_start_date <= b.observation_date
-      where b.value_as_concept_id in (4218686, 4183699)
-    )
-    select 
-      count(subject_id) as nn, 
+   
+   --drop table #temp;
+   
+  select
       cohort_definition_id,
-      b.concept_id,
-      concept_name
-    from cts a
-    left join @cdmDatabaseSchema.CONCEPT b
-    on a.value_as_concept_id =  b.concept_id
-    where rnk=1
-    group by cohort_definition_id, b.concept_id, concept_name;
+      subject_id,
+      cohort_start_date,
+      cohort_end_date,
+      death_date,
+      rnk
+  INTO #temp
+  FROM (
+        select subject_id, cohort_start_date, cohort_end_date, death_date, cohort_definition_id
+         ,row_number()over(partition by subject_id, cohort_definition_id order by death_date) as rnk
+        from @cohortDatabaseSchema.@cohortTable a
+        left join @cdmDatabaseSchema.death b
+        on a.subject_id = b.person_id and a.cohort_start_date <= b.death_date
+        where b.death_date is not null
+      )t1 ;
 "
   
+  sql2 <- "
+
+  select
+    count(subject_id) as nn,
+    cohort_definition_id,
+    0 as year
+  from #temp
+  where rnk=1
+  group by cohort_definition_id
+
+  UNION
+
+  select
+    count(subject_id) as nn,
+    cohort_definition_id,
+    cohortYear
+  from (
+    select
+      *,
+      DATEPART(year, cohort_start_date) as cohortYear
+    from #temp
+    where rnk=1
+  ) t1
+  group by cohort_definition_id, cohortYear;
+"
+
+  
   # Render and translate sql
-  cohortCovariateSql <- SqlRender::render(
-    sql,
+  cohortCovariateSql1 <- SqlRender::render(
+    sql1,
     cohortDatabaseSchema = cohortDatabaseSchema,
     cdmDatabaseSchema = cdmDatabaseSchema,
     cohortTable = cohortTable
   ) %>%
     SqlRender::translate(targetDialect = con@dbms)
   
-  tb <- DatabaseConnector::querySql(connection = con, sql = cohortCovariateSql)
+  DatabaseConnector::executeSql(connection = con, sql = cohortCovariateSql1)
+  
+  
+  # Render and translate sql
+  cohortCovariateSql2 <- SqlRender::render(
+    sql2
+  ) %>%
+    SqlRender::translate(targetDialect = con@dbms)
+  
+  tb <- DatabaseConnector::querySql(connection = con, sql = cohortCovariateSql2)
   names(tb) <- tolower(names(tb))
   
   cohortManifest <- readr::read_csv(file = here::here("results", database, "02_buildStrata", "allCohorts.csv"), 
@@ -968,10 +1075,9 @@ catCovDeath <- function(con,
   tbF <- tb %>%
     dplyr::left_join(cohortManifest, by = c("cohort_definition_id" = "cohortId")) %>%
     dplyr::rename(cohortId = cohort_definition_id,
-                  conceptName = concept_name,
                   totalEntries = cohortEntries,
                   totalSubjects = cohortSubjects) %>%
-    dplyr::select(nn, cohortId, conceptName, totalEntries, totalSubjects) %>%
+    dplyr::select(nn, cohortId, totalEntries, totalSubjects) %>%
     dplyr::mutate(pct = nn/totalSubjects)
   
   verboseSave(
