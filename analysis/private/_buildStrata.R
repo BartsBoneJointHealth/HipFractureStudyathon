@@ -12,7 +12,7 @@ deleteStratas <- function(executionSettings,
                           con) {
     
   
-    sql <- "DELETE FROM @cohortDatabaseSchema.@cohortTable where cohort_definition_id between 100 and 424;"
+    sql <- "DELETE FROM @cohortDatabaseSchema.@cohortTable where cohort_definition_id not in (1,2,3,4);"
     
     sql <- SqlRender::render(
       sql,
@@ -50,7 +50,11 @@ shsStrata <- function(con,
         from @cohortDatabaseSchema.@cohortTable a
         left join  @cdmDatabaseSchema.PROCEDURE_OCCURRENCE b
          on a.subject_id = b.person_id and a.cohort_start_date <= b.procedure_date
-        where cohort_definition_id IN (@targetId) and b.procedure_concept_id in (4343341)
+        where cohort_definition_id IN (@targetId) and b.procedure_concept_id in (
+          select concept_id 
+          from @cdmDatabaseSchema.CONCEPT a
+          inner join @cdmDatabaseSchema.CONCEPT_ANCESTOR b on a.concept_id = b.descendant_concept_id and b.descendant_concept_id in (4343341)
+        )
   )t1 
   WHERE rnk =1
     )t2;
@@ -128,7 +132,11 @@ chsStrata <- function(con,
         from @cohortDatabaseSchema.@cohortTable a
         left join  @cdmDatabaseSchema.PROCEDURE_OCCURRENCE b
          on a.subject_id = b.person_id and a.cohort_start_date <= b.procedure_date
-        where cohort_definition_id IN (@targetId) and b.procedure_concept_id in (40479229)
+        where cohort_definition_id IN (@targetId) and b.procedure_concept_id in (
+          select concept_id 
+          from @cdmDatabaseSchema.CONCEPT a
+          inner join @cdmDatabaseSchema.CONCEPT_ANCESTOR b on a.concept_id = b.descendant_concept_id and b.descendant_concept_id in (40479229)
+        )
   )t1 
   WHERE rnk =1
     )t2;
@@ -206,7 +214,11 @@ thrStrata <- function(con,
         from @cohortDatabaseSchema.@cohortTable a
         left join  @cdmDatabaseSchema.PROCEDURE_OCCURRENCE b
          on a.subject_id = b.person_id and a.cohort_start_date <= b.procedure_date
-        where cohort_definition_id IN (@targetId) and b.procedure_concept_id in (4203771)
+        where cohort_definition_id IN (@targetId) and b.procedure_concept_id in (
+          select concept_id 
+          from @cdmDatabaseSchema.CONCEPT a
+          inner join @cdmDatabaseSchema.CONCEPT_ANCESTOR b on a.concept_id = b.descendant_concept_id and b.descendant_concept_id in (4203771)
+        )
   )t1 
   WHERE rnk =1
     )t2;
@@ -284,7 +296,11 @@ imStrata <- function(con,
         from @cohortDatabaseSchema.@cohortTable a
         left join  @cdmDatabaseSchema.PROCEDURE_OCCURRENCE b
          on a.subject_id = b.person_id and a.cohort_start_date <= b.procedure_date
-        where cohort_definition_id IN (@targetId) and b.procedure_concept_id in (46270907)
+        where cohort_definition_id IN (@targetId) and b.procedure_concept_id in (
+          select concept_id 
+          from @cdmDatabaseSchema.CONCEPT a
+          inner join @cdmDatabaseSchema.CONCEPT_ANCESTOR b on a.concept_id = b.descendant_concept_id and b.descendant_concept_id in (46270907)
+        )
   )t1 
   WHERE rnk =1
     )t2;
@@ -362,7 +378,11 @@ hemiStrata <- function(con,
         from @cohortDatabaseSchema.@cohortTable a
         left join  @cdmDatabaseSchema.PROCEDURE_OCCURRENCE b
          on a.subject_id = b.person_id and a.cohort_start_date <= b.procedure_date
-        where cohort_definition_id IN (@targetId) and b.procedure_concept_id in (4297365)
+        where cohort_definition_id IN (@targetId) and b.procedure_concept_id in (
+          select concept_id 
+          from @cdmDatabaseSchema.CONCEPT a
+          inner join @cdmDatabaseSchema.CONCEPT_ANCESTOR b on a.concept_id = b.descendant_concept_id and b.descendant_concept_id in (4297365)
+        )
   )t1 
   WHERE rnk =1
     )t2;
@@ -441,7 +461,11 @@ operStrata <- function(con,
         from @cohortDatabaseSchema.@cohortTable a
         left join  @cdmDatabaseSchema.PROCEDURE_OCCURRENCE b
          on a.subject_id = b.person_id and a.cohort_start_date <= b.procedure_date
-        where cohort_definition_id IN (@targetId) and b.procedure_concept_id in (40479229, 4343341, 46270907, 4297365, 4203771, 4327115)
+        where cohort_definition_id IN (@targetId) and b.procedure_concept_id in (
+          select concept_id 
+          from @cdmDatabaseSchema.CONCEPT a
+          inner join @cdmDatabaseSchema.CONCEPT_ANCESTOR b on a.concept_id = b.descendant_concept_id and b.descendant_concept_id in (40479229, 4343341, 46270907, 4297365, 4203771, 4327115)
+        )
   )t1 
   WHERE rnk =1
     )t2;
@@ -519,7 +543,11 @@ pathStrata <- function(con,
         from @cohortDatabaseSchema.@cohortTable a
         left join  @cdmDatabaseSchema.CONDITION_OCCURRENCE b
          on a.subject_id = b.person_id and a.cohort_start_date <= b.condition_start_date
-        where cohort_definition_id IN (@targetId) and b.condition_concept_id in (45772710, 45766906)
+        where cohort_definition_id IN (@targetId) and b.condition_concept_id in (
+          select concept_id 
+          from @cdmDatabaseSchema.CONCEPT a
+          inner join @cdmDatabaseSchema.CONCEPT_ANCESTOR b on a.concept_id = b.descendant_concept_id and b.descendant_concept_id in (45772710, 45766906)
+        )
   )t1 
   WHERE rnk =1
     )t2;
@@ -597,7 +625,11 @@ malStrata <- function(con,
         from @cohortDatabaseSchema.@cohortTable a
         left join  @cdmDatabaseSchema.CONDITION_OCCURRENCE b
          on a.subject_id = b.person_id and a.cohort_start_date <= b.condition_start_date
-        where cohort_definition_id IN (@targetId) and b.condition_concept_id in (45772710)
+        where cohort_definition_id IN (@targetId) and b.condition_concept_id in (
+          select concept_id 
+          from @cdmDatabaseSchema.CONCEPT a
+          inner join @cdmDatabaseSchema.CONCEPT_ANCESTOR b on a.concept_id = b.descendant_concept_id and b.descendant_concept_id in (45772710)
+        )
   )t1 
   WHERE rnk =1
     )t2;
@@ -675,7 +707,11 @@ atypStrata <- function(con,
         from @cohortDatabaseSchema.@cohortTable a
         left join  @cdmDatabaseSchema.CONDITION_OCCURRENCE b
          on a.subject_id = b.person_id and a.cohort_start_date <= b.condition_start_date
-        where cohort_definition_id IN (@targetId) and b.condition_concept_id in (45766906)
+        where cohort_definition_id IN (@targetId) and b.condition_concept_id in (
+          select concept_id 
+          from @cdmDatabaseSchema.CONCEPT a
+          inner join @cdmDatabaseSchema.CONCEPT_ANCESTOR b on a.concept_id = b.descendant_concept_id and b.descendant_concept_id in (45766906)
+        )
   )t1 
   WHERE rnk =1
     )t2;
@@ -760,10 +796,18 @@ rehabStrata <- function(con,
         from @cohortDatabaseSchema.@cohortTable a
         left join  @cdmDatabaseSchema.PROCEDURE_OCCURRENCE b
          on a.subject_id = b.person_id and a.cohort_start_date <= b.procedure_date
-        where cohort_definition_id IN (@targetId) and b.procedure_concept_id in (40479229, 4343341, 46270907, 4297365, 4203771, 4327115)
+        where cohort_definition_id IN (@targetId) and b.procedure_concept_id in (
+          select concept_id 
+          from @cdmDatabaseSchema.CONCEPT a
+          inner join @cdmDatabaseSchema.CONCEPT_ANCESTOR b on a.concept_id = b.descendant_concept_id and b.descendant_concept_id in (40479229, 4343341, 46270907, 4297365, 4203771, 4327115)
+        )
     )t1 
     left join @cdmDatabaseSchema.OBSERVATION b on t1.subject_id = b.person_id and t1.cohort_start_date <= b.observation_date
-    where rnk =1 and b.observation_concept_id in (4125679, 4140767)
+    where rnk =1 and b.observation_concept_id in (
+          select concept_id 
+          from @cdmDatabaseSchema.CONCEPT a
+          inner join @cdmDatabaseSchema.CONCEPT_ANCESTOR b on a.concept_id = b.descendant_concept_id and b.descendant_concept_id in (4125679, 4140767)
+    )
   )t2 where rnk2=1;
    
    
@@ -846,11 +890,19 @@ postopStrata <- function(con,
         from @cohortDatabaseSchema.@cohortTable a
         left join  @cdmDatabaseSchema.PROCEDURE_OCCURRENCE b
          on a.subject_id = b.person_id and a.cohort_start_date <= b.procedure_date
-        where cohort_definition_id IN (@targetId) and b.procedure_concept_id in (40479229, 4343341, 46270907, 4297365, 4203771, 4327115)
+        where cohort_definition_id IN (@targetId) and b.procedure_concept_id in (
+          select concept_id 
+          from @cdmDatabaseSchema.CONCEPT a
+          inner join @cdmDatabaseSchema.CONCEPT_ANCESTOR b on a.concept_id = b.descendant_concept_id and b.descendant_concept_id in (40479229, 4343341, 46270907, 4297365, 4203771, 4327115)
+        )
     )t1 
     left join @cdmDatabaseSchema.PROCEDURE_OCCURRENCE b 
      on t1.subject_id = b.person_id and t1.cohort_start_date between b.procedure_date and DATEADD(dd, 1, b.procedure_date)
-    where rnk =1 and b.procedure_concept_id in (4040076)
+    where rnk =1 and b.procedure_concept_id in (
+          select concept_id 
+          from @cdmDatabaseSchema.CONCEPT a
+          inner join @cdmDatabaseSchema.CONCEPT_ANCESTOR b on a.concept_id = b.descendant_concept_id and b.descendant_concept_id in (4040076)
+    )
   )t2 where rnk2=1;
    
    

@@ -119,9 +119,10 @@ bindFilesCat <- function(outputPath,
                          col_types = list(
                            nn = "d",
                            cohortId = "d",
-                           totalEntries = "d",
-                           totalSubjects = "d",
-                           pct = "d"
+                           conceptId = "d",
+                           conceptName = "c",
+                           type = "c",
+                           year = "d"
                          )
   )
 
@@ -129,12 +130,22 @@ bindFilesCat <- function(outputPath,
   ## Created binded data frame with all data frames of list
   binded_df <- dplyr::bind_rows(listed_files)
   
+  cohortManifest <- readr::read_csv(file = here::here("results", database, "02_buildStrata", "allCohorts.csv"), 
+                                    show_col_types = FALSE)
+  
+  binded_df_F <- binded_df %>%
+    dplyr::left_join(cohortManifest, by = c("cohortId")) %>%
+    dplyr::rename(totalEntries = cohortEntries,
+                  totalSubjects = cohortSubjects) %>%
+    dplyr::mutate(pct = nn/totalSubjects)
+    
+  
   ## Create output directory
   fs::dir_create(outputPath)
   
   ## Save output
   readr::write_csv(
-    x = binded_df,
+    x = binded_df_F,
     file = file.path(outputPath, paste0(filename, "_", database, ".csv")),
     append = FALSE
   )

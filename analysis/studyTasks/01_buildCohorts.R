@@ -32,7 +32,7 @@ con <- DatabaseConnector::connect(connectionDetails)
 
 # Administrative Variables
 executionSettings <- config::get(config = configBlock) %>%
-  purrr::discard_at(c("dbms", "user", "password", "connectionString"))
+  purrr::discard_at(c("user", "password", "connectionString"))
 
 outputFolder <- here::here("results") %>%
   fs::path(executionSettings$databaseName, "01_buildCohorts") %>%
@@ -46,9 +46,28 @@ cohortManifest <- getCohortManifest()
 
 ### RUN ONCE - Initialize cohort tables ###
 #initializeCohortTables(executionSettings = executionSettings, con = con)
+# 
+# # Generate cohorts
+# generatedCohorts <- generateCohorts(
+#   executionSettings = executionSettings,
+#   con = con,
+#   cohortManifest = cohortManifest,
+#   outputFolder = outputFolder
+# )
 
-# Generate cohorts
-generatedCohorts <- generateCohorts(
+# Build stratas
+
+debug(buildStrata)
+buildStrata(con = con,
+            executionSettings = executionSettings)
+
+
+outputFolder <- here::here("results") %>%
+  fs::path(executionSettings$databaseName, "02_buildStrata") %>%
+  fs::dir_create()
+
+# Count cohorts
+countedCohorts <- countCohorts(
   executionSettings = executionSettings,
   con = con,
   cohortManifest = cohortManifest,

@@ -19,7 +19,7 @@ configBlock <- "nhfd"
 
 #bindAndShareResults()
 
-#debug(bindFilesCat)
+debug(bindFilesCat)
 bindFilesCat(outputPath = here::here("report"),
              database = configBlock,
              filename = "catCov")
