@@ -54,5 +54,5 @@ TBD
 
 # Support
 
--   Developer questions/comments/feedback: Email George Argyriou [george.argyriou\@odysseusinc.com](mailto:george.argyriou@odysseusinc.com)
+-   Developer questions/comments/feedback: Email Marissa Fiorello m.fiorello@northeastern.edu
 -   Bugs/issues/enhancements: GitHub issue tracker
